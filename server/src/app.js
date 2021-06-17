@@ -1,21 +1,19 @@
 const express = require('express')
 const bodyParser = require('body-parser')
-const cors =  require('cors')
+const cors = require('cors')
 const morgan = require('morgan')
+const {sequelize} = require('./models')
+const config = require('./config/config')
 
 const app = express()
-
-// Use Morgan log generator
-app.use(morgan('combined'))
-// Allow our app to process any json request
+app.use(morgan('tiny'))
 app.use(bodyParser.json())
-// Allow any client to access
 app.use(cors())
 
-app.get('/status', (req, res) => {
-    res.send({
-        message: 'hello world!'
-    })
-})
+require('./routes')(app)
 
-app.listen(process.env.PORT || 8081)
+sequelize.sync()
+.then(() => {
+    app.listen(config.port || 8081)
+    console.log('server started on port '+ config.port)
+})
