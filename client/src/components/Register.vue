@@ -22,9 +22,11 @@
                        Hide necessary components in each. -->
             <div class="container">
                 <input type="text" placeholder="Enter Username" name="uname" required>
-                <input type="password" placeholder="Enter Password" name="psw" required v-model="password">
+                <input type="password" placeholder="Enter Password" name="psw" required
+                v-model="password">
                 <input type="password" placeholder="Confirm Password" name="psw" required>
-                <input type="text" placeholder="Enter Email" name="email" required v-model="email">
+                <input type="text" placeholder="Enter Email" name="email" required
+                v-model="email">
                 <div class="container" style="background-color:#f1f1f1">
                     <button @click="register">Register</button>
                     <span class="psw">Forgot <a href="#">password?</a></span>
