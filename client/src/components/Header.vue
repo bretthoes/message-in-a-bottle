@@ -1,26 +1,16 @@
 <template>
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
-  <a class="navbar-brand" href="#">Navbar</a>
-  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-    <span class="navbar-toggler-icon"></span>
-  </button>
-  <div class="collapse navbar-collapse" id="navbarNav">
-    <ul class="navbar-nav">
-      <li class="nav-item active">
-        <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="#">Features</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="#">Pricing</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link disabled" href="#">Disabled</a>
-      </li>
+<div>
+  <nav>
+    <ul>
+      <li><a href="#"><b>home</b></a></li>
+      <li><a href="#">inbox</a></li>
+      <li><a href="#">profile</a></li>
     </ul>
-  </div>
-</nav>
+  </nav>
+  <h1>MESSAGE</h1>
+  <h1>IN A</h1>
+  <h1 class="blue">BOTTLE</h1>
+</div>
 </template>
 
 <script>
@@ -35,4 +25,27 @@ export default {
 </script>
 
 <style scoped>
+*{
+}
+nav {
+  text-align: right;
+}
+ul, a {
+  list-style-type: none;
+  text-decoration: none;
+  color: black;
+  padding-right: 12px;
+  font-size: 20px;
+}
+a:hover {
+  font-weight: bold;
+}
+h1 {
+  font-size: 48px;
+  transform: scale(1.2, 1);
+  font-weight: bold;
+}
+.blue {
+  color:blue;
+}
 </style>
