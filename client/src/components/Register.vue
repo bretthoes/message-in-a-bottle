@@ -3,36 +3,36 @@
         <h2>Register</h2>
         <button onclick="document.getElementById('id01').style.display='block'" style="width:auto;">Login</button>
         <div id="id01" class="modal">
-        <form class="modal-content animate" method="post">
-            <div class="imgcontainer">
-                <span onclick="document.getElementById('id01').style.display='none'" class="close" title="Close Modal">&times;</span>
-                <img src="../assets/avatar_bottle.png" alt="Avatar" class="avatar">
-            </div>
-            <div>
-            <ul class="nav nav-tabs">
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Login</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link active" href="#">Register</a>
-                </li>
-            </ul>
-            </div>
-            <!-- TODO: add functionality to switch between login and register tabs.
-                       Hide necessary components in each. -->
-            <div class="container">
-                <input type="text" placeholder="Enter Username" name="uname" required>
-                <input type="password" placeholder="Enter Password" name="psw" required
-                v-model="password">
-                <input type="password" placeholder="Confirm Password" name="psw" required>
-                <input type="text" placeholder="Enter Email" name="email" required
-                v-model="email">
-                <div class="container" style="background-color:#f1f1f1">
-                    <button @click="register">Register</button>
-                    <span class="psw">Forgot <a href="#">password?</a></span>
-                </div>
-            </div>
-        </form>
+          <form class="modal-content animate" method="post">
+              <div class="imgcontainer">
+                  <span onclick="document.getElementById('id01').style.display='none'" class="close" title="Close Modal">&times;</span>
+                  <img src="../assets/avatar_bottle.png" alt="Avatar" class="avatar">
+              </div>
+              <div>
+              <ul class="nav nav-tabs">
+                  <li class="nav-item">
+                      <a class="nav-link" href="#">Login</a>
+                  </li>
+                  <li class="nav-item">
+                      <a class="nav-link active" href="#">Register</a>
+                  </li>
+              </ul>
+              </div>
+              <!-- TODO: add functionality to switch between login and register tabs.
+                        Hide necessary components in each. -->
+              <div class="container">
+                  <input type="text" placeholder="Enter Username" name="uname" required>
+                  <input type="password" placeholder="Enter Password" name="psw" required
+                  v-model="password">
+                  <input type="password" placeholder="Confirm Password" name="psw" required>
+                  <input type="text" placeholder="Enter Email" name="email" required
+                  v-model="email">
+                  <div class="container" style="background-color:#f1f1f1">
+                      <button @click="register">Register</button>
+                      <span class="psw">Forgot <a href="#">password?</a></span>
+                  </div>
+              </div>
+          </form>
         </div>
     </div>
 </template>
