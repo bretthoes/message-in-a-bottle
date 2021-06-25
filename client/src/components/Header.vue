@@ -34,12 +34,29 @@
         <!-- TODO: add functionality to switch between login and register tabs.
                   Hide necessary components in each. -->
         <div class="container">
-            <input type="text" placeholder="Enter Username" name="uname" required>
-            <input type="password" placeholder="Enter Password" name="psw" required
-            v-model="password">
-            <input type="password" placeholder="Confirm Password" name="psw" required>
-            <input type="text" placeholder="Enter Email" name="email" required
-            v-model="email">
+            <input
+              type="text"
+              placeholder="Enter Username"
+              name="uname"
+              required />
+            <input
+              type="password"
+              placeholder="Enter Password"
+              name="psw"
+              required
+              v-model="password" />
+            <input
+              type="password"
+              placeholder="Confirm Password"
+              name="psw"
+              required />
+            <input
+              type="text"
+              placeholder="Enter Email"
+              name="email"
+              required
+              v-model="email" />
+            <div class="error" v-html="error" />
             <div class="container" style="background-color:#f1f1f1">
                 <button @click="register">Register</button>
                 <span class="psw">Forgot <a href="#">password?</a></span>
@@ -56,16 +73,21 @@ export default {
   data () {
     return {
       email: '',
-      password: ''
+      password: '',
+      error: null
     }
   },
   methods: {
-    async register () {
-      const response = await AuthenticationService.register({
-        email: this.email,
-        password: this.password
-      })
-      console.log(response.data)
+    async register (e) {
+      e.preventDefault()
+      try {
+        await AuthenticationService.register({
+          email: this.email,
+          password: this.password
+        })
+      } catch (err) {
+        this.error = err.response.data.error
+      }
     },
     navigateTo (route) {
       this.$router.push(route)
@@ -175,6 +197,10 @@ span.psw {
     margin: auto;
     padding-top: 9px;
     font-size: 12px;
+}
+
+.error {
+  color: red;
 }
 
 /* The Modal (background) */
