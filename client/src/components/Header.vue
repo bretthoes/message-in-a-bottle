@@ -1,11 +1,12 @@
 <template>
-<div>
+<div class="content">
   <!-- nav -->
   <nav>
     <ul>
-      <li><a href="#"><span>&nbsp;home</span></a></li>
+      <li><a href="#"><span @click="navigateTo({name: 'root'})">&nbsp;home</span></a></li>
       <li><a href="#"><span>&nbsp;inbox</span></a></li>
-      <li><a href="#" onclick="document.getElementById('id01').style.display='block'"><span>&nbsp;login</span></a></li>
+      <li><a href="#"><span>&nbsp;login</span></a></li>
+      <li><a href="#" onclick="document.getElementById('id01').style.display='block'"><span>&nbsp;register</span></a></li>
     </ul>
   </nav>
   <!-- TODO: move to home page, shouldn't be part of header -->
@@ -13,7 +14,7 @@
   IN A<br />
   <span class="blue">BOTTLE</span></h1>
 
-  <!-- modal -->
+  <!-- login/register modal -->
   <div id="id01" class="modal">
     <form class="modal-content animate" method="post">
         <div class="imgcontainer">
@@ -65,6 +66,9 @@ export default {
         password: this.password
       })
       console.log(response.data)
+    },
+    navigateTo (route) {
+      this.$router.push(route)
     }
   }
 }
@@ -80,9 +84,6 @@ window.onclick = function (event) {
 </script>
 
 <style scoped>
-*, ::before, ::after {
-box-sizing: border-box;
-}
 nav {
   text-align: right;
 }
@@ -106,6 +107,11 @@ nav a:hover {
   /*color: aquamarine;*/
   outline: 1px solid black;
 }
+.blue {
+  background: linear-gradient(to right, #30CFD0 0%, aquamarine 100%);
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
 h1 {
   font-size: 52px;
   transform: scale(1.2, 1);
@@ -113,11 +119,6 @@ h1 {
   font-weight: 900;
   text-transform: uppercase;
   display: inline-block;
-}
-.blue {
-  background: linear-gradient(aquamarine, aqua);
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
 }
 
 /* modal */
@@ -134,7 +135,7 @@ input[type=text], input[type=password] {
 
 /* Set a style for all buttons */
 button {
-  background-color: #04AA6D;
+  background-color: lightseagreen;
   color: white;
   padding: 14px 20px;
   margin: 8px 0;
