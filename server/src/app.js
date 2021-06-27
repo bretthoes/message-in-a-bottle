@@ -12,6 +12,7 @@ app.use(cors())
 // Pass our app and attach all endpoints
 require('./routes')(app)
 
+// Pass {force: true} into sync method to clear database
 sequelize.sync()
   .then(() => {
     app.listen(config.port)
