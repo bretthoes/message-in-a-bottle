@@ -9,16 +9,34 @@
           >
         </li>
         <li>
-          <a href="#" v-if="isLoggedIn"><span>&nbsp;inbox</span></a>
+          <a href="#" v-if="$store.state.isUserLoggedIn">
+            <span>&nbsp;inbox</span>
+          </a>
         </li>
         <li>
-          <a href="#" v-if="isLoggedIn"><span>&nbsp;profile</span></a>
+          <a href="#" v-if="$store.state.isUserLoggedIn">
+            <span v-b-toggle="'collapse-1'">
+              &#x25BE;profile
+            </span>
+            <b-collapse id="collapse-1">
+              <b-card>
+                <ul class='dropdown'>
+                  <li><a href='#'>my account</a></li>
+                  <li>
+                    <a href='#' @click="logout">
+                      sign out
+                    </a>
+                  </li>
+                </ul>
+              </b-card>
+            </b-collapse>
+          </a>
         </li>
         <li>
           <a
             href="#"
             onclick="document.getElementById('modal').style.display='block'"
-            v-if="!isLoggedIn"
+            v-if="!$store.state.isUserLoggedIn"
             @click="isRegister = false"
             ><span>&nbsp;login</span></a
           >
@@ -27,7 +45,7 @@
           <a
             href="#"
             onclick="document.getElementById('modal').style.display='block'"
-            v-if="!isLoggedIn"
+            v-if="!$store.state.isUserLoggedIn"
             @click="isRegister = true"
             ><span>&nbsp;register</span></a
           >
@@ -36,16 +54,21 @@
     </nav>
 
     <!-- TODO: move to home page, shouldn't be part of header -->
-    <h1>
-      MESSAGE<br />
-      IN A<br />
-      <span class="blue">BOTTLE</span>
-    </h1>
-    <h2 class="subtitle">0 matches in 0 quiz submissions</h2>
-
+    <div>
+      <h1>
+        MESSAGE<br />
+        IN A<br />
+        <span class="blue">BOTTLE</span>
+      </h1>
+      <h2 class="subtitle">0 matches after 0 bottles thrown to sea</h2>
+    </div>
+    <div class="start-quiz">
+      <button>what is this?</button>&nbsp;&nbsp;&nbsp;
+      <button>[&nbsp;start quiz&nbsp;]</button>
+    </div>
     <!-- login/register modal -->
     <div id="modal" class="modal">
-      <form class="modal-content animate" method="post">
+      <form class="modal-content animate">
         <div class="imgcontainer">
           <span
             onclick="document.getElementById('modal').style.display='none'"
@@ -77,9 +100,10 @@
           <input
             type="text"
             placeholder="Enter Username"
-            name="uname"
+            name="username"
             required
             v-if="isRegister"
+            v-model="username"
           />
           <input
             type="text"
@@ -101,11 +125,12 @@
             name="psw"
             required
             v-if="isRegister"
+            v-model="repeatedPassword"
           />
           <div class="error" v-html="error" />
           <div class="container" style="background-color:#f1f1f1">
-            <button @click="register" v-if="isRegister">Register</button>
-            <button @click="login" v-if="!isRegister">Login</button>
+            <button class="modal-button" @click="register" v-if="isRegister">Register</button>
+            <button class="modal-button" @click="login" v-if="!isRegister">Login</button>
             <span class="psw" v-if="!isRegister">Forgot <a href="#">password?</a></span>
           </div>
         </div>
@@ -146,21 +171,33 @@ import AuthenticationService from '@/services/AuthenticationService'
 export default {
   data () {
     return {
+      username: '',
       email: '',
       password: '',
+      repeatedPassword: '',
       error: null,
-      isLoggedIn: false,
       isRegister: false
     }
   },
   methods: {
     async register (e) {
       e.preventDefault()
+      // Ensure confirmation password matches
+      if (this.password !== this.repeatedPassword) {
+        this.error = 'Repeated password does not match.'
+        return
+      }
       try {
-        await AuthenticationService.register({
+        const response = await AuthenticationService.register({
           email: this.email,
           password: this.password
         })
+        this.$store.dispatch('setToken', response.data.token)
+        this.$store.dispatch('setUser', response.data.user)
+
+        // Close modal on successful register
+        var modal = document.getElementById('modal')
+        modal.style.display = 'none'
       } catch (err) {
         this.error = err.response.data.error
       }
@@ -168,16 +205,29 @@ export default {
     async login (e) {
       e.preventDefault()
       try {
-        await AuthenticationService.login({
+        const response = await AuthenticationService.login({
           email: this.email,
           password: this.password
         })
+        this.$store.dispatch('setToken', response.data.token)
+        this.$store.dispatch('setUser', response.data.user)
+
+        // Close modal on successful register
+        var modal = document.getElementById('modal')
+        modal.style.display = 'none'
       } catch (err) {
         this.error = err.response.data.error
       }
     },
     navigateTo (route) {
       this.$router.push(route)
+    },
+    logout () {
+      this.$store.dispatch('setToken', null)
+      this.$store.dispatch('setUser', null)
+      this.$router.push({
+        name: 'root'
+      })
     }
   }
 }
@@ -193,6 +243,35 @@ window.onclick = function (event) {
 </script>
 
 <style scoped>
+.start-quiz{
+  margin: auto;
+  margin-top: 24px;
+}
+.start-quiz > button {
+  cursor: pointer;
+  width: 150px;
+  height: 60px;
+  font-size: 22px;
+  border: 1px solid black;
+  box-shadow: 1px 2px;
+}
+.start-quiz > button:hover {
+  text-decoration: underline;
+  border: 3px solid black;
+  box-shadow: 2px 3px;
+  background-color: #B1D3E1;
+}
+.start-quiz:hover{
+}
+.dropdown > li > a {
+  color: black;
+  list-style-type: none;
+  text-decoration: none;
+}
+.dropdown > li > a:hover {
+  transition: 0.25s ease;
+  text-decoration: underline;
+}
 nav {
   text-align: right;
 }
@@ -206,23 +285,26 @@ nav > ul > li {
   font-size: 22px;
   text-transform: lowercase;
 }
-nav a {
+
+nav > ul > li > a {
   display: inline-block;
   transform: skew(-12deg);
 }
-nav span {
+nav > ul > li > a > span {
   display: inline-block;
   transform: skew(12deg);
 }
-nav a:hover {
+nav > ul > li > a:hover {
   transition: 0.75s ease;
   /*color: aquamarine;*/
   outline: 1px solid black;
 }
 .blue {
-  background: linear-gradient(to right, #30cfd0 0%, aquamarine 100%);
+  /*background: linear-gradient(to right, #30cfd0 0%, aquamarine 100%);
   background-clip: text;
-  -webkit-text-fill-color: transparent;
+  -webkit-text-fill-color: transparent;*/
+  color: #4696B8;
+  text-shadow: 1px 0 black, 0 1px black, 1px 0 black, 0 -1px
 }
 h1 {
   font-size: 52px;
@@ -251,9 +333,8 @@ input[type="password"] {
   box-sizing: border-box;
 }
 
-/* Set a style for all buttons */
-button {
-  background-color: lightseagreen;
+.modal-button {
+  background-color: #006f9e;
   color: white;
   padding: 14px 20px;
   margin: 8px 0;
@@ -262,7 +343,7 @@ button {
   width: 100%;
 }
 
-button:hover {
+.modal-button:hover {
   opacity: 0.8;
 }
 

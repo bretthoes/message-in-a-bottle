@@ -1,7 +1,9 @@
 import Vue from 'vue'
 import App from './App'
 import router from './router'
+import { sync } from 'vuex-router-sync'
 import { BootstrapVue, IconsPlugin } from 'bootstrap-vue'
+import store from './store/store'
 
 // Import Bootstrap an BootstrapVue CSS files
 import 'bootstrap/dist/css/bootstrap.css'
@@ -14,9 +16,12 @@ Vue.use(IconsPlugin)
 
 Vue.config.productionTip = false
 
+sync(store, router)
+
 /* eslint-disable no-new */
 new Vue({
   el: '#app',
   router,
+  store,
   render: h => h(App)
 })
