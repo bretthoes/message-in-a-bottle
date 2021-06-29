@@ -3,6 +3,9 @@ const Joi = require('joi')
 module.exports = {
   register(req, res, next) {
     const schema = Joi.object({
+      username: Joi.string().regex(
+        new RegExp('&[a-zA-Z0-9]{4,16}$')
+      ),
       email: Joi.string().min(6).email(),
       password: Joi.string().regex(
         new RegExp('^[a-zA-Z0-9]{8,32}$')
@@ -13,6 +16,11 @@ module.exports = {
 
     if (error) {
       switch (error.details[0].context.key) {
+        case 'username':
+          res.status(400).send({
+            error: 'You must provide a valid username.'
+          })
+          break
         case 'email':
           res.status(400).send({
             error: 'You must provide a valid email address.'

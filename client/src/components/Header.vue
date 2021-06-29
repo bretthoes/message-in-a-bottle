@@ -16,7 +16,7 @@
         <li>
           <a href="#" v-if="$store.state.isUserLoggedIn">
             <span v-b-toggle="'collapse-1'">
-              &#x25BE;profile
+              &#x25BE;{{$store.state.user.username}}
             </span>
             <b-collapse id="collapse-1">
               <b-card>
@@ -97,31 +97,32 @@
         <!-- TODO: add functionality to switch between login and register tabs.
                   Hide necessary components in each. -->
         <div class="container">
+          <label v-if="isRegister">Username</label>
           <input
             type="text"
-            placeholder="Enter Username"
             name="username"
             required
             v-if="isRegister"
             v-model="username"
           />
+          <label v-if="isRegister">Email</label>
+          <label v-if="!isRegister">Email or Username</label>
           <input
             type="text"
-            placeholder="Enter Email"
             name="email"
             required
             v-model="email"
           />
+          <label>Password</label>
           <input
             type="password"
-            placeholder="Enter Password"
             name="psw"
             required
             v-model="password"
           />
+          <label v-if="isRegister">Confirm Password</label>
           <input
             type="password"
-            placeholder="Confirm Password"
             name="psw"
             required
             v-if="isRegister"
@@ -189,6 +190,7 @@ export default {
       }
       try {
         const response = await AuthenticationService.register({
+          username: this.username,
           email: this.email,
           password: this.password
         })
@@ -206,6 +208,8 @@ export default {
       e.preventDefault()
       try {
         const response = await AuthenticationService.login({
+          // Pass both username and email as email input value to check on both for login
+          username: this.email,
           email: this.email,
           password: this.password
         })
@@ -243,6 +247,14 @@ window.onclick = function (event) {
 </script>
 
 <style scoped>
+label {
+  display: block;
+  text-align: left;
+  font-size: 16px;
+  font-weight: bold;
+  padding-left: 3px;
+
+}
 .start-quiz{
   margin: auto;
   margin-top: 24px;
@@ -260,8 +272,6 @@ window.onclick = function (event) {
   border: 3px solid black;
   box-shadow: 2px 3px;
   background-color: #B1D3E1;
-}
-.start-quiz:hover{
 }
 .dropdown > li > a {
   color: black;
@@ -304,7 +314,8 @@ nav > ul > li > a:hover {
   background-clip: text;
   -webkit-text-fill-color: transparent;*/
   color: #4696B8;
-  text-shadow: 1px 0 black, 0 1px black, 1px 0 black, 0 -1px
+  text-shadow: 1px 0 black, 0 1px black, 1px 0 black, 0 -1px;
+  /* text-shadow: 2px 2px black; */
 }
 h1 {
   font-size: 52px;
@@ -331,6 +342,11 @@ input[type="password"] {
   display: inline-block;
   border: 1px solid #ccc;
   box-sizing: border-box;
+  background-color: white;
+}
+input:focus{
+  padding: 9px 15px;
+  background-color: beige;
 }
 
 .modal-button {
