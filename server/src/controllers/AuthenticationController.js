@@ -40,7 +40,7 @@ module.exports = {
           email: email
         }
       })
-      // Check for matchinf username
+      // Check for matching username
       if (!user) {
         user = await User.findOne({
           where: {

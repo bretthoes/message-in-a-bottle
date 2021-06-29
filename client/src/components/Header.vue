@@ -16,7 +16,7 @@
         <li>
           <a href="#" v-if="$store.state.isUserLoggedIn">
             <span v-b-toggle="'collapse-1'">
-              &#x25BE;{{$store.state.user.username}}
+              &#x25BE;{{ username }}
             </span>
             <b-collapse id="collapse-1">
               <b-card>
@@ -53,19 +53,6 @@
       </ul>
     </nav>
 
-    <!-- TODO: move to home page, shouldn't be part of header -->
-    <div>
-      <h1>
-        MESSAGE<br />
-        IN A<br />
-        <span class="blue">BOTTLE</span>
-      </h1>
-      <h2 class="subtitle">0 matches after 0 bottles thrown to sea</h2>
-    </div>
-    <div class="start-quiz">
-      <button>what is this?</button>&nbsp;&nbsp;&nbsp;
-      <button>[&nbsp;start quiz&nbsp;]</button>
-    </div>
     <!-- login/register modal -->
     <div id="modal" class="modal">
       <form class="modal-content animate">
@@ -101,6 +88,8 @@
           <input
             type="text"
             name="username"
+            maxlength="16"
+            minlength="4"
             required
             v-if="isRegister"
             v-model="username"
@@ -110,6 +99,7 @@
           <input
             type="text"
             name="email"
+            minlength="6"
             required
             v-model="email"
           />
@@ -117,6 +107,8 @@
           <input
             type="password"
             name="psw"
+            minlength="8"
+            maxlength="32"
             required
             v-model="password"
           />
@@ -137,33 +129,6 @@
         </div>
       </form>
     </div>
-    <!-- bottom waves -->
-    <footer>
-      <svg viewBox="0 0 120 28">
-        <defs>
-          <filter>
-            <feGaussianBlur in="SourceGraphic" stdDeviation="1" result="blur" />
-            <feColorMatrix
-              in="blur"
-              mode="matrix"
-              values="
-           1 0 0 0 0
-           0 1 0 0 0
-           0 0 1 0 0
-           0 0 0 13 -9"
-            />
-            <xfeBlend in="SourceGraphic" in2="goo" />
-          </filter>
-          <path
-            id="wave"
-            d="M 0,10 C 30,10 30,15 60,15 90,15 90,10 120,10 150,10 150,15 180,15 210,15 210,10 240,10 v 28 h -240 z"
-          />
-        </defs>
-
-        <use id="wave3" class="wave" xlink:href="#wave" x="0" y="-2"></use>
-        <use id="wave2" class="wave" xlink:href="#wave" x="0" y="0"></use>
-      </svg>
-    </footer>
   </div>
 </template>
 
@@ -255,24 +220,6 @@ label {
   padding-left: 3px;
 
 }
-.start-quiz{
-  margin: auto;
-  margin-top: 24px;
-}
-.start-quiz > button {
-  cursor: pointer;
-  width: 150px;
-  height: 60px;
-  font-size: 22px;
-  border: 1px solid black;
-  box-shadow: 1px 2px;
-}
-.start-quiz > button:hover {
-  text-decoration: underline;
-  border: 3px solid black;
-  box-shadow: 2px 3px;
-  background-color: #B1D3E1;
-}
 .dropdown > li > a {
   color: black;
   list-style-type: none;
@@ -309,28 +256,6 @@ nav > ul > li > a:hover {
   /*color: aquamarine;*/
   outline: 1px solid black;
 }
-.blue {
-  /*background: linear-gradient(to right, #30cfd0 0%, aquamarine 100%);
-  background-clip: text;
-  -webkit-text-fill-color: transparent;*/
-  color: #4696B8;
-  text-shadow: 1px 0 black, 0 1px black, 1px 0 black, 0 -1px;
-  /* text-shadow: 2px 2px black; */
-}
-h1 {
-  font-size: 52px;
-  transform: scale(1.2, 1);
-  font-family: "Montserrat", sans-serif;
-  font-weight: 900;
-  text-transform: uppercase;
-  display: inline-block;
-}
-.subtitle {
-  font-style: italic;
-  color: gray;
-  font-size: 26px;
-}
-
 /* modal */
 
 /* Full-width input fields */
@@ -456,45 +381,6 @@ span.psw {
 @media screen and (max-width: 300px) {
   .cancelbtn {
     width: 100%;
-  }
-}
-
-/* wave effects */
-
-footer {
-  width: 100vw;
-  position: fixed;
-  bottom: 0px;
-}
-footer div {
-  background-color: var(--col-deepblue);
-  margin: -5px 0px 0px 0px;
-  padding: 0px;
-  color: #fff;
-  text-align: center;
-}
-svg {
-  width: 100%;
-  overflow: visible;
-}
-
-.wave {
-  animation: wave 3s linear;
-  animation-iteration-count: infinite;
-  fill: #006f9e;
-}
-#wave2 {
-  animation-duration: 10s;
-  animation-direction: reverse;
-  opacity: 0.6;
-}
-#wave3 {
-  animation-duration: 12s;
-  opacity: 0.3;
-}
-@keyframes wave {
-  to {
-    transform: translateX(-100%);
   }
 }
 </style>
