@@ -11,7 +11,7 @@
     </div>
     <div class="start-quiz">
       <button @click="navigateTo({name: 'about'})">what is this?</button>&nbsp;&nbsp;&nbsp;
-      <button>[&nbsp;start quiz&nbsp;]</button>
+      <button @click="navigateTo({name: 'quiz'})">[&nbsp;start quiz&nbsp;]</button>
     </div>
     <!-- bottom waves -->
     <footer>

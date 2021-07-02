@@ -1,8 +1,8 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import Home from '@/components/Home'
-import Register from '@/components/Register'
 import About from '@/components/About'
+import Quiz from '@/components/Quiz'
 
 Vue.use(Router)
 
@@ -14,14 +14,14 @@ export default new Router({
       component: Home
     },
     {
-      path: '/register',
-      name: 'register',
-      component: Register
-    },
-    {
       path: '/about',
       name: 'about',
       component: About
+    },
+    {
+      path: '/quiz',
+      name: 'quiz',
+      component: Quiz
     }
   ]
 })
