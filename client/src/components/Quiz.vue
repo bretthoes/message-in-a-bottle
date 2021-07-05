@@ -1,16 +1,36 @@
 <template>
   <div class='quiz-container'>
-    <div class='quiz' v-for="(element,index) in questions.slice(a,b)" :key="index">
-      <div class='question'>
-        <div class='question-header'>
-        <h2>Question</h2>
-        </div>
-        <p>{{element.question}}</p>
+    <div
+    class='quiz'
+    v-for="(element,index) in questions.slice(questionStartIndex,questionEndIndex)"
+    :key="index">
+      <div class='question-header'>
+        <p>{{questionEndIndex}} / {{questions.length}}</p>
+        <h2>{{element.question}}</h2>
       </div>
-      <div class='options'>
-        <ul>
-          <li v-for="(item,index) in element.options" :key="index">{{item.option}}</li>
-        </ul>
+      <div class='question-options'>
+        <div
+        v-for="(item,index) in element.options"
+        :key="index"
+        @click="selectResponse(index)">
+          <div style='float:left;padding-left:10px;'>{{index+1}}.</div>
+          {{item.option}}
+        </div>
+      </div>
+      <div class='question-footer'>
+        <div class='footer-buttons'>
+          <button @click="previousQuestion">Back</button>
+          <button>Exit</button>
+        </div>
+        <b-progress
+        :value="questionStartIndex"
+        :max="questions.length"
+        variant="info"
+        striped
+        :animated="true"
+        class="mt-2"
+        show-progress>
+        </b-progress>
       </div>
     </div>
   </div>
@@ -55,7 +75,7 @@ export default {
           ]
         },
         {
-          question: 'Of the Big Five personality traits, which is most represented your personality?',
+          question: 'Of the Big Five personality traits, which is most represented in your personality?',
           options:
           [
             { option: 'Openness' },
@@ -75,10 +95,48 @@ export default {
             { option: 'Quality Time' },
             { option: 'Acts of Service' }
           ]
+        },
+        {
+          question: 'Are you ready to submit your quiz?',
+          options:
+          [
+            { option: 'Yes, submit' },
+            { option: 'No, go back' }
+          ]
         }
       ],
-      a: 0,
-      b: 1
+      questionStartIndex: 0,
+      questionEndIndex: 1,
+      answerKey: ''
+    }
+  },
+  methods: {
+    selectResponse (index) {
+      // Check if last question
+      if (this.questionEndIndex === this.questions.length) {
+        // Redirect to quiz submitted page
+        this.$router.push({name: 'root'})
+      } else {
+        // Append answer to answer key
+        this.answerKey += index
+        console.log(this.answerKey)
+        // Move to next question
+        this.questionStartIndex++
+        this.questionEndIndex++
+      }
+    },
+    previousQuestion () {
+      if (this.questionStartIndex > 0 && this.questionEndIndex > 0) {
+        // Remove answer from answer key
+        this.answerKey = this.answerKey.slice(0, this.answerKey.length - 1)
+        console.log(this.answerKey)
+        // Move to previous question
+        this.questionStartIndex--
+        this.questionEndIndex--
+      }
+    },
+    navigateTo (route) {
+      this.$router.push(route)
     }
   }
 }
@@ -87,31 +145,66 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 .quiz-container {
-  display: flex;
-  width: 100%;
-  height: 100%;
   justify-content: center;
+  transition: 1s ease-in;
 }
 .quiz {
-  display: flex;
-  width: 40%;
-  height: 85%;
-  position: absolute;
-  top: 0;
-  bottom: 0;
   margin: auto;
-  flex-flow: column;
   text-align: center;
-  border: 1px solid white;
+  max-width: 600px;
   border-radius: 10px;
-  background-color: white;
-  box-shadow: 0 10px 20px rgba(0, 0 ,0 ,0.19), 0 6px 6px rgba(0,0,0,0.23);
+  box-shadow: 0 10px 20px rgba(0, 0 ,0 ,0.19), 0 6px 6px rgba(0,0,0,0.19);
+  transition: 1s ease-in;
 }
-.question {
+.question-header {
+  height: 20%;
+  border-radius: 10px 10px 0 0;
+  justify-content: center;
+  padding: 20px;
+  /* background-color: #e7eae0; */
+  background-color: #B1D3E1;
+  font-family: "Montserrat", sans-serif;
+  font-weight: bold;
+}
+h2 {
+  font-family: "Montserrat", sans-serif;
+  font-weight: 600;
+}
+.question-options {
+  display: grid;
+  grid-template-columns: 1;
+}
+
+.question-options > div {
+  text-align: center;
+  padding: 20px 0;
+  font-size: 24px;
+  cursor: pointer;
+  box-shadow:         inset 0 0 3px #000000;
+  -moz-box-shadow:    inset 0 0 3px #000000;
+  -webkit-box-shadow: inset 0 0 3px #000000;
+}
+.question-options > div:hover {
+  background-color: #EAEDED;
+  /* transition: 0.4s ease-in; */
+}
+.question-footer {
+  text-align: left;
+  padding: 12px;
+}
+.footer-buttons {
   display: flex;
   width: 100%;
-  height: 70%;
-  flex-flow: column;
+  padding: 10px;
+}
+.footer-buttons > button {
+  width: 150px;
+  height: 35px;
+  outline: none;
+  border: 0;
+  font-size: 18px;
+  cursor: pointer;
+  background-color: #B1D3E1;
   margin: auto;
 }
 </style>
