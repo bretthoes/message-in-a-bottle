@@ -1,6 +1,5 @@
 <template>
   <div>
-    <!-- TODO: move to home page, shouldn't be part of header -->
     <div>
       <h1>
         MESSAGE<br />
@@ -28,7 +27,7 @@
            0 0 1 0 0
            0 0 0 13 -9"
             />
-            <xfeBlend in="SourceGraphic" in2="goo" />
+            <xfeBlend in="SourceGraphic" />
           </filter>
           <path
             id="wave"

@@ -3,7 +3,7 @@ const jwt = require('jsonwebtoken')
 const config = require('../config/config')
 
 function jwtSignUser(user) {
-  const ONE_WEEK = 60 * 60 * 24 * 7
+  const ONE_WEEK = 604800 // seconds
   return jwt.sign(user, config.authentication.jwtSecret, {
     expiresIn: ONE_WEEK
   })
@@ -19,12 +19,16 @@ module.exports = {
         token: jwtSignUser(userJson)
       })
     } catch (err) {
-      res.status(400).send({
-        // TODO: Probably need better error handling here.
-        // Right now this is just to conditionally handle "Username must be unique" 
-        // or "Email already used" since axios error messages are intuitive/friendly.
-        error: err.errors[0].message
-      })
+      console.log(err.errors[0].type)
+      switch (err.errors[0].type) {
+        case 'unique violation':
+          error = err.errors[0].path + ' is already taken!'
+          break
+        default:
+          error = err.errors[0].message
+          break
+      }
+      res.status(400).send({error})
     }
   },
   async login(req, res) {

@@ -81,8 +81,6 @@
             </li>
           </ul>
         </div>
-        <!-- TODO: add functionality to switch between login and register tabs.
-                  Hide necessary components in each. -->
         <div class="container">
           <label v-if="isRegister">Username</label>
           <input
@@ -165,6 +163,7 @@ export default {
         // Close modal on successful register
         var modal = document.getElementById('modal')
         modal.style.display = 'none'
+        // TODO: Display toast on successful register
       } catch (err) {
         this.error = err.response.data.error
       }

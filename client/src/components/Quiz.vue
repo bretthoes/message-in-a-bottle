@@ -20,7 +20,7 @@
       <div class='question-footer'>
         <div class='footer-buttons'>
           <button @click="previousQuestion">Back</button>
-          <button>Exit</button>
+          <button  @click="navigateTo({ name: 'root' })">Exit</button>
         </div>
         <b-progress
         :value="questionStartIndex"
@@ -100,8 +100,7 @@ export default {
           question: 'Are you ready to submit your quiz?',
           options:
           [
-            { option: 'Yes, submit' },
-            { option: 'No, go back' }
+            { option: 'Yes, submit' }
           ]
         }
       ],
@@ -147,6 +146,7 @@ export default {
 .quiz-container {
   justify-content: center;
   transition: 1s ease-in;
+  position: relative;
 }
 .quiz {
   margin: auto;

@@ -7,8 +7,9 @@ module.exports = {
         new RegExp('^[a-zA-Z0-9]{4,16}$')
       ),
       email: Joi.string().min(6).email(),
+      //TODO: Beef up this regex for password, kept simple for quick account creation during testing
       password: Joi.string().regex(
-        new RegExp('^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,32}$')
+        new RegExp('^[a-zA-Z0-9]{4,16}$')
       )
     })
 
