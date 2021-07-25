@@ -16,12 +16,12 @@
         <li>
           <a href="#" v-if="$store.state.isUserLoggedIn">
             <span v-b-toggle="'collapse-1'">
-              &#x25BE;{{ username }}
+              &#x25BE;{{ $store.state.user.username }}
             </span>
             <b-collapse id="collapse-1">
               <b-card>
                 <ul class='dropdown'>
-                  <li><a href='#'>my account</a></li>
+                  <li><a href='#' @click="navigateTo({ name: 'profile' })">my account</a></li>
                   <li>
                     <a href='#' @click="logout">
                       sign out
@@ -35,18 +35,16 @@
         <li>
           <a
             href="#"
-            onclick="document.getElementById('modal').style.display='block'"
             v-if="!$store.state.isUserLoggedIn"
-            @click="isRegister = false"
+            @click="openModal(false)"
             ><span>&nbsp;login</span></a
           >
         </li>
         <li>
           <a
             href="#"
-            onclick="document.getElementById('modal').style.display='block'"
             v-if="!$store.state.isUserLoggedIn"
-            @click="isRegister = true"
+            @click="openModal(true)"
             ><span>&nbsp;register</span></a
           >
         </li>
@@ -84,45 +82,55 @@
         <div class="container">
           <label v-if="isRegister">Username</label>
           <input
+            v-model="username"
+            v-if="isRegister"
             type="text"
             name="username"
+            ref="username"
             maxlength="16"
             minlength="4"
+            autocomplete="off"
             required
-            v-if="isRegister"
-            v-model="username"
           />
           <label v-if="isRegister">Email</label>
           <label v-if="!isRegister">Email or Username</label>
           <input
+            v-model="email"
             type="text"
             name="email"
+            ref="email"
             minlength="6"
+            autocomplete="off"
             required
-            v-model="email"
           />
           <label>Password</label>
           <input
+            v-model="password"
             type="password"
             name="psw"
             minlength="8"
             maxlength="32"
+            autocomplete="off"
             required
-            v-model="password"
           />
           <label v-if="isRegister">Confirm Password</label>
           <input
+            v-model="repeatedPassword"
+            v-if="isRegister"
             type="password"
             name="psw"
+            autocomplete="off"
             required
-            v-if="isRegister"
-            v-model="repeatedPassword"
           />
           <div class="error" v-html="error" />
           <div class="container" style="background-color:#f1f1f1">
             <button class="modal-button" @click="register" v-if="isRegister">Register</button>
             <button class="modal-button" @click="login" v-if="!isRegister">Login</button>
-            <span class="psw" v-if="!isRegister">Forgot <a href="#">password?</a></span>
+            <span class="psw" v-if="!isRegister">Forgot
+              <a href="#" @click="navigateTo({ name: 'account-recovery' })">
+                password?
+              </a>
+            </span>
           </div>
         </div>
       </form>
@@ -160,10 +168,10 @@ export default {
         this.$store.dispatch('setToken', response.data.token)
         this.$store.dispatch('setUser', response.data.user)
 
-        // Close modal on successful register
-        var modal = document.getElementById('modal')
-        modal.style.display = 'none'
-        // TODO: Display toast on successful register
+        // Close modal upon successful register
+        this.closeModal()
+        // Display toast on successful register
+        this.makeToast('primary', 'Register Successful!', 'Welcome, ' + this.username + '!')
       } catch (err) {
         this.error = err.response.data.error
       }
@@ -172,40 +180,65 @@ export default {
       e.preventDefault()
       try {
         const response = await AuthenticationService.login({
-          // Pass both username and email as email input value to check on both for login
+          // Pass both username and email as email input value to check on both for login.
           username: this.email,
           email: this.email,
           password: this.password
         })
         this.$store.dispatch('setToken', response.data.token)
         this.$store.dispatch('setUser', response.data.user)
-
-        // Close modal on successful register
-        var modal = document.getElementById('modal')
-        modal.style.display = 'none'
+        // Close modal upon successful login
+        this.closeModal()
+        // Display toast on successful login
+        this.makeToast('primary', 'Login Successful!', 'Welcome back, ' + this.username + '!')
       } catch (err) {
         this.error = err.response.data.error
       }
     },
     navigateTo (route) {
-      this.$router.push(route)
+      // Move to selected route unless we are already on it
+      if (this.$router.currentRoute.name !== route.name) {
+        this.$router.push(route)
+      }
+      // TODO: Only really necessary when we navigate to account recovery at the moment,
+      // may be a cleaner way to do this instead of calling at every navigation from header
+      this.closeModal()
     },
     logout () {
       this.$store.dispatch('setToken', null)
       this.$store.dispatch('setUser', null)
-      this.$router.push({
-        name: 'root'
+      // Return to root page on logout
+      this.navigateTo({ name: 'root' })
+    },
+    closeModal () {
+      var modal = document.getElementById('modal')
+      modal.style.display = 'none'
+    },
+    openModal (isRegister) {
+      // Determine whether to display login or register content of modal
+      this.isRegister = isRegister
+      // Open modal
+      var modal = document.getElementById('modal')
+      modal.style.display = 'block'
+      // Set focus on first input
+      if (isRegister) {
+        // nextTick used to update DOM after data is changed but
+        // before browser has rendered changes on page.
+        this.$nextTick(() => this.$refs.username.focus())
+      } else {
+        this.$nextTick(() => this.$refs.email.focus())
+      }
+    }, // TODO: Toast disappears immediately after display
+    makeToast (variant = null, title, body) {
+      this.$root.$bvToast.toast(body, {
+        title: title,
+        variant: variant,
+        solid: true,
+        noAutoHide: true,
+        autoHideDelay: 10000,
+        toaster: 'b-toaster-top-center'
       })
     }
-  }
-}
-// Get the modal
-var modal = document.getElementById('modal')
-
-// When the user clicks anywhere outside of the modal, close it
-window.onclick = function (event) {
-  if (event.target === modal) {
-    modal.style.display = 'none'
   }
 }
 </script>

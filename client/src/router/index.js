@@ -4,6 +4,7 @@ import Home from '@/components/Home'
 import About from '@/components/About'
 import Quiz from '@/components/Quiz'
 import Profile from '@/components/Profile'
+import AccountRecovery from '@/components/AccountRecovery'
 
 Vue.use(Router)
 
@@ -28,6 +29,11 @@ export default new Router({
       path: '/profile',
       name: 'profile',
       component: Profile
+    },
+    {
+      path: '/account-recovery',
+      name: 'account-recovery',
+      component: AccountRecovery
     }
   ]
 })

@@ -1,6 +1,10 @@
 <template>
   <div>
     <div>
+      <!--
+        TODO: Fix font size difference of title here between browsers -- too big in Chrome.
+        Note: look for other small peculiarities with this since we use a lot of newer CSS trickery.
+      -->
       <h1>
         MESSAGE<br />
         IN A<br />
