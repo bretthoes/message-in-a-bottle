@@ -2,6 +2,7 @@
   <div>
     <h1>About</h1>
     <p>
+      <br />
       Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam diam tortor,
       suscipit ut magna id, vestibulum ullamcorper purus. Phasellus scelerisque,
       orci dictum malesuada molestie, tortor velit hendrerit tellus, ac
@@ -58,11 +59,15 @@ export default {}
 <style scoped>
 h1 {
   font-family: "Montserrat", sans-serif;
+  -webkit-animation: fadein 1s; /* Safari, Chrome and Opera > 12.1 */
+     -moz-animation: fadein 1s; /* Firefox < 16 */
+      -ms-animation: fadein 1s; /* Internet Explorer */
+       -o-animation: fadein 1s; /* Opera < 12.1 */
+          animation: fadein 1s;
 }
 p {
-  text-align: center;
+  text-align: justify;
   margin: auto;
-  display:block;
   width: 70%;
   font-family: "Montserrat", sans-serif;
   font-size: 22px;
@@ -71,6 +76,11 @@ p {
       -ms-animation: fadein 2s; /* Internet Explorer */
        -o-animation: fadein 2s; /* Opera < 12.1 */
           animation: fadein 2s;
+}
+@media only screen and (max-width: 600px) {
+  p {
+    width: 90%;
+  }
 }
 
 @keyframes fadein {

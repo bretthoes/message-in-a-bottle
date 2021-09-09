@@ -14,7 +14,7 @@
     </div>
     <div class="start-quiz">
       <button @click="navigateTo({name: 'about'})">what is this?</button>&nbsp;&nbsp;&nbsp;
-      <button @click="navigateTo({name: 'quiz'})">[&nbsp;start quiz&nbsp;]</button>
+      <button @click="navigateTo({name: 'quiz'})">[ start quiz ]</button>
     </div>
     <!-- bottom waves -->
     <footer>
@@ -96,6 +96,7 @@ h1 {
   font-style: italic;
   color: gray;
   font-size: 26px;
+  padding: 0 12px;
 }
 
 /* wave effects */
