@@ -37,6 +37,7 @@
 </template>
 
 <script>
+import navigateToMixin from '../Mixins/navigateToMixin'
 export default {
   data () {
     return {
@@ -109,10 +110,12 @@ export default {
       answerKey: ''
     }
   },
+  mixins: [navigateToMixin],
   methods: {
     selectResponse (index) {
       // Check if last question
       if (this.questionEndIndex === this.questions.length) {
+        // TODO: Add answer key to User
         // Redirect to quiz submitted page
         this.$router.push({name: 'root'})
       } else {
@@ -133,9 +136,6 @@ export default {
         this.questionStartIndex--
         this.questionEndIndex--
       }
-    },
-    navigateTo (route) {
-      this.$router.push(route)
     }
   }
 }

@@ -140,6 +140,7 @@
 
 <script>
 import AuthenticationService from '@/services/AuthenticationService'
+import navigateToMixin from '../Mixins/navigateToMixin'
 export default {
   data () {
     return {
@@ -151,6 +152,7 @@ export default {
       isRegister: false
     }
   },
+  mixins: [navigateToMixin],
   methods: {
     async register (e) {
       e.preventDefault()
@@ -194,15 +196,6 @@ export default {
       } catch (err) {
         this.error = err.response.data.error
       }
-    },
-    navigateTo (route) {
-      // Move to selected route unless we are already on it
-      if (this.$router.currentRoute.name !== route.name) {
-        this.$router.push(route)
-      }
-      // TODO: Only really necessary when we navigate to account recovery at the moment,
-      // may be a cleaner way to do this instead of calling at every navigation from header
-      this.closeModal()
     },
     logout () {
       this.$store.dispatch('setToken', null)

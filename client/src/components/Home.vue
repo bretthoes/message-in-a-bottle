@@ -13,7 +13,7 @@
       <h2 class="subtitle">0 matches after 0 bottles thrown to sea</h2>
     </div>
     <div class="start-quiz">
-      <button @click="navigateTo({name: 'about'})">what is this?</button>&nbsp;&nbsp;&nbsp;
+      <button @click="navigateTo({name: 'about'})">what is this?</button>
       <button @click="navigateTo({name: 'quiz'})">[ start quiz ]</button>
     </div>
     <!-- bottom waves -->
@@ -46,31 +46,33 @@
 </template>
 
 <script>
+import navigateToMixin from '../Mixins/navigateToMixin'
 export default {
   methods: {
-    navigateTo (route) {
-      this.$router.push(route)
+    openQuiz (isLoggedIn) {
     }
-  }
+  },
+  mixins: [navigateToMixin]
 }
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 
-.start-quiz{
+.start-quiz {
   margin: auto;
   margin-top: 24px;
 }
-.start-quiz > button {
+button {
   cursor: pointer;
   width: 150px;
   height: 60px;
   font-size: 22px;
   border: 1px solid black;
   box-shadow: 1px 2px;
+  margin: 6px;
 }
-.start-quiz > button:hover {
+button:hover {
   text-decoration: underline;
   border: 3px solid black;
   box-shadow: 2px 3px;
@@ -98,7 +100,6 @@ h1 {
   font-size: 26px;
   padding: 0 12px;
 }
-
 /* wave effects */
 
 footer {
