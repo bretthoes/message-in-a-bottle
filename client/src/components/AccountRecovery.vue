@@ -2,6 +2,7 @@
   <div>
       <h1>Account Recovery</h1>
       <h2>Enter email:</h2>
+      <input />
   </div>
 </template>
 
