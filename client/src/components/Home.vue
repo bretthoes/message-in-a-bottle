@@ -1,20 +1,18 @@
 <template>
-  <div>
-    <!--
-      TODO: Fix font size difference of title here between browsers -- too big in Chrome.
-      Note: look for other small peculiarities with this since we use a lot of newer CSS trickery.
-    -->
+  <div class="content">
       <h1>MESSAGE</h1>
       <h1>IN A</h1>
       <h1><span class="blue">BOTTLE</span></h1>
       <h2 class="subtitle">0 matches after 0 bottles thrown to sea</h2>
-    <div class="start-quiz">
+    <div class="button-container">
       <button @click="navigateTo({name: 'about'})">what is this?</button>
       <button @click="openQuiz($store.state.isUserLoggedIn)">[ start quiz ]</button>
     </div>
     <!-- bottom waves -->
     <footer>
-      <svg viewBox="0 0 120 28">
+      <!-- TODO: Change viewbox dims on ultra wide and possibly mobile browser widths. Original 0 0 120 28.
+                 Changed to 24 as svg will overlay above waves and user cannot click buttons. -->
+      <svg viewBox="0 0 120 24">
         <defs>
           <filter>
             <feGaussianBlur in="SourceGraphic" stdDeviation="1" result="blur" />
@@ -71,10 +69,13 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-
-.start-quiz {
+.content {
+  padding-top: 60px;
+}
+.button-container {
   margin: auto;
   margin-top: 24px;
+  margin-bottom: 60px;
 }
 button {
   cursor: pointer;
@@ -100,7 +101,7 @@ button:hover {
   /* text-shadow: 2px 2px black; */
 }
 h1 {
-  font-size: 62px;
+  font-size: 52px;
   letter-spacing: 1px;
   margin-top: -26px;
   /* TODO: make transform work with modal; currently sits in front
