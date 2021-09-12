@@ -37,7 +37,7 @@
 </template>
 
 <script>
-import navigateToMixin from '../Mixins/navigateToMixin'
+import navigateToMixin from '@/mixins/navigateToMixin'
 export default {
   data () {
     return {

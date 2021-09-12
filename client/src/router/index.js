@@ -5,6 +5,7 @@ import About from '@/components/About'
 import Quiz from '@/components/Quiz'
 import Profile from '@/components/Profile'
 import AccountRecovery from '@/components/AccountRecovery'
+import Modal from '@/components/Modal'
 
 Vue.use(Router)
 
@@ -34,6 +35,11 @@ export default new Router({
       path: '/account-recovery',
       name: 'account-recovery',
       component: AccountRecovery
+    },
+    {
+      path: '/modal',
+      name: 'modal',
+      component: Modal
     }
   ]
 })

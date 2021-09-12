@@ -50,187 +50,30 @@
         </li>
       </ul>
     </nav>
-
-    <!-- login/register modal -->
-    <div id="modal" class="modal">
-      <form class="modal-content animate">
-        <div class="imgcontainer">
-          <span
-            onclick="document.getElementById('modal').style.display='none'"
-            class="close"
-            title="Close Modal"
-            >&times;</span
-          >
-          <img src="../assets/avatar_bottle.png" alt="Avatar" class="avatar" />
-        </div>
-        <div>
-          <ul class="nav nav-tabs">
-            <li class="nav-item">
-              <a class="nav-link"
-                :class="{active: !isRegister}"
-                @click="isRegister = !isRegister"
-                href="#">Login</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link"
-                :class="{active: isRegister}"
-                @click="isRegister = !isRegister"
-                href="#">Register</a>
-            </li>
-          </ul>
-        </div>
-        <div class="container">
-          <label v-if="isRegister">Username</label>
-          <input
-            v-model="username"
-            v-if="isRegister"
-            type="text"
-            name="username"
-            ref="username"
-            maxlength="16"
-            minlength="4"
-            autocomplete="off"
-            required
-          />
-          <label v-if="isRegister">Email</label>
-          <label v-if="!isRegister">Email or Username</label>
-          <input
-            v-model="email"
-            type="text"
-            name="email"
-            ref="email"
-            minlength="6"
-            autocomplete="off"
-            required
-          />
-          <label>Password</label>
-          <input
-            v-model="password"
-            type="password"
-            name="psw"
-            minlength="8"
-            maxlength="32"
-            autocomplete="off"
-            required
-          />
-          <label v-if="isRegister">Confirm Password</label>
-          <input
-            v-model="repeatedPassword"
-            v-if="isRegister"
-            type="password"
-            name="psw"
-            autocomplete="off"
-            required
-          />
-          <div class="error" v-html="error" />
-          <div class="container" style="background-color:#f1f1f1">
-            <button class="modal-button" @click="register" v-if="isRegister">Register</button>
-            <button class="modal-button" @click="login" v-if="!isRegister">Login</button>
-            <span class="psw" v-if="!isRegister">Forgot
-              <a href="#" @click="navigateTo({ name: 'account-recovery' })">
-                password?
-              </a>
-            </span>
-          </div>
-        </div>
-      </form>
-    </div>
+    <Modal
+      v-show="isModalVisible"
+      @close="closeModal"
+      ref="modalComponent"
+    />
   </div>
 </template>
 
 <script>
-import AuthenticationService from '@/services/AuthenticationService'
-import navigateToMixin from '../Mixins/navigateToMixin'
+import navigateToMixin from '@/mixins/navigateToMixin'
+import Modal from '@/components/Modal.vue'
+import modalMixin from '@/mixins/modalMixin'
 export default {
-  data () {
-    return {
-      username: '',
-      email: '',
-      password: '',
-      repeatedPassword: '',
-      error: null,
-      isRegister: false
-    }
+  name: 'Header',
+  components: {
+    Modal
   },
-  mixins: [navigateToMixin],
+  mixins: [navigateToMixin, modalMixin],
   methods: {
-    async register (e) {
-      e.preventDefault()
-      // Ensure confirmation password matches
-      if (this.password !== this.repeatedPassword) {
-        this.error = 'Repeated password does not match.'
-        return
-      }
-      try {
-        const response = await AuthenticationService.register({
-          username: this.username,
-          email: this.email,
-          password: this.password
-        })
-        this.$store.dispatch('setToken', response.data.token)
-        this.$store.dispatch('setUser', response.data.user)
-
-        // Close modal upon successful register
-        this.closeModal()
-        // Display toast on successful register
-        this.makeToast('primary', 'Register Successful!', 'Welcome, ' + this.username + '!')
-      } catch (err) {
-        this.error = err.response.data.error
-      }
-    },
-    async login (e) {
-      e.preventDefault()
-      try {
-        const response = await AuthenticationService.login({
-          // Pass both username and email as email input value to check on both for login.
-          username: this.email,
-          email: this.email,
-          password: this.password
-        })
-        this.$store.dispatch('setToken', response.data.token)
-        this.$store.dispatch('setUser', response.data.user)
-        // Close modal upon successful login
-        this.closeModal()
-        // Display toast on successful login
-        this.makeToast('primary', 'Login Successful!', 'Welcome back, ' + this.username + '!')
-      } catch (err) {
-        this.error = err.response.data.error
-      }
-    },
     logout () {
       this.$store.dispatch('setToken', null)
       this.$store.dispatch('setUser', null)
       // Return to root page on logout
       this.navigateTo({ name: 'root' })
-    },
-    closeModal () {
-      var modal = document.getElementById('modal')
-      modal.style.display = 'none'
-    },
-    openModal (isRegister) {
-      // Determine whether to display login or register content of modal
-      this.isRegister = isRegister
-      // Open modal
-      var modal = document.getElementById('modal')
-      modal.style.display = 'block'
-      // Set focus on first input
-      if (isRegister) {
-        // nextTick used to update DOM after data is changed but
-        // before browser has rendered changes on page.
-        this.$nextTick(() => this.$refs.username.focus())
-      } else {
-        this.$nextTick(() => this.$refs.email.focus())
-      }
-    }, // TODO: Toast disappears immediately after display
-    makeToast (variant = null, title, body) {
-      this.$root.$bvToast.toast(body, {
-        title: title,
-        variant: variant,
-        solid: true,
-        noAutoHide: true,
-        autoHideDelay: 10000,
-        toaster: 'b-toaster-top-center'
-      })
     }
   }
 }

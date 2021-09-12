@@ -1,20 +1,16 @@
 <template>
   <div>
-    <div>
-      <!--
-        TODO: Fix font size difference of title here between browsers -- too big in Chrome.
-        Note: look for other small peculiarities with this since we use a lot of newer CSS trickery.
-      -->
-      <h1>
-        MESSAGE<br />
-        IN A<br />
-        <span class="blue">BOTTLE</span>
-      </h1>
+    <!--
+      TODO: Fix font size difference of title here between browsers -- too big in Chrome.
+      Note: look for other small peculiarities with this since we use a lot of newer CSS trickery.
+    -->
+      <h1>MESSAGE</h1>
+      <h1>IN A</h1>
+      <h1><span class="blue">BOTTLE</span></h1>
       <h2 class="subtitle">0 matches after 0 bottles thrown to sea</h2>
-    </div>
     <div class="start-quiz">
       <button @click="navigateTo({name: 'about'})">what is this?</button>
-      <button @click="navigateTo({name: 'quiz'})">[ start quiz ]</button>
+      <button @click="openQuiz($store.state.isUserLoggedIn)">[ start quiz ]</button>
     </div>
     <!-- bottom waves -->
     <footer>
@@ -42,17 +38,34 @@
         <use id="wave2" class="wave" xlink:href="#wave" x="0" y="0"></use>
       </svg>
     </footer>
+    <Modal
+      v-show="isModalVisible"
+      @close="closeModal"
+      ref="modalComponent"
+    />
   </div>
 </template>
 
 <script>
-import navigateToMixin from '../Mixins/navigateToMixin'
+import navigateToMixin from '@/mixins/navigateToMixin'
+import modalMixin from '@/mixins/modalMixin'
+import Modal from '@/components/Modal.vue'
 export default {
-  methods: {
-    openQuiz (isLoggedIn) {
-    }
+  name: 'Home',
+  components: {
+    Modal
   },
-  mixins: [navigateToMixin]
+  mixins: [navigateToMixin, modalMixin],
+  methods: {
+    openQuiz (isUserLoggedIn) {
+      if (isUserLoggedIn) {
+        this.navigateTo({name: 'quiz'})
+      } else {
+        // Open modal if not logged in
+        this.openModal(true)
+      }
+    }
+  }
 }
 </script>
 
@@ -87,12 +100,20 @@ button:hover {
   /* text-shadow: 2px 2px black; */
 }
 h1 {
+  font-size: 62px;
+  letter-spacing: 1px;
+  margin-top: -26px;
+  /* TODO: make transform work with modal; currently sits in front
   font-size: 52px;
   transform: scale(1.2, 1);
+  -ms-transform: scale(1.2, 1);
+  -moz-transform: scale(1.2, 1);
+  -webkit-transform: scale(1.2, 1);
+  -o-transform: scale(1.2, 1); */
   font-family: "Montserrat", sans-serif;
   font-weight: 900;
   text-transform: uppercase;
-  display: inline-block;
+  display: block;
 }
 .subtitle {
   font-style: italic;
