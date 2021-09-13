@@ -1,99 +1,102 @@
 <template>
-<div class='modal-background'>
-  <!-- login/register modal -->
-  <div class='modal'>
-    <form class='modal-content animate'>
-      <div class='imgcontainer'>
-        <span
-          @click="close"
-          class='close'
-          title='Close Modal'
-          >&times;</span
-        >
-        <img src='../assets/avatar_bottle.png' alt='Avatar' class='avatar' />
-      </div>
-      <div>
-        <ul class='nav nav-tabs'>
-          <li class='nav-item'>
-            <a
-              class='nav-link'
-              :class='{ active: !isRegister }'
-              @click='isRegister = !isRegister'
-              href='#'
-              >Login</a
+  <transition name='modal-fade'>
+    <div class='modal-background'>
+      <!-- login/register modal -->
+      <div class='modal'
+        role='dialog'>
+        <form class='modal-content animate'>
+          <div class='imgcontainer'>
+            <span
+              @click="close"
+              class='close'
+              title='Close Modal'
+              >&times;</span
             >
-          </li>
-          <li class='nav-item'>
-            <a
-              class='nav-link'
-              :class='{ active: isRegister }'
-              @click='isRegister = !isRegister'
-              href='#'
-              >Register</a
-            >
-          </li>
-        </ul>
+            <img src='../assets/avatar_bottle.png' alt='Avatar' class='avatar' />
+          </div>
+          <div>
+            <ul class='nav nav-tabs'>
+              <li class='nav-item'>
+                <a
+                  class='nav-link'
+                  :class='{ active: !isRegister }'
+                  @click='isRegister = !isRegister'
+                  href='#'
+                  >Login</a
+                >
+              </li>
+              <li class='nav-item'>
+                <a
+                  class='nav-link'
+                  :class='{ active: isRegister }'
+                  @click='isRegister = !isRegister'
+                  href='#'
+                  >Register</a
+                >
+              </li>
+            </ul>
+          </div>
+          <div class='container'>
+            <label v-if='isRegister'>Username</label>
+            <input
+              v-model='username'
+              v-if='isRegister'
+              type='text'
+              name='username'
+              ref='username'
+              maxlength='16'
+              minlength='4'
+              autocomplete='off'
+              required
+            />
+            <label v-if='isRegister'>Email</label>
+            <label v-if='!isRegister'>Email or Username</label>
+            <input
+              v-model='email'
+              type='text'
+              name='email'
+              ref='email'
+              minlength='6'
+              autocomplete='off'
+              required
+            />
+            <label>Password</label>
+            <input
+              v-model='password'
+              type='password'
+              name='psw'
+              minlength='8'
+              maxlength='32'
+              autocomplete='off'
+              required
+            />
+            <label v-if='isRegister'>Confirm Password</label>
+            <input
+              v-model='repeatedPassword'
+              v-if='isRegister'
+              type='password'
+              name='psw'
+              autocomplete='off'
+              required
+            />
+            <div class='error' v-html='error' />
+            <div class='container' style='background-color:#f1f1f1'>
+              <button class='modal-button' @click='register' v-if='isRegister'>
+                Register
+              </button>
+              <button class='modal-button' @click='login' v-if='!isRegister'>
+                Login
+              </button>
+              <span class='psw' v-if='!isRegister'
+                >Forgot
+                <a href='#' @click='(navigateTo({ name: "account-recovery" }))'>password?</a>
+              </span>
+            </div>
+          </div>
+        </form>
       </div>
-      <div class='container'>
-        <label v-if='isRegister'>Username</label>
-        <input
-          v-model='username'
-          v-if='isRegister'
-          type='text'
-          name='username'
-          ref='username'
-          maxlength='16'
-          minlength='4'
-          autocomplete='off'
-          required
-        />
-        <label v-if='isRegister'>Email</label>
-        <label v-if='!isRegister'>Email or Username</label>
-        <input
-          v-model='email'
-          type='text'
-          name='email'
-          ref='email'
-          minlength='6'
-          autocomplete='off'
-          required
-        />
-        <label>Password</label>
-        <input
-          v-model='password'
-          type='password'
-          name='psw'
-          minlength='8'
-          maxlength='32'
-          autocomplete='off'
-          required
-        />
-        <label v-if='isRegister'>Confirm Password</label>
-        <input
-          v-model='repeatedPassword'
-          v-if='isRegister'
-          type='password'
-          name='psw'
-          autocomplete='off'
-          required
-        />
-        <div class='error' v-html='error' />
-        <div class='container' style='background-color:#f1f1f1'>
-          <button class='modal-button' @click='register' v-if='isRegister'>
-            Register
-          </button>
-          <button class='modal-button' @click='login' v-if='!isRegister'>
-            Login
-          </button>
-          <span class='psw' v-if='!isRegister'
-            >Forgot
-            <a href='#' @click='(navigateTo({ name: "account-recovery" }))'>password?</a>
-          </span>
-        </div>
-      </div>
-    </form>
-  </div>
-  </div>
+    </div>
+  </transition>
 </template>
 
 <script>
@@ -286,6 +289,16 @@ span.psw {
 
 .error {
   color: red;
+}
+
+.modal-fade-enter,
+.modal-fade-leave-to {
+  opacity: 0;
+}
+
+.modal-fade-enter-active,
+.modal-fade-leave-active {
+  transition: opacity .5s ease;
 }
 
 </style>
