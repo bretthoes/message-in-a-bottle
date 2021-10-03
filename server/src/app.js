@@ -7,16 +7,21 @@ const config = require('./config/config')
 const app = express()
 app.use(morgan('combined'))
 app.use(bodyParser.json())
+app.use('/uploads', express.static('uploads'))
+
+const router = express.Router();
+router.get('/', function(req,res,next){
+ req.url = '/index.html';
+ next();
+});
+
 app.use(cors())
+
+app.use(router)
+app.use(express.static('dist'))
 
 // Pass our app and attach all endpoints
 require('./routes')(app)
-
-// Handle production (Heroku) 
-if (process.env.NODE_ENV == 'production') {
-  app.use(express.static(__dirname + '../public/'))
-  app.get(/.*/, (req, res) => res.sendFile(__dirname + '../public/index.html'))
-}
 
 // Pass {force: true} into sync method to clear database
 sequelize.sync({force: false})
