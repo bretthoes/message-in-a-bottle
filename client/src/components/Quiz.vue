@@ -117,7 +117,7 @@ export default {
       if (this.questionEndIndex === this.questions.length) {
         // TODO: Add answer key to User
         // Redirect to quiz submitted page
-        this.$router.push({name: 'root'})
+        this.navigateTo({ name: 'root' })
       } else {
         // Append answer to answer key
         this.answerKey += index
