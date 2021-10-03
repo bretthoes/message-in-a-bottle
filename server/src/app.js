@@ -12,6 +12,12 @@ app.use(cors())
 // Pass our app and attach all endpoints
 require('./routes')(app)
 
+// Handle production (Heroku) 
+if (process.env.NODE_ENV == 'production') {
+  app.use(express.static(__dirname + '../public/'))
+  app.get(/.*/, (req, res) => res.sendFile(__dirname + '../public/index.html'))
+}
+
 // Pass {force: true} into sync method to clear database
 sequelize.sync({force: false})
   .then(() => {
