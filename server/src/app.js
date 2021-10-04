@@ -9,6 +9,7 @@ const app = express()
 app.use(morgan('combined'))
 app.use(bodyParser.json())
 
+// TODO: Check if still needed for dev and prod
 const router = express.Router();
 router.get('/', function(req, res, next){
  req.url = '/index.html';

@@ -6,7 +6,7 @@
       <h2 class="subtitle">0 matches after 0 bottles thrown to sea</h2>
     <div class="button-container">
       <button @click="navigateTo({name: 'about'})">what is this?</button>
-      <button @click="openQuiz($store.state.isUserLoggedIn)">[ start quiz ]</button>
+      <button @click="openQuizPage($store.state.isUserLoggedIn)">view quizzes</button>
     </div>
     <!-- bottom waves -->
     <footer>
@@ -55,9 +55,9 @@ export default {
   },
   mixins: [navigateToMixin, modalMixin],
   methods: {
-    openQuiz (isUserLoggedIn) {
+    openQuizPage (isUserLoggedIn) {
       if (isUserLoggedIn) {
-        this.navigateTo({name: 'quiz'})
+        this.navigateTo({name: 'quizzes'})
       } else {
         // Open modal if not logged in
         this.openModal(true)
