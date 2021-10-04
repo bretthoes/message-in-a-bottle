@@ -4,7 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon src/app.js --exec \"npm run lint && node\"",
+    "start": "npm run prod",
+    "dev": "nodemon src/app.js --exec \"npm run lint && node\"",
+    "prod": "export NODE_ENV=production && node 'src/app.js'",
     "lint": "eslint **/*.js"
   },
   "keywords": [],
