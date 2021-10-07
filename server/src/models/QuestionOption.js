@@ -1,8 +1,11 @@
 module.exports = (sequelize, DataTypes) => {
     const QuestionOption = sequelize.define('QuestionOption', {
-      prompt: DataTypes.STRING,
-      questionId: DataTypes.INTEGER
+      text: DataTypes.STRING
     })
 
-    return Question
+    QuestionOption.associate = function (models) {
+      QuestionOption.belongsTo(models.Question)
+    }
+
+    return QuestionOption
   }

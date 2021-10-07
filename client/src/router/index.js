@@ -7,6 +7,7 @@ import Profile from '@/components/Profile'
 import AccountRecovery from '@/components/AccountRecovery'
 import Modal from '@/components/Modal'
 import Quizzes from '@/components/Quizzes'
+import CreateQuiz from '@/components/CreateQuiz'
 
 Vue.use(Router)
 
@@ -46,6 +47,11 @@ export default new Router({
       path: '/quizzes',
       name: 'quizzes',
       component: Quizzes
+    },
+    {
+      path: '/quizzes/create',
+      name: 'quizzes-create',
+      component: CreateQuiz
     }
   ]
 })
