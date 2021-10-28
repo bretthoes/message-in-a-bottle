@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <h2 class="title">Panel Title</h2>
+    <h2 class="title">{{title}}</h2>
     <div class="panel">
       <div class="panel-heading">Panel Heading</div>
       <div class="panel-body">Panel Content</div>
@@ -10,11 +10,9 @@
 
 <script>
 export default {
-  data () {
-    return {
-      title: 'Title'
-    }
-  }
+  props: [
+    'title'
+  ]
 }
 </script>
 
@@ -31,7 +29,7 @@ export default {
   border-top: 1px solid lightgray;
   border-left: 1px solid lightgray;
   border-right: 1px solid lightgray;
-  background-color: #f5f5f5;
+  background-color: #b1d3e1af;
   border-top-right-radius: 5px;
   border-top-left-radius: 5px;
   text-align: left;

@@ -7,6 +7,7 @@
           <th>Title</th>
           <th>Questions</th>
           <th>Date Added</th>
+          <th>Actions</th>
         </tr>
       </thead>
       <tbody>
@@ -14,15 +15,21 @@
           <td>{{ quiz.title }}</td>
           <td>?</td>
           <td>{{ quiz.createdAt.substring(0, 10) }}</td>
+          <td><a href="#">Take Quiz</a> | <a href="#">Edit</a> | <a href="#">Delete</a></td>
         </tr>
       </tbody>
     </table>
+    <div class="create-quiz">
+      <button @click="navigateTo({name: 'quizzes-create'})">Add Quiz</button>
+    </div>
   </div>
 </template>
 
 <script>
 import QuizzesService from '@/services/QuizzesService'
+import navigateToMixin from '@/mixins/navigateToMixin'
 export default {
+  mixins: [navigateToMixin],
   data () {
     return {
       quizzes: null
