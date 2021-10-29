@@ -4,19 +4,23 @@
     <div class="container">
       <h4 style="text-align:left;">Quiz Title</h4>
       <div class="field-wrapper">
-        <input class="text-input" placeholder="Quiz title here..."/>
+        <input v-model="quizTitle" class="text-input" placeholder="Quiz title here..."/>
       </div>
       <h4 style="text-align:left;">Questions</h4>
-      <div v-for="(n_parent, parent_index) in questionsCount" :key="parent_index">
+      <div v-for="(question, index) in questions" :key="index">
         <div class="createdQuestion">
           <div class="field-wrapper">
-            <input v-model='questions[parent_index].questionText' class="text-input question-input" placeholder="Question text here..."/>
-            <div v-for="(n, index) in questionResponseCounts[parent_index]" :key="index" class="question-responses">
+            <input v-model="question.questionText"
+            class="text-input question-input"
+            placeholder="Question text here..."/>
+            <div v-for="(questionResponse, childIndex) in question.responses"
+            :key="childIndex"
+            class="question-responses">
               <div class="createdQuestionResponse">
-                <input class="text-input question-response-input" placeholder="Question text here..."/>
+                <input v-model="question.responses[childIndex]" class="text-input question-response-input" placeholder="Question text here..."/>
               </div>
             </div>
-            <button v-on:click="createQuestionResponse(parent_index)" class="add-question-response-button">+ Add Question Response</button>
+            <button v-on:click="createQuestionResponse(index)" class="add-question-response-button">+ Add Question Response</button>
           </div>
         </div>
       </div>
@@ -24,7 +28,7 @@
       <!-- TODO somehow *sigh* create method that from here, will add quiz to db from title, quiz questions
       from first input field in each field-wrapper div, then the other inputs in each as their question responses
       START by finishing posts for questions/question responses, then redirect to quizzes page -->
-      <button class="save-button">Save Quiz</button>
+      <button v-on:click="saveQuiz()" class="save-button">Save Quiz</button>
       <!--TODO cancel button somewhere that returns to quizzes page -->
     </div>
   </div>
@@ -39,40 +43,27 @@ export default {
   data () {
     return {
       quizTitle: null,
-      // find out why to v-bind or v-model above v-fors to fill this data
-      questions: [{
-        questionText: ''
-      }],
-      questionResponses: [[]],
-      displayQuestion: [false],
-      displayQuestionResponses: [[false]],
-      questionResponseCounts: [1],
-      questionsCount: 1
+      questions: []
     }
   },
   methods: {
     createQuestion () {
-      this.questionsCount++
-      this.displayQuestion.push(false)
-      this.questionResponseCounts.push(1)
-      this.displayQuestionResponses.push([false])
-      console.log('questionResponseCounts:')
-      console.log(this.questionResponseCounts)
-      console.log('displayQuestionResponses')
-      console.log(this.displayQuestionResponses)
+      this.questions.push({
+        questionText: '',
+        displayQuestion: false,
+        responses: []
+      })
+      console.log('questions:')
       console.log(this.questions)
     },
     createQuestionResponse (index) {
-      this.questionResponseCounts[index]++
-      this.displayQuestionResponses[index].push(false)
-      // TODO find out why these 2 lines are necessary for question response updating immediately..
-      // seems to just create way more arrays than needed, as if we're adding another question with responses
-      this.questionResponseCounts.push(1)
-      this.displayQuestionResponses.push([false])
-      console.log('questionResponseCounts')
-      console.log(this.questionResponseCounts)
-      console.log('displayQuestionResponses')
-      console.log(this.displayQuestionResponses)
+      this.questions[index].responses.push({
+        responseText: '',
+        displayResponse: false
+      })
+    },
+    saveQuiz () {
+
     }
   }
 }
@@ -96,6 +87,7 @@ export default {
 }
 .add-question-button {
   width: 100%;
+  background-color: rgb(144, 238, 175);
 }
 button {
   height: 48px;
