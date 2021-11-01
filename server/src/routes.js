@@ -1,6 +1,7 @@
 const AuthenticationController = require('./controllers/AuthenticationController')
 const AuthenticationControllerPolicy = require('./policies/AuthenticationControllerPolicy')
 const QuizzesController = require('./controllers/QuizzesController')
+const UsersController = require('./controllers/UsersController')
 
 module.exports = (app) => {
   app.post('/register', 
@@ -15,4 +16,7 @@ module.exports = (app) => {
 
   app.post('/quizzes',
     QuizzesController.post)
+
+  app.get('/users/:userId',
+    UsersController.show)
 }

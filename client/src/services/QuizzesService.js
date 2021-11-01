@@ -4,7 +4,7 @@ export default {
   index () {
     return Api().get('quizzes')
   },
-  post (credentials) {
-    return Api().post('quizzes', credentials)
+  post (quiz) {
+    return Api().post('quizzes', quiz)
   }
 }

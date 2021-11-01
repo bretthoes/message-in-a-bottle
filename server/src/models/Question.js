@@ -1,6 +1,9 @@
 module.exports = (sequelize, DataTypes) => {
     const Question = sequelize.define('Question', {
-      text: DataTypes.STRING
+      text: {
+        type: DataTypes.STRING,
+        allowNull: false
+      }
     })
 
     Question.associate = function (models) {

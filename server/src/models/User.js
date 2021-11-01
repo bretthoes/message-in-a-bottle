@@ -21,11 +21,25 @@ module.exports = (sequelize, DataTypes) => {
   const User = sequelize.define('User', {
     username: {
       type: DataTypes.STRING,
-      unique: true
+      unique: true,
+      allowNull: false
     },
     email: {
       type: DataTypes.STRING,
-      unique: true
+      unique: true,
+      allowNull: false
+    },
+    image_url: DataTypes.STRING,
+    birth_date: DataTypes.DATE,
+    location: DataTypes.STRING,
+    biography: DataTypes.STRING(1234),
+    is_active: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: 1
+    },
+    is_admin: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: 0
     },
     password: DataTypes.STRING,
     answerKey: DataTypes.STRING

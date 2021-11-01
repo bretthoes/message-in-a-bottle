@@ -29,8 +29,8 @@ export default new Router({
       component: Quiz
     },
     {
-      path: '/profile',
-      name: 'profile',
+      path: '/users/:userId',
+      name: 'user',
       component: Profile
     },
     {

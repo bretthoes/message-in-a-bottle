@@ -4,31 +4,32 @@
     <div class="container">
       <h4 style="text-align:left;">Quiz Title</h4>
       <div class="field-wrapper">
-        <input v-model="quizTitle" class="text-input" placeholder="Quiz title here..."/>
+        <input v-model="quiz.title" class="text-input" placeholder="Quiz title here..."/>
       </div>
       <h4 style="text-align:left;">Questions</h4>
-      <div v-for="(question, index) in questions" :key="index">
+      <div v-for="(question, index) in quiz.questions" :key="index">
         <div class="createdQuestion">
           <div class="field-wrapper">
-            <input v-model="question.questionText"
+            <input v-model="question.text"
             class="text-input question-input"
             placeholder="Question text here..."/>
             <div v-for="(questionResponse, childIndex) in question.responses"
             :key="childIndex"
             class="question-responses">
               <div class="createdQuestionResponse">
-                <input v-model="question.responses[childIndex]" class="text-input question-response-input" placeholder="Question text here..."/>
+                <input v-model="questionResponse.text" class="text-input question-response-input" placeholder="Question text here..."/>
               </div>
             </div>
-            <button v-on:click="createQuestionResponse(index)" class="add-question-response-button">+ Add Question Response</button>
+            <button v-on:click="addQuestionResponse(index)" class="add-question-response-button">+ Add Question Response</button>
           </div>
         </div>
       </div>
-      <button v-on:click="createQuestion" class="add-question-button">+ Add Question</button>
+      <button v-on:click="addQuestion" class="add-question-button">+ Add Question</button>
       <!-- TODO somehow *sigh* create method that from here, will add quiz to db from title, quiz questions
       from first input field in each field-wrapper div, then the other inputs in each as their question responses
       START by finishing posts for questions/question responses, then redirect to quizzes page -->
-      <button v-on:click="saveQuiz()" class="save-button">Save Quiz</button>
+      <button v-on:click="save" class="save-button">Save</button><br /><br /><br /><br />
+      <p v-if="!this.validInput" style="color:red;display:block;font-size:24px;float:right;">No empty fields allowed.</p>
       <!--TODO cancel button somewhere that returns to quizzes page -->
     </div>
   </div>
@@ -36,34 +37,85 @@
 
 <script>
 import Panel from '@/components/Panel'
+import QuizzesService from '@/services/QuizzesService'
 export default {
   components: {
     Panel
   },
   data () {
     return {
-      quizTitle: null,
-      questions: []
+      quiz: {
+        title: '',
+        questions: [{
+          text: '',
+          displayQuestion: false,
+          responses: [{
+            text: '',
+            displayResponse: false
+          }, {
+            text: '',
+            displayResponse: false
+          }]
+        }]
+      },
+      validInput: true
     }
   },
   methods: {
-    createQuestion () {
-      this.questions.push({
-        questionText: '',
+    addQuestion () {
+      this.quiz.questions.push({
+        text: '',
         displayQuestion: false,
-        responses: []
+        responses: [{
+          text: '',
+          displayResponse: false
+        }, {
+          text: '',
+          displayResponse: false
+        }]
       })
-      console.log('questions:')
-      console.log(this.questions)
     },
-    createQuestionResponse (index) {
-      this.questions[index].responses.push({
-        responseText: '',
+    addQuestionResponse (index) {
+      this.quiz.questions[index].responses.push({
+        text: '',
         displayResponse: false
       })
     },
-    saveQuiz () {
+    async save () {
+      // TODO create quiz, quiz questions, quiz question options,
+      // do not include blank strings, redirect back to quiz page
+      // where newly created quiz will be visible, also add toast
+      // indicating if quiz has been created...
+      // check for any empty strings in input
+      this.validInput = true
+      if (!this.quiz.title) this.validInput = false
+      for (let i = 0; i < this.quiz.questions.length; i++) {
+        if (!this.quiz.questions[i].text) this.validInput = false
+        for (let j = 0; j < this.quiz.questions[i].responses.length; j++) {
+          if (!this.quiz.questions[i].responses[j].text) this.validInput = false
+        }
+      }
+      // save quiz if input valid, else display error message
+      if (this.validInput) {
+        try {
+          await QuizzesService.post(this.quiz)
+        } catch (err) {
+          console.log(err)
+        }
+      } else {
 
+      }
+      /* console.log('quiz title:')
+      console.log(this.quiz.title)
+      TODO possibly use these to ensure no empty strings
+      for (let i = 0; i < this.quiz.questions.length; i++) {
+        console.log('question:')
+        console.log(this.quiz.questions[i].questionText)
+        console.log('question responses:')
+        for (let j = 0; j < this.quiz.questions[i].responses.length; j++) {
+          console.log(this.quiz.questions[i].responses[j].responseText)
+        }
+      } */
     }
   }
 }

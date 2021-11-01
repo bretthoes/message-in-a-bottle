@@ -8,7 +8,8 @@ export default new Vuex.Store({
   state: {
     token: null,
     user: null,
-    isUserLoggedIn: false
+    isUserLoggedIn: false,
+    isUserAdmin: false
   },
   mutations: {
     setToken (state, token) {
@@ -21,6 +22,8 @@ export default new Vuex.Store({
     },
     setUser (state, user) {
       state.user = user
+      // check for admin privileges when setting new user
+      state.isUserAdmin = user.is_admin
     }
   },
   actions: {

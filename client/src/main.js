@@ -16,6 +16,7 @@ Vue.use(IconsPlugin)
 
 Vue.config.productionTip = false
 
+// sync router to store so when route is updated store is updated as well
 sync(store, router)
 
 /* eslint-disable no-new */

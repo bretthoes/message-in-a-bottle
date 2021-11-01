@@ -21,7 +21,14 @@
             <b-collapse id="collapse-1">
               <b-card>
                 <ul class='dropdown'>
-                  <li><a href='#' @click="navigateTo({ name: 'profile' })">my account</a></li>
+                  <li><a href='#'
+                  @click="navigateTo({
+                    name: 'user',
+                    params: {
+                      userId: $store.state.user.id
+                    }
+                  })">
+                    my account</a></li>
                   <li>
                     <a href='#' @click="logout">
                       sign out
