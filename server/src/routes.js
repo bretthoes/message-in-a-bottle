@@ -19,4 +19,7 @@ module.exports = (app) => {
 
   app.get('/users/:userId',
     UsersController.show)
+  
+  app.put('/users/:userId',
+    UsersController.put)
 }

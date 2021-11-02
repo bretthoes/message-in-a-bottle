@@ -54,7 +54,7 @@ export default {
       }
       // load default image if user profile image is undefined
       return {
-        imageUrl: require('@/assets/default_profile_picture.png')
+        imageUrl: require('../assets/default_profile_picture.png')
       }
     }
   }

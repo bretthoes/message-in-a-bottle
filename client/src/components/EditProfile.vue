@@ -2,21 +2,30 @@
   <div class="container-fluid">
     <div class="row">
       <div class="col col-md-6 col-sm-12">
-        <img class="profile-picture" alt="Profile picture" :src="userWithImage.imageUrl || '@/assets/default_profile_picture.png'" width="500" />
+        <button type="button" class="btn btn-outline-dark">Upload Image</button>
+        <img class="profile-picture" alt="Profile picture" :src="userWithImage.imageUrl" width="500" />
         <br />
-        <h2 class="username field"><b-icon icon="person-fill"></b-icon> {{user.username}}</h2>
+        <h2><b-icon icon="person-fill"> </b-icon><input type="text" v-model="user.username" required :rules="[required]" /></h2>
         <br />
-        <h4 class="field"><b-icon icon="gift"></b-icon> {{user.birthdate || 'No birthday added.'}}</h4>
+        <h4 class="field"><b-icon icon="gift"> </b-icon><input type="date" v-model="user.birthdate" required :rules="[required]" /></h4>
         <br />
-        <h4 class="field"><b-icon icon="tags"></b-icon> {{user.location || 'No location added.'}}</h4>
+        <h4 class="field"><b-icon icon="tags"></b-icon> <input type="text" v-model="user.location" required :rules="[required]" /></h4>
       </div>
       <div class="col col-md-6 col-sm-12">
         <h4>About me:</h4>
-        <textarea v-model="user.biography" class="bio" readonly></textarea>
+        <textarea v-model="user.biography" class="bio" :rules="[required]"></textarea>
       </div>
     </div>
     <button @click="save" style="float:right;" type="button" class="btn btn-primary">Save</button>
-    <button @click="save" style="float:right;" type="button" class="btn btn-danger">Cancel</button>
+    <button
+      @click="navigateTo({
+                name: 'user',
+                params: {
+                  userId: $store.state.user.id
+                }
+              })" style="float:right;" type="button" class="btn btn-danger">Cancel</button>
+    <br /><br />
+    <div class='error' v-html='error' />
   </div>
   <!-- TODO add edit only visible button if user id matches store state user -->
 </template>
@@ -53,31 +62,32 @@ export default {
   computed: {
     // computed property to load user profile image after user is defined
     userWithImage () {
+      if (this.user.imageUrl) {
+        return {
+          ...this.user,
+          imageUrl: this.user.imageUrl && require(`@/assets/${this.user.imageUrl}`)
+        }
+      }
+      // load default image if user profile image is undefined
       return {
-        ...this.user,
-        imageUrl: this.user.imageUrl && require(`@/assets/${this.user.imageUrl}`)
+        imageUrl: require('../assets/default_profile_picture.png')
       }
     }
   },
   methods: {
     async save () {
+      console.log('Hello1 from EditProfile.vue save!')
       this.error = null
-      const allFieldsFilled = Object.keys(this.user).every(key => !!this.user[key])
-      if (!allFieldsFilled) {
-        this.error = 'All fields must be filled.'
-        return
-      }
       try {
-        const userId = this.$store.state.route.params.userId
         await UsersService.put(this.user)
-        this.nanavigateTo({
-          name: 'users',
+        this.navigateTo({
+          name: 'user',
           params: {
-            userId: userId
+            userId: this.$store.state.user.id
           }
         })
       } catch (err) {
-        console.log(err)
+        this.error = err.response.data.error
       }
     }
   }
@@ -111,5 +121,9 @@ textarea {
   width: 80%;
   height: fit-content;
   box-shadow: 5px 5px 5px grey;
+}
+.error {
+  color: red;
+  text-align: right;
 }
 </style>
