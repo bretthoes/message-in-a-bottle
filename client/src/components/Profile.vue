@@ -3,7 +3,7 @@
   <div class="container-fluid">
     <div class="row">
       <div class="col col-md-6 col-sm-12">
-        <img class="profile-picture" alt="Profile picture" :src="userWithImage.image_url || '@/assets/default_profile_picture.png'" width="500" />
+        <img class="profile-picture" alt="Profile picture" :src="userWithImage.imageUrl" width="500" />
         <br />
         <h2 class="username field"><b-icon icon="person-fill"></b-icon> {{user.username}}</h2>
         <br />
@@ -46,9 +46,15 @@ export default {
   computed: {
     // computed property to load user profile image after user is defined
     userWithImage () {
+      if (this.user.imageUrl) {
+        return {
+          ...this.user,
+          imageUrl: this.user.imageUrl && require(`@/assets/${this.user.imageUrl}`)
+        }
+      }
+      // load default image if user profile image is undefined
       return {
-        ...this.user,
-        image_url: this.user.image_url && require(`@/assets/${this.user.image_url}`)
+        imageUrl: require('@/assets/default_profile_picture.png')
       }
     }
   }

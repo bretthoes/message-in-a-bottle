@@ -12,7 +12,7 @@
               title='Close Modal'
               >&times;</span
             >
-            <img src='../assets/avatar_bottle.png' alt='Avatar' class='avatar' />
+            <img src='@/assets/avatar_bottle.png' alt='Avatar' class='avatar' />
           </div>
           <div>
             <ul class='nav nav-tabs'>

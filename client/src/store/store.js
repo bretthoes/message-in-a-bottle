@@ -23,7 +23,7 @@ export default new Vuex.Store({
     setUser (state, user) {
       state.user = user
       // check for admin privileges when setting new user
-      state.isUserAdmin = user.is_admin
+      state.isUserAdmin = user.isAdmin
     }
   },
   actions: {

@@ -29,18 +29,17 @@ module.exports = (sequelize, DataTypes) => {
       unique: true,
       allowNull: false
     },
-    image_url: {
-      type: DataTypes.STRING,
-      defaultValue: 'default_profile_picture.png'
+    imageUrl: {
+      type: DataTypes.STRING
     },
-    birth_date: DataTypes.DATE,
+    birthdate: DataTypes.DATE,
     location: DataTypes.STRING,
     biography: DataTypes.STRING(1234),
-    is_active: {
+    isActive: {
       type: DataTypes.BOOLEAN,
       defaultValue: 1
     },
-    is_admin: {
+    isAdmin: {
       type: DataTypes.BOOLEAN,
       defaultValue: 0
     },

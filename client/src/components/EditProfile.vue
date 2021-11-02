@@ -2,7 +2,7 @@
   <div class="container-fluid">
     <div class="row">
       <div class="col col-md-6 col-sm-12">
-        <img class="profile-picture" alt="Profile picture" :src="userWithImage.image_url || '@/assets/default_profile_picture.png'" width="500" />
+        <img class="profile-picture" alt="Profile picture" :src="userWithImage.imageUrl || '@/assets/default_profile_picture.png'" width="500" />
         <br />
         <h2 class="username field"><b-icon icon="person-fill"></b-icon> {{user.username}}</h2>
         <br />
@@ -30,8 +30,8 @@ export default {
       user: {
         username: null,
         email: null,
-        image_url: null,
-        birth_date: null,
+        imageUrl: null,
+        birthdate: null,
         location: null,
         biography: null
       },
@@ -55,7 +55,7 @@ export default {
     userWithImage () {
       return {
         ...this.user,
-        image_url: this.user.image_url && require(`@/assets/${this.user.image_url}`)
+        imageUrl: this.user.imageUrl && require(`@/assets/${this.user.imageUrl}`)
       }
     }
   },
