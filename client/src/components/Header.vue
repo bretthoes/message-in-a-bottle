@@ -28,7 +28,7 @@
                       userId: $store.state.user.id
                     }
                   })">
-                    my account</a></li>
+                    my profile</a></li>
                   <li>
                     <a href='#' @click="logout">
                       sign out

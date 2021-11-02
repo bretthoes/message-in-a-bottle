@@ -8,6 +8,7 @@ import AccountRecovery from '@/components/AccountRecovery'
 import Modal from '@/components/Modal'
 import Quizzes from '@/components/Quizzes'
 import CreateQuiz from '@/components/CreateQuiz'
+import EditProfile from '@/components/EditProfile'
 
 Vue.use(Router)
 
@@ -32,6 +33,11 @@ export default new Router({
       path: '/users/:userId',
       name: 'user',
       component: Profile
+    },
+    {
+      path: '/users/:userId/edit',
+      name: 'user-edit',
+      component: EditProfile
     },
     {
       path: '/account-recovery',

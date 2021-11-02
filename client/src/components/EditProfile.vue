@@ -1,5 +1,4 @@
 <template>
-<div>
   <div class="container-fluid">
     <div class="row">
       <div class="col col-md-6 col-sm-12">
@@ -16,14 +15,9 @@
         <textarea v-model="user.biography" class="bio" readonly></textarea>
       </div>
     </div>
-    <button @click="navigateTo({
-      name: 'user-edit',
-      params: {
-        userId: user.id
-      }
-    })" style="float:right;" type="button" class="btn btn-secondary">Edit</button>
+    <button @click="save" style="float:right;" type="button" class="btn btn-primary">Save</button>
+    <button @click="save" style="float:right;" type="button" class="btn btn-danger">Cancel</button>
   </div>
-</div>
   <!-- TODO add edit only visible button if user id matches store state user -->
 </template>
 
@@ -33,22 +27,57 @@ import navigateToMixin from '@/mixins/navigateToMixin'
 export default {
   data () {
     return {
-      user: {}
+      user: {
+        username: null,
+        email: null,
+        image_url: null,
+        birth_date: null,
+        location: null,
+        biography: null
+      },
+      error: null,
+      required: (value) => !!value || 'Required'
     }
   },
-  async mounted () {
-    // get userId from route params
-    const userId = this.$store.state.route.params.userId
-    // retrieve user from id to populate profile page
-    this.user = (await UsersService.show(userId)).data
-  },
   mixins: [navigateToMixin],
+  async mounted () {
+    try {
+      // get userId from route params
+      const userId = this.$store.state.route.params.userId
+      // retrieve user from id to populate profile page
+      this.user = (await UsersService.show(userId)).data
+    } catch (err) {
+      console.log(err)
+    }
+  },
   computed: {
     // computed property to load user profile image after user is defined
     userWithImage () {
       return {
         ...this.user,
         image_url: this.user.image_url && require(`@/assets/${this.user.image_url}`)
+      }
+    }
+  },
+  methods: {
+    async save () {
+      this.error = null
+      const allFieldsFilled = Object.keys(this.user).every(key => !!this.user[key])
+      if (!allFieldsFilled) {
+        this.error = 'All fields must be filled.'
+        return
+      }
+      try {
+        const userId = this.$store.state.route.params.userId
+        await UsersService.put(this.user)
+        this.nanavigateTo({
+          name: 'users',
+          params: {
+            userId: userId
+          }
+        })
+      } catch (err) {
+        console.log(err)
       }
     }
   }
