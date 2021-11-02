@@ -16,15 +16,15 @@
         <textarea v-model="user.biography" class="bio" readonly></textarea>
       </div>
     </div>
+    <!-- TODO add edit only visible button if user id matches store state user -->
     <button @click="navigateTo({
       name: 'user-edit',
       params: {
         userId: user.id
       }
-    })" style="float:right;" type="button" class="btn btn-secondary">Edit</button>
+    })" v-if="$store.state.route.params.userId == user.id" style="float:right;" type="button" class="btn btn-secondary">Edit</button>
   </div>
 </div>
-  <!-- TODO add edit only visible button if user id matches store state user -->
 </template>
 
 <script>
@@ -77,7 +77,7 @@ export default {
   text-align: left;
 }
 .profile-picture {
-  border-radius: 5px;
+  border-radius: 300px;
   margin-bottom: 8px;
   max-width: 100%;
   height: auto;

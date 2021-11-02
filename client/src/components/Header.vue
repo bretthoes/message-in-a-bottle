@@ -77,10 +77,12 @@ export default {
   mixins: [navigateToMixin, modalMixin],
   methods: {
     logout () {
-      this.$store.dispatch('setToken', null)
-      this.$store.dispatch('setUser', null)
+      console.log('Hello from Header.vue logout!')
       // Return to root page on logout
       this.navigateTo({ name: 'root' })
+      // TODO verify this works from all pages
+      this.$store.dispatch('setToken', null)
+      this.$store.dispatch('setUser', null)
     }
   }
 }
