@@ -29,7 +29,10 @@ module.exports = (sequelize, DataTypes) => {
       unique: true,
       allowNull: false
     },
-    image_url: DataTypes.STRING,
+    image_url: {
+      type: DataTypes.STRING,
+      defaultValue: 'default_profile_picture.png'
+    },
     birth_date: DataTypes.DATE,
     location: DataTypes.STRING,
     biography: DataTypes.STRING(1234),
