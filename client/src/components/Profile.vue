@@ -3,7 +3,7 @@
   <div class="container-fluid">
     <div class="row">
       <div class="col col-md-6 col-sm-12">
-        <img class="profile-picture" alt="Profile picture" :src="userWithImage.imageUrl" width="500" />
+        <img class="profile-picture" alt="Profile picture" :src="imgUrl" width="500" />
         <br />
         <h2 class="username field"><b-icon icon="person-fill"></b-icon> {{user.username}}</h2>
         <br />
@@ -13,16 +13,15 @@
       </div>
       <div class="col col-md-6 col-sm-12">
         <h4>About me:</h4>
-        <textarea v-model="user.biography" class="bio" readonly></textarea>
+        <textarea v-model="user.biography" class="bio" readonly placeholder="No bio added yet..."></textarea>
       </div>
     </div>
-    <!-- TODO add edit only visible button if user id matches store state user -->
     <button @click="navigateTo({
       name: 'user-edit',
       params: {
         userId: user.id
       }
-    })" v-if="$store.state.route.params.userId == user.id" style="float:right;" type="button" class="btn btn-secondary">Edit</button>
+    })" v-if="$store.state.user.id == user.id" style="float:right;" type="button" class="btn btn-secondary">Edit</button>
   </div>
 </div>
 </template>
@@ -45,17 +44,9 @@ export default {
   mixins: [navigateToMixin],
   computed: {
     // computed property to load user profile image after user is defined
-    userWithImage () {
-      if (this.user.imageUrl) {
-        return {
-          ...this.user,
-          imageUrl: this.user.imageUrl && require(`@/assets/${this.user.imageUrl}`)
-        }
-      }
-      // load default image if user profile image is undefined
-      return {
-        imageUrl: require('../assets/default_profile_picture.png')
-      }
+    imgUrl () {
+      // TODO find way to distinguish between png/jpeg on load
+      return this.user.blobUrl ? 'data:image/jpeg;charset=utf-8;base64,' + this.user.blobUrl : require('../assets/default_profile_picture.png')
     }
   }
 }
@@ -68,6 +59,7 @@ export default {
   background-color: #F4F4F4;
   padding: 12px;
   max-width: 80%;
+  box-shadow: 5px 5px 5px gray;
   overflow: hidden;
 }
 .row {
@@ -86,7 +78,8 @@ export default {
 textarea {
   resize: none;
   width: 80%;
-  height: fit-content;
+  height: 80%;
   box-shadow: 5px 5px 5px grey;
+  background-color: #ececec;
 }
 </style>

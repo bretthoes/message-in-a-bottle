@@ -29,8 +29,12 @@ module.exports = (sequelize, DataTypes) => {
       unique: true,
       allowNull: false
     },
-    imageUrl: {
-      type: DataTypes.STRING
+    blobUrl: {
+      type: DataTypes.BLOB,
+      get () {
+        const data = this.getDataValue('blobUrl')
+        return data ? data.toString('base64') : ''
+      }
     },
     birthdate: DataTypes.DATE,
     location: DataTypes.STRING,

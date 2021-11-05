@@ -22,4 +22,7 @@ module.exports = (app) => {
   
   app.put('/users/:userId',
     UsersController.put)
+
+  app.post('/upload',
+    UsersController.upload)
 }
