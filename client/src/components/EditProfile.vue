@@ -1,46 +1,44 @@
 <template>
   <div class="container-fluid">
-    <div class="row">
-        <div class="col col-md-6 col-sm-12">
-          <img class="profile-picture" alt="Profile picture" :src="userWithImage.imageUrl" width="500" />
-          <br />
-          <!-- TODO finish image upload capabilities with Multer -->
-          <form @submit.prevent="submitFile" method="POST" enctype="multipart/form-data">
-            <input @change="selectFile($event)" type="file" name="imageUrl" id="file" />
-            <button type="submit" class="btn btn-outline-dark">Upload Image</button>
-          </form>
-          <br /><br />
-          <h2><b-icon icon="person-fill">
-            </b-icon><input type="text" v-model="user.username" required :rules="[required]" minlength="4" maxlength="16" />
-          </h2>
-          <br />
-          <h4 class="field">
-            <b-icon icon="gift"> </b-icon><input type="date" v-model="user.birthdate" required :rules="[required]" />
-          </h4>
-          <br />
-          <h4 class="field">
-            <b-icon icon="tags"></b-icon> <input type="text" v-model="user.location" required :rules="[required]" />
-          </h4>
-        </div>
-        <div class="col col-md-6 col-sm-12">
-          <h4>About me:</h4>
-          <textarea v-model="user.biography" class="bio" :rules="[required]"></textarea>
-          <div class="bottom-right">
-            <button @click="save" type="button" class="btn btn-primary">Save</button>
-            <button
-              @click="navigateTo({
-                        name: 'user',
-                        params: {
-                          userId: $store.state.user.id
-                        }
-                      })" type="button" class="btn btn-danger">Cancel</button>
+    <form @submit.prevent="submit" enctype="multipart/form-data">
+      <div class="row">
+          <div class="col col-md-6 col-sm-12">
+            <img class="profile-picture" alt="Profile picture" :src="imgUrl" width="500" />
+            <br />
+              <input @change="selectFile($event)" type="file" name="blobUrl" id="file" />
             <br /><br />
-            <div class='error' v-html='error' />
+            <h2><b-icon icon="person-fill">
+              </b-icon><input type="text" v-model="user.username" required :rules="[required]" minlength="4" maxlength="16" />
+            </h2>
+            <br />
+            <h4 class="field">
+              <b-icon icon="gift"> </b-icon><input type="date" v-model="user.birthdate" :rules="[required]" />
+            </h4>
+            <br />
+            <h4 class="field">
+              <b-icon icon="tags"></b-icon> <input type="text" v-model="user.location" required :rules="[required]" />
+            </h4>
           </div>
-        </div>
-    </div>
+          <div class="col col-md-6 col-sm-12">
+            <h4>About me:</h4>
+            <textarea v-model="user.biography" class="bio" :rules="[required]"></textarea>
+          </div>
+      </div>
+      <div class="button-container">
+        <button type="submit" class="btn btn-primary">Save</button>
+        <button
+          @click="navigateTo({
+                    name: 'user',
+                    params: {
+                      userId: $store.state.user.id
+                    }
+                  })" type="button" class="btn btn-danger">Cancel
+        </button>
+        <br /><br />
+        <div class='error' v-html='error' />
+      </div>
+    </form>
   </div>
-  <!-- TODO add edit only visible button if user id matches store state user -->
 </template>
 
 <script>
@@ -51,8 +49,7 @@ export default {
     return {
       user: {
         username: null,
-        email: null,
-        imageUrl: null,
+        blobUrl: null,
         birthdate: null,
         location: null,
         biography: null
@@ -75,30 +72,35 @@ export default {
   },
   computed: {
     // computed property to load user profile image after user is defined
-    userWithImage () {
-      if (this.user.imageUrl) {
-        return {
-          ...this.user,
-          imageUrl: this.user.imageUrl && require(`@/assets/${this.user.imageUrl}`)
-        }
-      }
-      // load default image if user profile image is undefined
-      return {
-        imageUrl: require('../assets/default_profile_picture.png')
-      }
+    imgUrl () {
+      // TODO find way to distinguish between png/jpeg on load
+      return this.user.blobUrl ? 'data:image/jpeg;charset=utf-8;base64,' + this.user.blobUrl : require('../assets/default_profile_picture.png')
     }
   },
   methods: {
-    async save () {
-      // TODO update token with SetUser if username is changed here
-      // so the username displayed in nav updates
-      // TODO combine submitFile into this method as well by
-      // appending user to formData I think. Make the form the entire
-      // template if need be and pass info at once instead of having
-      // 2 different calls going on for editing the same table.
+    selectFile (event) {
+      this.file = event.target.files[0]
+    },
+    async submit () {
       this.error = null
       try {
-        await UsersService.put(this.user)
+        // hit update endpoint if file was added to update user
+        // and image data simultaneously, else just update user
+        // without expensive sending of FormData object
+        if (this.file) {
+          // declare FormData object and append file
+          let formData = new FormData()
+          formData.append('file', this.file)
+
+          // append user fields to formData being sent to backend
+          for (var key in this.user) {
+            formData.append(key, this.user[key])
+          }
+          await UsersService.update(formData)
+        } else {
+          await UsersService.put(this.user)
+        }
+        // redirect back to user profile upon successful submit
         this.navigateTo({
           name: 'user',
           params: {
@@ -108,15 +110,6 @@ export default {
       } catch (err) {
         this.error = err.response.data.error
       }
-    },
-    selectFile (event) {
-      this.file = event.target.files[0]
-    },
-    async submitFile () {
-      let formData = new FormData()
-      formData.append('file', this.file)
-      formData.append('userId', this.$store.state.user.id)
-      await UsersService.upload(formData)
     }
   }
 }
@@ -129,6 +122,7 @@ export default {
   background-color: #F4F4F4;
   padding: 12px;
   max-width: 80%;
+  overflow: hidden;
 }
 .row {
   padding: 12px;
@@ -154,9 +148,8 @@ textarea {
   color: red;
   text-align: right;
 }
-.bottom-right {
-  position: absolute;
-  right: 5px;
-  bottom: 0;
+.button-container {
+  float: right;
+  padding-top: 32px;
 }
 </style>

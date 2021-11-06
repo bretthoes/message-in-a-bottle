@@ -14,14 +14,13 @@ module.exports = {
   },
   async put (req, res) {
     try {
-      const user = await User.update(req.body, {
+      // ensure a blobUrl is never updated from an endpoint with invalid header/encoder
+      delete req.body.blobUrl
+      await User.update(req.body, {
         where: {
           id: req.params.userId
         }
       })
-      console.log('Hello from UserController put!')
-      console.log('user',user);
-      console.log('req.body',req.body);
       res.send(req.body)
     } catch (err) {
       switch (err.errors[0].type) {
@@ -37,22 +36,21 @@ module.exports = {
       res.status(400).send({error})
     }
   },
-  async upload (req, res) {
+  async update (req, res) {
     try {
-      // note: console.log req.body in put above to find out 
-      // how to update imageUrl with blob specifically
-      console.log('Hello from UserController upload!')
-      console.log(req.files)
-      console.log('userId', req.body.userId)
-      console.log('img blob', req.files.file.data)
-      const user = await User.update(
-        {blobUrl: req.files.file.data },
-        { where: { id: req.body.userId } }
-      ) 
-
-      res.send({
-        test: 'hello! '
-      })
+      // TODO possibly save  file.mimetype  here as well, would
+      // resolve the issue of dynamically handling png/jpegs
+      // only update imagurl if file.data isnt null
+      await User.update(
+        {
+          username: req.body.username,
+          blobUrl: req.files.file.data,
+          birthdate: req.body.birthdate,
+          biography: req.body.biography
+        },
+        { where: { id: req.body.id } }
+      )
+      res.send(req.body)
     } catch (err) {
       console.error(err)
       res.status(500).send({

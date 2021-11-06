@@ -21,7 +21,8 @@
       params: {
         userId: user.id
       }
-    })" v-if="$store.state.user.id == user.id" style="float:right;" type="button" class="btn btn-secondary">Edit</button>
+    })" v-if="$store.state.user.id == user.id" style="float:right;" type="button" class="btn btn-secondary">Edit
+    </button>
   </div>
 </div>
 </template>

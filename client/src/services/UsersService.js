@@ -10,7 +10,7 @@ export default {
   put (user) {
     return Api().put(`users/${user.id}`, user)
   },
-  upload (file) {
-    return Api().post('upload', file)
+  update (user) {
+    return Api().post('update', user)
   }
 }
