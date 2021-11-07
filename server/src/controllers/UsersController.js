@@ -45,6 +45,7 @@ module.exports = {
         {
           username: req.body.username,
           blobUrl: req.files.file.data,
+          imageType: req.files.file.mimetype,
           birthdate: req.body.birthdate,
           biography: req.body.biography
         },

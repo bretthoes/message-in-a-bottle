@@ -16,7 +16,7 @@
             </h4>
             <br />
             <h4 class="field">
-              <b-icon icon="tags"></b-icon> <input type="text" v-model="user.location" required :rules="[required]" />
+              <b-icon icon="tags"></b-icon> <input type="text" v-model="user.location" :rules="[required]" />
             </h4>
           </div>
           <div class="col col-md-6 col-sm-12">
@@ -50,6 +50,7 @@ export default {
       user: {
         username: null,
         blobUrl: null,
+        imageType: null,
         birthdate: null,
         location: null,
         biography: null
@@ -73,8 +74,8 @@ export default {
   computed: {
     // computed property to load user profile image after user is defined
     imgUrl () {
-      // TODO find way to distinguish between png/jpeg on load
-      return this.user.blobUrl ? 'data:image/jpeg;charset=utf-8;base64,' + this.user.blobUrl : require('../assets/default_profile_picture.png')
+      return this.user.blobUrl ? 'data:' + this.user.imageType + ';charset=utf-8;base64,' +
+        this.user.blobUrl : require('../assets/default_profile_picture.png')
     }
   },
   methods: {
@@ -90,6 +91,7 @@ export default {
         if (this.file) {
           // declare FormData object and append file
           let formData = new FormData()
+          // TODO add validation/security for file uploads to ensure only png/jpg
           formData.append('file', this.file)
 
           // append user fields to formData being sent to backend

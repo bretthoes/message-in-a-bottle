@@ -36,6 +36,9 @@ module.exports = (sequelize, DataTypes) => {
         return data ? data.toString('base64') : ''
       }
     },
+    imageType: {
+      type: DataTypes.STRING
+    },
     birthdate: DataTypes.DATE,
     location: DataTypes.STRING,
     biography: DataTypes.STRING(1234),

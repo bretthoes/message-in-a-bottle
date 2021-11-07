@@ -46,8 +46,8 @@ export default {
   computed: {
     // computed property to load user profile image after user is defined
     imgUrl () {
-      // TODO find way to distinguish between png/jpeg on load
-      return this.user.blobUrl ? 'data:image/jpeg;charset=utf-8;base64,' + this.user.blobUrl : require('../assets/default_profile_picture.png')
+      return this.user.blobUrl ? 'data:' + this.user.imageType + ';charset=utf-8;base64,' +
+        this.user.blobUrl : require('../assets/default_profile_picture.png')
     }
   }
 }
