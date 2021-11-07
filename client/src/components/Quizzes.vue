@@ -1,6 +1,9 @@
 <template>
   <div class="container">
     <h3 class="p-3 text-center">All Quizzes</h3>
+    <div class="create-quiz">
+      <button @click="navigateTo({name: 'quizzes-create'})" class="btn btn-info" style="float:right;margin-bottom:8px;">Add Quiz</button>
+    </div>
     <table class="table table-striped table-bordered">
       <thead>
         <tr>
@@ -19,9 +22,6 @@
         </tr>
       </tbody>
     </table>
-    <div class="create-quiz">
-      <button @click="navigateTo({name: 'quizzes-create'})">Add Quiz</button>
-    </div>
   </div>
 </template>
 

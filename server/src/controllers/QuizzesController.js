@@ -17,11 +17,13 @@ module.exports = {
   async post (req, res) {
     try {
       console.log('Hello from QuizzesController post method!');
-      console.log(req.body)
-      console.log(req.body.questions)
+      console.log('req.body',req.body)
+      console.log('req.body.questions',req.body.questions)
+      console.log('req.body.questions.responses',JSON.stringify(req.body.questions[0].responses))
+      console.log('req.body.questions.responses',JSON.stringify(req.body.questions[0].responses[0]))
       const quiz = await Quiz.create(req.body)
       for (var question in req.body.questions) {
-        console.log(question.text)
+        console.log('question',question)
       }
       // console.log(quiz)
       res.send(quiz)
