@@ -17,19 +17,20 @@
             :key="childIndex"
             class="question-responses">
               <div class="createdQuestionResponse">
-                <input v-model="questionResponse.text" class="text-input question-response-input" placeholder="Question text here..."/>
+                <input v-model="questionResponse.text" class="text-input question-response-input" placeholder="Question response text here..."/>
               </div>
             </div>
-            <button v-on:click="addQuestionResponse(index)" class="add-question-response-button">+ Add Question Response</button>
+            <button v-on:click="addQuestionResponse(index)" type="button" class="btn btn-info add-question-response-button">+ Add Question Response</button>
           </div>
         </div>
       </div>
-      <button v-on:click="addQuestion" class="add-question-button">+ Add Question</button>
+      <button v-on:click="addQuestion" type="button" class="btn btn-info add-question-button">+ Add Question</button><br /><hr />
       <!-- TODO somehow *sigh* create method that from here, will add quiz to db from title, quiz questions
       from first input field in each field-wrapper div, then the other inputs in each as their question responses
       START by finishing posts for questions/question responses, then redirect to quizzes page -->
-      <button v-on:click="save" class="save-button">Save</button><br /><br /><br /><br />
-      <p v-if="!this.validInput" style="color:red;display:block;font-size:24px;float:right;">No empty fields allowed.</p>
+      <button v-on:click="save" type="button" class="btn btn-primary save-button" style="float:right;margin:4px;">Save</button>
+      <button @click="navigateTo({name: 'quizzes'})" type="button" class="btn btn-danger cancel-button" style="float:right;margin:4px;">Cancel</button><br /><br />
+      <p v-if="!this.validInput" style="color:red;font-size:20px;float:right;">No empty fields allowed.</p>
       <!--TODO cancel button somewhere that returns to quizzes page -->
     </div>
   </div>
@@ -38,10 +39,12 @@
 <script>
 import Panel from '@/components/Panel'
 import QuizzesService from '@/services/QuizzesService'
+import navigateToMixin from '@/mixins/navigateToMixin'
 export default {
   components: {
     Panel
   },
+  mixins: [navigateToMixin],
   data () {
     return {
       quiz: {
@@ -124,10 +127,9 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 .add-question-response-button {
-  background-color: gainsboro;
-  font-size: 16px;
-  padding: 4px;
+  margin-top: 8px;
   float: right;
+  border: 1px solid black;
 }
 .question-response-input {
   width: 92%;
@@ -139,23 +141,7 @@ export default {
 }
 .add-question-button {
   width: 100%;
-  background-color: rgb(144, 238, 175);
-}
-button {
-  height: 48px;
-  background-color: lightblue;
-  border-radius: 5px;
-  margin-bottom: 8px;
-  font-size: 20px;
-}
-.save-button {
-  width: 20%;
-  float: right;
-  color:whitesmoke;
-  background-color: #0754B8;
-}
-button:hover {
-  background-color: lightskyblue;
+  border: 1px solid black;
 }
 .text-input {
   border: 1px solid #e6e6e6;
@@ -182,13 +168,11 @@ table {
   border-collapse: collapse;
   width: 100%;
 }
-
 td, th {
   border: 1px solid #dddddd;
   text-align: left;
   padding: 8px;
 }
-
 tr:nth-child(even) {
   background-color: #dddddd;
 }
