@@ -13,7 +13,7 @@
             <input v-model="question.text"
             class="text-input question-input"
             placeholder="Question text here..."/>
-            <div v-for="(questionResponse, childIndex) in question.responses"
+            <div v-for="(questionResponse, childIndex) in question.questionOptions"
             :key="childIndex"
             class="question-responses">
               <div class="createdQuestionResponse">
@@ -25,24 +25,17 @@
         </div>
       </div>
       <button v-on:click="addQuestion" type="button" class="btn btn-info add-question-button">+ Add Question</button><br /><hr />
-      <!-- TODO somehow *sigh* create method that from here, will add quiz to db from title, quiz questions
-      from first input field in each field-wrapper div, then the other inputs in each as their question responses
-      START by finishing posts for questions/question responses, then redirect to quizzes page -->
       <button v-on:click="save" type="button" class="btn btn-primary save-button" style="float:right;margin:4px;">Save</button>
       <button @click="navigateTo({name: 'quizzes'})" type="button" class="btn btn-danger cancel-button" style="float:right;margin:4px;">Cancel</button><br /><br />
-      <p v-if="!this.validInput" style="color:red;font-size:20px;float:right;">No empty fields allowed.</p>
+      <p v-if="!this.validInput" v-html="error" style="color:red;font-size:20px;float:right;">No empty fields allowed.</p>
     </div>
   </div>
 </template>
 
 <script>
-import Panel from '@/components/Panel'
 import QuizzesService from '@/services/QuizzesService'
 import navigateToMixin from '@/mixins/navigateToMixin'
 export default {
-  components: {
-    Panel
-  },
   mixins: [navigateToMixin],
   data () {
     return {
@@ -51,7 +44,7 @@ export default {
         questions: [{
           text: '',
           displayQuestion: false,
-          responses: [{
+          questionOptions: [{
             text: '',
             displayResponse: false
           }, {
@@ -60,15 +53,17 @@ export default {
           }]
         }]
       },
-      validInput: true
+      validInput: true,
+      error: null
     }
   },
   methods: {
+    // each question should have a minumum of 2 questionOptions by default
     addQuestion () {
       this.quiz.questions.push({
         text: '',
         displayQuestion: false,
-        responses: [{
+        questionOptions: [{
           text: '',
           displayResponse: false
         }, {
@@ -78,27 +73,29 @@ export default {
       })
     },
     addQuestionResponse (index) {
-      this.quiz.questions[index].responses.push({
+      this.quiz.questions[index].questionOptions.push({
         text: '',
         displayResponse: false
       })
     },
     async save () {
-      // check for any empty strings in input
+      // loop through all input fields; check for any empty strings
       this.validInput = true
       if (!this.quiz.title) this.validInput = false
       for (let i = 0; i < this.quiz.questions.length; i++) {
         if (!this.quiz.questions[i].text) this.validInput = false
-        for (let j = 0; j < this.quiz.questions[i].responses.length; j++) {
-          if (!this.quiz.questions[i].responses[j].text) this.validInput = false
+        for (let j = 0; j < this.quiz.questions[i].questionOptions.length; j++) {
+          if (!this.quiz.questions[i].questionOptions[j].text) this.validInput = false
         }
       }
-      // save quiz if input valid, else display error message
+      // save quiz if input valid, else update and display error message
       if (this.validInput) {
         try {
           await QuizzesService.post(this.quiz)
+          this.navigateTo({name: 'quizzes'})
         } catch (err) {
-          console.log(err)
+          this.error = err.response.data.error
+          this.validInput = false
         }
       }
     }
@@ -163,29 +160,7 @@ input {
   height: 100%;
   border:none;
 }
-.panel {
-  margin:auto;
-  padding: 6px;
-  width: 80%;
-}
 .title {
   text-align: left;
-}
-.panel-heading {
-  border-top: 1px solid lightgray;
-  border-left: 1px solid lightgray;
-  border-right: 1px solid lightgray;
-  background-color: #b1d3e1af;
-  border-top-right-radius: 5px;
-  border-top-left-radius: 5px;
-  text-align: left;
-  padding: 12px;
-}
-.panel-body {
-  border: 1px solid lightgray;
-  border-bottom-right-radius: 5px;
-  border-bottom-left-radius: 5px;
-  text-align: left;
-  padding: 12px;
 }
 </style>

@@ -16,7 +16,7 @@
       <tbody>
         <tr v-for="quiz in quizzes" :key="quiz.id">
           <td>{{ quiz.title }}</td>
-          <td>?</td>
+          <td>{{ quiz.questionCount }}</td>
           <td>{{ quiz.createdAt.substring(0, 10) }}</td>
           <td><a href="#">Take Quiz</a> | <a href="#">Edit</a> | <a href="#">Delete</a></td>
         </tr>

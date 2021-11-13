@@ -3,12 +3,9 @@ module.exports = (sequelize, DataTypes) => {
       text: {
         type: DataTypes.STRING,
         allowNull: false
-      }
+      },
+      quizId: DataTypes.INTEGER
     })
-
-    Question.associate = function (models) {
-      Question.belongsTo(models.Quiz)
-    }
 
     return Question
   }
