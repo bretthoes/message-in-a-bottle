@@ -36,7 +36,6 @@ export default {
     }
   },
   async mounted () {
-    // TODO: request backend for all quizzes
     this.quizzes = (await QuizzesService.index()).data
   }
 }

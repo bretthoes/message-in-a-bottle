@@ -38,9 +38,6 @@ module.exports = {
   },
   async update (req, res) {
     try {
-      // TODO possibly save  file.mimetype  here as well, would
-      // resolve the issue of dynamically handling png/jpegs
-      // only update imagurl if file.data isnt null
       await User.update(
         {
           username: req.body.username,

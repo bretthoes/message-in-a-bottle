@@ -5,9 +5,7 @@ export default {
       if (this.$router.currentRoute.name !== route.name) {
         this.$router.push(route)
       }
-      // TODO: Only really necessary when we navigate to account recovery (only
-      // accessible through login modal, which needs to be closed after navigation)
-      // need a cleaner way to do this instead of checking at every navigation
+      // Ensure we close modal if user is navigating to account recovery page
       if (route.name === 'account-recovery') {
         this.$emit('close')
       }

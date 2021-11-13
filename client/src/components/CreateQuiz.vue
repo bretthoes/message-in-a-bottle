@@ -31,7 +31,6 @@
       <button v-on:click="save" type="button" class="btn btn-primary save-button" style="float:right;margin:4px;">Save</button>
       <button @click="navigateTo({name: 'quizzes'})" type="button" class="btn btn-danger cancel-button" style="float:right;margin:4px;">Cancel</button><br /><br />
       <p v-if="!this.validInput" style="color:red;font-size:20px;float:right;">No empty fields allowed.</p>
-      <!--TODO cancel button somewhere that returns to quizzes page -->
     </div>
   </div>
 </template>
@@ -85,10 +84,6 @@ export default {
       })
     },
     async save () {
-      // TODO create quiz, quiz questions, quiz question options,
-      // do not include blank strings, redirect back to quiz page
-      // where newly created quiz will be visible, also add toast
-      // indicating if quiz has been created...
       // check for any empty strings in input
       this.validInput = true
       if (!this.quiz.title) this.validInput = false
@@ -105,20 +100,7 @@ export default {
         } catch (err) {
           console.log(err)
         }
-      } else {
-
       }
-      /* console.log('quiz title:')
-      console.log(this.quiz.title)
-      TODO possibly use these to ensure no empty strings
-      for (let i = 0; i < this.quiz.questions.length; i++) {
-        console.log('question:')
-        console.log(this.quiz.questions[i].questionText)
-        console.log('question responses:')
-        for (let j = 0; j < this.quiz.questions[i].responses.length; j++) {
-          console.log(this.quiz.questions[i].responses[j].responseText)
-        }
-      } */
     }
   }
 }

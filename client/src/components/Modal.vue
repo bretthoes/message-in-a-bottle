@@ -139,7 +139,7 @@ export default {
         //   'primary',
         //   'Login Successful!',
         //   'Welcome back, ' + this.username + '!'
-        // )
+        // ) // maybe try toast component
       } catch (err) {
         this.error = err.response.data.error
       }
