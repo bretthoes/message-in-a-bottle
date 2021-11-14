@@ -10,9 +10,5 @@ export default {
   },
   post (quiz) {
     return Api().post('quizzes', quiz)
-  },
-  getQuestionsByQuizId (quizId) {
-    console.log('QuizzesService getqbyid: ', quizId)
-    return Api().get('getQuestionsByQuizId', {quizId})
   }
 }

@@ -123,8 +123,6 @@ export default {
       this.quiz = (await QuizzesService.show(quizId)).data
       console.log('QUiz.vue mounted this.quiz: ', this.quiz)
       // query and get all questions from quizId
-      const questionsTest = await QuizzesService.getQuestionsByQuizId(quizId)
-      console.log('questions:', questionsTest)
       // query and get all questionOptions from questionIds
     } catch (err) {
       console.log(err)

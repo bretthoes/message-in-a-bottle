@@ -15,13 +15,10 @@ module.exports = (app) => {
     QuizzesController.index)
 
   app.post('/quizzes',
-    QuizzesController.post)
+    QuizzesController.post) // TODO possible policy for validation?
 
   app.get('/quizzes/:quizId',
     QuizzesController.show)
-
-  app.get('/getQuestionsByQuizId',
-    QuizzesController.getQuestionsByQuizId)
 
   app.get('/users/:userId',
     UsersController.show)
