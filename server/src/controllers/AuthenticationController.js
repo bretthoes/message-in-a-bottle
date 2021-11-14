@@ -13,6 +13,8 @@ module.exports = {
   async register(req, res) {
     try {
       const user = await User.create(req.body)
+      // TODO set isAdmin store here from user
+      console.log('Hello from authentication controller register! user:', user)
       const userJson = user.toJSON()
       res.send({
         user: userJson,
@@ -65,6 +67,7 @@ module.exports = {
           error: 'Email or password was incorrect.'
         })
       }
+      console.log('Hello from authentication controller login! user:', user)
       const userJson = user.toJSON()
       res.send({
         user: userJson,

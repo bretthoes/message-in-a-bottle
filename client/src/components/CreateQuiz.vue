@@ -27,7 +27,7 @@
       <button v-on:click="addQuestion" type="button" class="btn btn-info add-question-button">+ Add Question</button><br /><hr />
       <button v-on:click="save" type="button" class="btn btn-primary save-button" style="float:right;margin:4px;">Save</button>
       <button @click="navigateTo({name: 'quizzes'})" type="button" class="btn btn-danger cancel-button" style="float:right;margin:4px;">Cancel</button><br /><br />
-      <p v-if="!this.validInput" v-html="error" style="color:red;font-size:20px;float:right;">No empty fields allowed.</p>
+      <p v-if="!this.validInput" v-html="error" style="color:red;font-size:20px;float:right;"></p>
     </div>
   </div>
 </template>
@@ -39,6 +39,8 @@ export default {
   mixins: [navigateToMixin],
   data () {
     return {
+      // TODO create limits on total # of questions
+      // and questionOptions admin can create
       quiz: {
         title: '',
         questions: [{
@@ -54,7 +56,7 @@ export default {
         }]
       },
       validInput: true,
-      error: null
+      error: 'No empty fields allowed.'
     }
   },
   methods: {

@@ -1,5 +1,6 @@
 <template>
   <div class='quiz-container'>
+    <h2>{{quiz.title}}</h2>
     <div
     class='quiz'
     v-for="(element,index) in questions.slice(questionStartIndex,questionEndIndex)"
@@ -38,9 +39,12 @@
 
 <script>
 import navigateToMixin from '@/mixins/navigateToMixin'
+import QuizzesService from '@/services/QuizzesService'
 export default {
   data () {
     return {
+      // TODO have quiz mode and view mode based on if user has taken quiz
+      quiz: {},
       questions:
       [
         {
@@ -110,6 +114,22 @@ export default {
       answerKey: ''
     }
   },
+  async mounted () {
+    try {
+      // get userId from route params
+      const quizId = this.$store.state.route.params.quizId
+      console.log('Quiz.vue mounted quizId: ', quizId)
+      // retrieve user from id to populate profile page
+      this.quiz = (await QuizzesService.show(quizId)).data
+      console.log('QUiz.vue mounted this.quiz: ', this.quiz)
+      // query and get all questions from quizId
+      const questionsTest = await QuizzesService.getQuestionsByQuizId(quizId)
+      console.log('questions:', questionsTest)
+      // query and get all questionOptions from questionIds
+    } catch (err) {
+      console.log(err)
+    }
+  },
   mixins: [navigateToMixin],
   methods: {
     selectResponse (index) {
@@ -117,11 +137,10 @@ export default {
       if (this.questionEndIndex === this.questions.length) {
         // TODO: Add answer key to User
         // Redirect to quiz submitted page
-        this.navigateTo({ name: 'root' })
+        this.navigateTo({ name: 'quizzes' })
       } else {
         // Append answer to answer key
         this.answerKey += index
-        console.log(this.answerKey)
         // Move to next question
         this.questionStartIndex++
         this.questionEndIndex++
@@ -131,7 +150,6 @@ export default {
       if (this.questionStartIndex > 0 && this.questionEndIndex > 0) {
         // Remove answer from answer key
         this.answerKey = this.answerKey.slice(0, this.answerKey.length - 1)
-        console.log(this.answerKey)
         // Move to previous question
         this.questionStartIndex--
         this.questionEndIndex--

@@ -4,6 +4,18 @@ const {QuestionOption } = require('../models')
 const {sequelize} = require('../models')
 
 module.exports = {
+  async show (req, res) {
+    try {
+      console.log('Hello from QuizzesController show!')
+      const quiz = await Quiz.findByPk(req.params.quizId)
+      res.send(quiz)
+    } catch (err) {
+      console.log(err)
+      res.status(500).send({
+        error: 'an error has occurred trying to retrieve the user'
+      })
+    }
+  },
   async index (req, res) {
     try {
       const quizzes = await Quiz.findAll({
@@ -50,6 +62,19 @@ module.exports = {
           break
       }
       res.status(400).send({error})
+    }
+  },
+  async getQuestionsByQuizId (req, res) {
+    try {
+      console.log('QuizzesController GetQuestionsByQuizId req.body', req.body)
+      const questions = await Question.findAll({
+        where: {
+          quizId: req.body.quizId
+        }
+      })
+      res.send(questions)
+    } catch (err) {
+      res.status(400).send(err)
     }
   }
 }

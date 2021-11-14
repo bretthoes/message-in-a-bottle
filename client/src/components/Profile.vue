@@ -37,10 +37,14 @@ export default {
     }
   },
   async mounted () {
-    // get userId from route params
-    const userId = this.$store.state.route.params.userId
-    // retrieve user from id to populate profile page
-    this.user = (await UsersService.show(userId)).data
+    try {
+      // get userId from route params
+      const userId = this.$store.state.route.params.userId
+      // retrieve user from id to populate profile page
+      this.user = (await UsersService.show(userId)).data
+    } catch (err) {
+      console.log(err)
+    }
   },
   mixins: [navigateToMixin],
   computed: {

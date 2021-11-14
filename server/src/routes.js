@@ -17,6 +17,12 @@ module.exports = (app) => {
   app.post('/quizzes',
     QuizzesController.post)
 
+  app.get('/quizzes/:quizId',
+    QuizzesController.show)
+
+  app.get('/getQuestionsByQuizId',
+    QuizzesController.getQuestionsByQuizId)
+
   app.get('/users/:userId',
     UsersController.show)
   

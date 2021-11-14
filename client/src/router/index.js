@@ -25,11 +25,6 @@ export default new Router({
       component: About
     },
     {
-      path: '/quiz',
-      name: 'quiz',
-      component: Quiz
-    },
-    {
       path: '/users/:userId',
       name: 'user',
       component: Profile
@@ -58,6 +53,11 @@ export default new Router({
       path: '/quizzes/create',
       name: 'quizzes-create',
       component: CreateQuiz
+    },
+    {
+      path: '/quizzes/:quizId',
+      name: 'quiz',
+      component: Quiz
     }
   ]
 })
