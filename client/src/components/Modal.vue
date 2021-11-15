@@ -44,8 +44,8 @@
               type='text'
               name='username'
               ref='username'
-              maxlength='16'
               minlength='4'
+              maxlength='16'
               autocomplete='off'
               required
             />
@@ -56,7 +56,8 @@
               type='text'
               name='email'
               ref='email'
-              minlength='6'
+              minlength='4'
+              maxlength='32'
               autocomplete='off'
               required
             />

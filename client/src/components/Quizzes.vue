@@ -1,8 +1,20 @@
 <template>
   <div class="container">
     <h3 class="p-3 text-center">All Quizzes</h3>
-    <div class="create-quiz">
-      <button @click="navigateTo({name: 'quizzes-create'})" class="btn btn-info" style="float:right;margin-bottom:8px;">Add Quiz</button>
+    <div class="row">
+      <div class="col-sm-3">
+        <div class="search">
+          <b-input-group size="sm">
+          <b-input-group-prepend is-text>
+            <b-icon icon="search"></b-icon>
+          </b-input-group-prepend>
+          <b-form-input type="search" placeholder="Search quizzes"></b-form-input>
+        </b-input-group>
+        </div>
+      </div>
+      <div class="col-sm-9">
+        <button @click="navigateTo({name: 'quizzes-create'})" v-if="$store.state.isUserAdmin">Add Quiz</button>
+      </div>
     </div>
     <table class="table table-striped table-bordered">
       <thead>
@@ -51,4 +63,35 @@ export default {
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped></style>
+<style scoped>
+
+button {
+  cursor: pointer;
+  width: 100px;
+  height: 40px;
+  font-size: 14px;
+  border: 1px solid black;
+  box-shadow: 1px 2px;
+  float:right;
+  margin-bottom:8px;
+}
+button:hover {
+  text-decoration: underline;
+  border: 3px solid black;
+  box-shadow: 2px 3px;
+  background-color: #B1D3E1;
+}
+h3 {
+  font-size: 32px;
+  letter-spacing: 1px;
+  /* transform: scale(1.2, 1);
+  -ms-transform: scale(1.2, 1);
+  -moz-transform: scale(1.2, 1);
+  -webkit-transform: scale(1.2, 1);
+  -o-transform: scale(1.2, 1); */
+  font-family: "Montserrat", sans-serif;
+  font-weight: 900;
+  text-transform: uppercase;
+  display: block;
+}
+</style>

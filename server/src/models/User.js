@@ -22,12 +22,16 @@ module.exports = (sequelize, DataTypes) => {
     username: {
       type: DataTypes.STRING,
       unique: true,
-      allowNull: false
+      allowNull: false,
+      min: 4,
+      max: 16
     },
     email: {
       type: DataTypes.STRING,
       unique: true,
-      allowNull: false
+      allowNull: false,
+      min: 4,
+      max: 30
     },
     blobUrl: {
       type: DataTypes.BLOB,
@@ -44,14 +48,24 @@ module.exports = (sequelize, DataTypes) => {
     biography: DataTypes.STRING(1234),
     isActive: {
       type: DataTypes.BOOLEAN,
-      defaultValue: 1
+      defaultValue: 1,
+      allowNull: false
     },
     isAdmin: {
       type: DataTypes.BOOLEAN,
-      defaultValue: 0
+      defaultValue: 0,
+      allowNull: false
     },
-    password: DataTypes.STRING,
-    answerKey: DataTypes.STRING
+    password: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      min: 4,
+      max: 64
+    },
+    resetLink: {
+      type: DataTypes.STRING,
+      default: ''
+    }
   }, {
     hooks: {
       beforeCreate: hashPassword

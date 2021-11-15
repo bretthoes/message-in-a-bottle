@@ -79,9 +79,7 @@ h1 {
   font-size: 52px;
   letter-spacing: 1px;
   margin-top: -26px;
-  /* TODO: make transform work with modal; currently sits in front
-  font-size: 52px;
-  transform: scale(1.2, 1);
+  /* transform: scale(1.2, 1);
   -ms-transform: scale(1.2, 1);
   -moz-transform: scale(1.2, 1);
   -webkit-transform: scale(1.2, 1);

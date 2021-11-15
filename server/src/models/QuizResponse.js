@@ -1,7 +1,5 @@
 module.exports = (sequelize, DataTypes) => {
     const QuizResponse = sequelize.define('QuizResponse', {
-      userId: DataTypes.INTEGER,
-      quizId: DataTypes.INTEGER,
       answerKey: DataTypes.STRING
     })
 

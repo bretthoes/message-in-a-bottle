@@ -2,7 +2,7 @@
   <footer>
     <!-- TODO: Change viewbox dims on ultra wide and possibly mobile browser widths. Original 0 0 120 28.
                Changed to 24 as svg will overlay above waves and user cannot click buttons. -->
-    <svg viewBox="0 0 120 24">
+    <svg viewBox="0 0 120 20">
       <defs>
         <filter>
           <feGaussianBlur in="SourceGraphic" stdDeviation="1" result="blur" />
@@ -19,7 +19,7 @@
         </filter>
         <path
           id="wave"
-          d="M 0,10 C 30,10 30,15 60,15 90,15 90,10 120,10 150,10 150,15 180,15 210,15 210,10 240,10 v 24 h -240 z"
+          d="M 0,10 C 30,10 30,15 60,15 90,15 90,10 120,10 150,10 150,15 180,15 210,15 210,10 240,10 v 20 h -240 z"
         />
       </defs>
       <use id="wave3" class="wave" xlink:href="#wave" x="0" y="-2"></use>

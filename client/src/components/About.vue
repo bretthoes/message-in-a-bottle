@@ -111,4 +111,17 @@ p {
     from { opacity: 0; }
     to   { opacity: 1; }
 }
+h1 {
+  font-size: 32px;
+  letter-spacing: 1px;
+  /* transform: scale(1.2, 1);
+  -ms-transform: scale(1.2, 1);
+  -moz-transform: scale(1.2, 1);
+  -webkit-transform: scale(1.2, 1);
+  -o-transform: scale(1.2, 1); */
+  font-family: "Montserrat", sans-serif;
+  font-weight: 900;
+  text-transform: uppercase;
+  display: block;
+}
 </style>

@@ -20,14 +20,14 @@
                 <input v-model="questionResponse.text" class="text-input question-response-input" placeholder="Question response text here..."/>
               </div>
             </div>
-            <button v-on:click="addQuestionResponse(index)" type="button" class="btn btn-info add-question-response-button">+ Add Question Response</button>
+            <button v-on:click="addQuestionResponse(index)" type="button" class="add-question-response-button">+</button>
           </div>
         </div>
       </div>
-      <button v-on:click="addQuestion" type="button" class="btn btn-info add-question-button">+ Add Question</button><br /><hr />
-      <button v-on:click="save" type="button" class="btn btn-primary save-button" style="float:right;margin:4px;">Save</button>
-      <button @click="navigateTo({name: 'quizzes'})" type="button" class="btn btn-danger cancel-button" style="float:right;margin:4px;">Cancel</button><br /><br />
-      <p v-if="!this.validInput" v-html="error" style="color:red;font-size:20px;float:right;"></p>
+      <button v-on:click="addQuestion" type="button" class="add-question-button">+ Add Question</button><br /><hr />
+      <button v-on:click="save" type="button" class="save">Save</button>
+      <button @click="navigateTo({name: 'quizzes'})" type="button" class="cancel">Cancel</button><br /><br />
+      <p v-if="!this.validInput" v-html="error" style="color:red;font-size:20px;float:right;">No empty fields allowed.</p>
     </div>
   </div>
 </template>
@@ -107,10 +107,41 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+button {
+  cursor: pointer;
+  width: 100px;
+  height: 40px;
+  font-size: 14px;
+  border: 1px solid black;
+  box-shadow: 1px 2px;
+}
+button:hover {
+  text-decoration: underline;
+  border: 3px solid black;
+  box-shadow: 2px 3px;
+  background-color: #B1D3E1;
+}
 .add-question-response-button {
   margin-top: 8px;
+  width: 40px;
   float: right;
-  border: 1px solid black;
+  border-radius: 33px;
+}
+.add-question-button {
+  width: 50%;
+  margin: auto;
+  background-color: #b1d3e1bb;
+}
+.add-question-button:hover {
+  background-color: #99cde4;
+}
+.save, .cancel {
+  float:right;
+  background-color: #b1d3e1bb;
+  margin:4px;
+}
+.save:hover, .cancel:hover {
+  background-color: #99cde4;
 }
 .question-response-input {
   width: 92%;
@@ -119,10 +150,6 @@ export default {
 }
 .question-input {
   margin-bottom: 24px;
-}
-.add-question-button {
-  width: 100%;
-  border: 1px solid black;
 }
 .text-input {
   border: 1px solid #e6e6e6;
@@ -164,5 +191,35 @@ input {
 }
 .title {
   text-align: left;
+}
+.panel-heading {
+  border-top: 1px solid lightgray;
+  border-left: 1px solid lightgray;
+  border-right: 1px solid lightgray;
+  background-color: #b1d3e1af;
+  border-top-right-radius: 5px;
+  border-top-left-radius: 5px;
+  text-align: left;
+  padding: 12px;
+}
+.panel-body {
+  border: 1px solid lightgray;
+  border-bottom-right-radius: 5px;
+  border-bottom-left-radius: 5px;
+  text-align: left;
+  padding: 12px;
+}
+h3 {
+  font-size: 32px;
+  letter-spacing: 1px;
+  /* transform: scale(1.2, 1);
+  -ms-transform: scale(1.2, 1);
+  -moz-transform: scale(1.2, 1);
+  -webkit-transform: scale(1.2, 1);
+  -o-transform: scale(1.2, 1); */
+  font-family: "Montserrat", sans-serif;
+  font-weight: 900;
+  text-transform: uppercase;
+  display: block;
 }
 </style>
