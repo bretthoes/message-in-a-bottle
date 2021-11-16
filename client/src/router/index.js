@@ -9,6 +9,7 @@ import Modal from '@/components/Modal'
 import Quizzes from '@/components/Quizzes'
 import CreateQuiz from '@/components/CreateQuiz'
 import EditProfile from '@/components/EditProfile'
+import Inbox from '@/components/Inbox'
 
 Vue.use(Router)
 
@@ -58,6 +59,11 @@ export default new Router({
       path: '/quizzes/:quizId',
       name: 'quiz',
       component: Quiz
+    },
+    {
+      path: '/inbox',
+      name: 'inbox',
+      component: Inbox
     }
   ]
 })

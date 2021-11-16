@@ -140,8 +140,16 @@ button:hover {
   background-color: #b1d3e1bb;
   margin:4px;
 }
-.save:hover, .cancel:hover {
+.cancel {
+  float:right;
+  background-color: #e1b1b1bb;
+  margin:4px;
+}
+.save:hover {
   background-color: #99cde4;
+}
+.cancel:hover {
+  background-color: #e49b99;
 }
 .question-response-input {
   width: 92%;
@@ -170,6 +178,7 @@ button:hover {
   width: 80%;
   padding: 12px;
   overflow: hidden;
+  margin-bottom: 80px;
 }
 table {
   font-family: arial, sans-serif;

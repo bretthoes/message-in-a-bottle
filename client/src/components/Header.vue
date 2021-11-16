@@ -10,7 +10,7 @@
         </li>
         <li>
           <a href="#" v-if="$store.state.isUserLoggedIn">
-            <span>&nbsp;inbox</span>
+            <span @click="navigateTo({ name: 'inbox' })">&nbsp;inbox</span>
           </a>
         </li>
         <li>
