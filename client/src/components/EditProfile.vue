@@ -63,6 +63,8 @@ export default {
   mixins: [navigateToMixin],
   async mounted () {
     try {
+      // redirect home if not logged in
+      if (!this.$store.state.isUserLoggedIn) this.navigateTo({ name: 'root' })
       // get userId from route params
       const userId = this.$store.state.route.params.userId
       // retrieve user from id to populate profile page

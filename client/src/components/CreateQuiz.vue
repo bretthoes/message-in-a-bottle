@@ -59,6 +59,10 @@ export default {
       error: 'No empty fields allowed.'
     }
   },
+  async mounted () {
+    // redirect home if not logged in or user is not admin
+    if (!this.$store.state.isUserLoggedIn || !this.$store.state.isUserAdmin) this.navigateTo({ name: 'root' })
+  },
   methods: {
     // each question should have a minumum of 2 questionOptions by default
     addQuestion () {
@@ -200,23 +204,6 @@ input {
 }
 .title {
   text-align: left;
-}
-.panel-heading {
-  border-top: 1px solid lightgray;
-  border-left: 1px solid lightgray;
-  border-right: 1px solid lightgray;
-  background-color: #b1d3e1af;
-  border-top-right-radius: 5px;
-  border-top-left-radius: 5px;
-  text-align: left;
-  padding: 12px;
-}
-.panel-body {
-  border: 1px solid lightgray;
-  border-bottom-right-radius: 5px;
-  border-bottom-left-radius: 5px;
-  text-align: left;
-  padding: 12px;
 }
 h3 {
   font-size: 32px;

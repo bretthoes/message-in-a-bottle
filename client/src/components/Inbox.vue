@@ -15,7 +15,12 @@
 </template>
 
 <script>
-export default {}
+export default {
+  async mounted () {
+    // redirect home if not logged in
+    if (!this.$store.state.isUserLoggedIn) this.navigateTo({ name: 'root' })
+  }
+}
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->

@@ -10,6 +10,7 @@ import Quizzes from '@/components/Quizzes'
 import CreateQuiz from '@/components/CreateQuiz'
 import EditProfile from '@/components/EditProfile'
 import Inbox from '@/components/Inbox'
+import QuizSubmitted from '@/components/QuizSubmitted'
 
 Vue.use(Router)
 
@@ -64,6 +65,11 @@ export default new Router({
       path: '/inbox',
       name: 'inbox',
       component: Inbox
+    },
+    {
+      path: '/quiz-submitted',
+      name: 'quiz-submitted',
+      component: QuizSubmitted
     }
   ]
 })

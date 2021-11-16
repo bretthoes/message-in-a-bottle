@@ -21,7 +21,6 @@
       <div class='question-footer'>
         <p v-if="questionEndIndex === quiz.Questions.length"><b>Final question!</b> Choosing an option above will submit quiz.</p>
         <div class='footer-buttons'>
-          <!-- TODO make these buttons prettier -->
           <button @click="previousQuestion" class="back">Back</button>
           <button  @click="navigateTo({ name: 'quizzes' })" class="exit">Exit</button>
         </div>
@@ -55,6 +54,8 @@ export default {
   },
   async mounted () {
     try {
+      // redirect home if not logged in
+      if (!this.$store.state.isUserLoggedIn) this.navigateTo({ name: 'root' })
       // get userId from route params
       const quizId = this.$store.state.route.params.quizId
       // get quiz from quizId
@@ -84,7 +85,7 @@ export default {
             }
             await QuizzesService.put(quizResponse)
             // Redirect to quiz submitted page
-            this.navigateTo({ name: 'quizzes' })
+            this.navigateTo({ name: 'quiz-submitted' })
           } catch (err) {
             console.log(err)
           }

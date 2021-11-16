@@ -5,7 +5,7 @@
       <div class='modal'
         role='dialog'>
         <form class='modal-content animate'>
-          <div class='imgcontainer'>
+          <div class='img-container'>
             <span
               @click="close"
               class='close'
@@ -267,7 +267,7 @@ input:focus {
 }
 
 /* Center the image and position the close button */
-.imgcontainer {
+.img-container {
   text-align: center;
   margin: 24px 0 12px 0;
   position: relative;
