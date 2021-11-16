@@ -6,10 +6,8 @@ module.exports = (sequelize, DataTypes) => {
       }
     })
     Question.associate = function (models) {
-      Question.hasMany(models.QuestionOption)
-    }
-    Question.associate = function (models) {
       Question.belongsTo(models.Quiz)
+      Question.hasMany(models.QuestionOption)
     }
     
     return Question

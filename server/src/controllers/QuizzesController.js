@@ -6,16 +6,17 @@ const {sequelize} = require('../models')
 module.exports = {
   async show (req, res) {
     try {
-      console.log('Hello from QuizzesController show!')
-      const quiz = await Quiz.findByPk(req.params.quizId)
-      const questions = await Question.findAll({
+      // get quiz and include all belonging questions
+      // and each question's belonging QuestionOption 
+      const quiz = await Quiz.findOne({
         where: {
-          quizId: req.params.quizId
+          id: req.params.quizId
         },
-        limit: 99
+        include: {
+          model: Question,
+          include: QuestionOption
+        }
       })
-      console.log('questions', questions)
-      quiz.questions = questions
       res.send(quiz)
     } catch (err) {
       console.log(err)
@@ -26,6 +27,7 @@ module.exports = {
   },
   async index (req, res) {
     try {
+      // get all quizzes 
       const quizzes = await Quiz.findAll({
         limit: 99
       })
@@ -75,7 +77,6 @@ module.exports = {
       } else {
         error = err;
       }
-      
       res.status(400).send({error})
     }
   }

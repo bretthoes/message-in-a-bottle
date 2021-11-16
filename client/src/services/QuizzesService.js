@@ -2,7 +2,6 @@ import Api from '@/services/Api'
 
 export default {
   show (quizId) {
-    console.log('QuizzesService show quizId:', quizId)
     return Api().get(`quizzes/${quizId}`)
   },
   index () {
