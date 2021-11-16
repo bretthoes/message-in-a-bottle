@@ -35,7 +35,6 @@ export default {
     margin: auto;
     max-width: 800px;
     border: 1px solid black;
-    background-color: #B1D3E1;
 }
 h2 {
   font-family: "Montserrat", sans-serif;

@@ -17,10 +17,10 @@ module.exports = {
           include: QuestionOption
         }
       })
-      res.send(quiz)
+      return res.send(quiz)
     } catch (err) {
       console.log(err)
-      res.status(500).send({
+      return res.status(500).send({
         error: 'an error has occurred trying to retrieve the user'
       })
     }
@@ -31,9 +31,9 @@ module.exports = {
       const quizzes = await Quiz.findAll({
         limit: 99
       })
-      res.send(quizzes)
+      return res.send(quizzes)
     } catch (err) {
-      res.status(400).send(err)
+      return res.status(400).send(err)
     }
   },
   async post (req, res) {
@@ -61,7 +61,7 @@ module.exports = {
           }
         }
       })
-      res.sendStatus(200)
+      return res.sendStatus(200)
     } catch (err) {
       // rollback will occur automatically if exception is
       // thrown in managed transaction
@@ -77,7 +77,7 @@ module.exports = {
       } else {
         error = err;
       }
-      res.status(400).send({error})
+      return res.status(400).send({error})
     }
   }
 }

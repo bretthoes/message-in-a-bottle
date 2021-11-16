@@ -1,6 +1,15 @@
 const { QuizResponse } = require('../models')
 
 module.exports = {
+  async index (req, res) {
+    try {
+      // get all quizzes 
+      const quizResponses = await QuizResponse.findAll()
+      return res.send(quizResponses)
+    } catch (err) {
+      return res.status(400).send(err)
+    }
+  },
   async put (req, res) {
     try {
       // check if user has response to given quiz already
@@ -17,7 +26,7 @@ module.exports = {
           QuizId: req.body.quizId,
           answerKey: req.body.answerKey
         })
-        res.send(quizResponse)
+        return res.send(quizResponse)
       }
       // item found, update
       const quizResponse = await QuizResponse.update({
@@ -28,10 +37,10 @@ module.exports = {
           QuizId: req.body.quizId
         }
       })
-      res.send(quizResponse)
+      return res.send(quizResponse)
     } catch (err) {
       console.log('err', err)
-      res.status(400).send(err)
+      return res.status(400).send(err)
     }
   }
 }

@@ -3,7 +3,7 @@
       <h1>MESSAGE</h1>
       <h1>IN A</h1>
       <h1><span class="blue">BOTTLE</span></h1>
-      <h2 class="subtitle">0 matches after 0 bottles thrown to sea</h2>
+      <h2 class="subtitle">0 matches after {{totalQuizResponses}} bottles thrown to sea</h2>
     <div class="button-container">
       <button @click="navigateTo({name: 'about'})">what is this?</button>
       <button @click="openQuizPage($store.state.isUserLoggedIn)">view quizzes</button>
@@ -18,17 +18,32 @@
 </template>
 
 <script>
+import QuizResponsesService from '@/services/QuizResponsesService'
 import navigateToMixin from '@/mixins/navigateToMixin'
 import modalMixin from '@/mixins/modalMixin'
 import Modal from '@/components/Modal.vue'
 import FooterWaves from './FooterWaves.vue'
 export default {
   name: 'Home',
+  data () {
+    return {
+      totalQuizResponses: 0
+    }
+  },
   components: {
     Modal,
     FooterWaves
   },
   mixins: [navigateToMixin, modalMixin],
+  async mounted () {
+    try {
+      // get count of all quiz responses
+      this.totalQuizResponses = ((await QuizResponsesService.index()).data).length
+      // TODO get count of all matches
+    } catch (err) {
+      console.log(err)
+    }
+  },
   methods: {
     openQuizPage (isUserLoggedIn) {
       if (isUserLoggedIn) {
