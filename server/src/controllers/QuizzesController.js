@@ -7,11 +7,6 @@ module.exports = {
   async show (req, res) {
     try {
       console.log('Hello from QuizzesController show!')
-      var quiz = {
-        title: null,
-        questionCount: 0,
-        questions: []
-      }
       const quiz = await Quiz.findByPk(req.params.quizId)
       const questions = await Question.findAll({
         where: {
@@ -50,33 +45,37 @@ module.exports = {
           questionCount: req.body.questions.length
         }, { transaction: t })
         // insert each question within quiz
-        // TODO possibly convert to bulkCreates if no association
         for (const q of req.body.questions) {
           const insertedQuestion = await Question.create({
             text: q.text,
-            quizId: insertedQuiz.dataValues.id
+            QuizId: insertedQuiz.id
           },{ transaction: t })
           // insert each question option within a question
-          for (const r of q.questionOptions) {
+          for (const o of q.questionOptions) {
             await QuestionOption.create({
-              text: r.text,
-              questionId: insertedQuestion.dataValues.id
+              text: o.text,
+              QuestionId: insertedQuestion.id
             }, { transaction: t })
           }
         }
-        res.sendStatus(200)
       })
+      res.sendStatus(200)
     } catch (err) {
       // rollback will occur automatically if exception is
       // thrown in managed transaction
-      switch (err.errors[0].type) {
-        case 'unique violation':
-          error = 'Quiz already exists! Please enter a new title.'
-          break
-        default:
-          error = err.errors[0].message
-          break
+      if (err.errors) {
+        switch (err.errors[0].type) {
+          case 'unique violation':
+            error = 'Quiz already exists! Please enter a new title.'
+            break
+          default:
+            error = err.errors[0].message
+            break
+        }
+      } else {
+        error = err;
       }
+      
       res.status(400).send({error})
     }
   }

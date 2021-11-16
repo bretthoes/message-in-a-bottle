@@ -5,8 +5,14 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
       unique: true
     },
-    questionCount: DataTypes.INTEGER
+    questionCount: {
+      type: DataTypes.INTEGER,
+      allowNull: false
+    }
   })
+  Quiz.associate = function (models) {
+    Quiz.hasMany(models.Question)
+  }
 
   return Quiz
 }
