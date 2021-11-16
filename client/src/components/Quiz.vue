@@ -37,10 +37,10 @@
     </div>
   </div>
 </template>
-
 <script>
 import navigateToMixin from '@/mixins/navigateToMixin'
 import QuizzesService from '@/services/QuizzesService'
+import QuizResponsesService from '@/services/QuizResponsesService'
 export default {
   data () {
     return {
@@ -83,7 +83,7 @@ export default {
               'quizId': this.quiz.id,
               'answerKey': this.answerKey
             }
-            await QuizzesService.put(quizResponse)
+            await QuizResponsesService.put(quizResponse)
             // Redirect to quiz submitted page
             this.navigateTo({ name: 'quiz-submitted' })
           } catch (err) {

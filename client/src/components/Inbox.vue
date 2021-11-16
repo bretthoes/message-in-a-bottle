@@ -19,6 +19,8 @@ export default {
   async mounted () {
     // redirect home if not logged in
     if (!this.$store.state.isUserLoggedIn) this.navigateTo({ name: 'root' })
+    console.log('userId:', this.$store.state.user.id)
+    // TODO query all matches and populate list based on user id
   }
 }
 </script>
