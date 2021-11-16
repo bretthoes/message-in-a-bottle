@@ -49,7 +49,8 @@ export default {
       quiz: null,
       questionStartIndex: 0,
       questionEndIndex: 1,
-      answerKey: ''
+      answerKey: '',
+      quizSubmitted: false
     }
   },
   async mounted () {
@@ -64,19 +65,31 @@ export default {
   },
   mixins: [navigateToMixin],
   methods: {
-    // advance question
-    selectResponse (index) {
-      // Check if last question
+    // selecting question also advances to next question
+    async selectResponse (index) {
+      // Append answer to answer key
+      this.answerKey += index
+      // check if last question
       if (this.questionEndIndex === this.quiz.Questions.length) {
-        this.answerKey += index
-        // TODO: Add answer key to User
-        // Redirect to quiz submitted page
-        console.log(this.answerKey)
-        // this.navigateTo({ name: 'quizzes' })
+        // check if quizSubmitted to prevent spam submissions
+        if (!this.quizSubmitted) {
+          try {
+            // update quizSubmitted
+            this.quizSubmitted = true
+            // insert or update quiz response
+            const quizResponse = {
+              'userId': this.$store.state.user.id,
+              'quizId': this.quiz.id,
+              'answerKey': this.answerKey
+            }
+            await QuizzesService.put(quizResponse)
+            // Redirect to quiz submitted page
+            this.navigateTo({ name: 'quizzes' })
+          } catch (err) {
+            console.log(err)
+          }
+        }
       } else {
-        // Append answer to answer key
-        this.answerKey += index
-        console.log(this.answerKey)
         // Move to next question
         this.questionStartIndex++
         this.questionEndIndex++

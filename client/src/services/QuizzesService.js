@@ -9,5 +9,8 @@ export default {
   },
   post (quiz) {
     return Api().post('quizzes', quiz)
+  },
+  put (quizResponse) {
+    return Api().put('quiz-response', quizResponse)
   }
 }

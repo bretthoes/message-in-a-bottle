@@ -2,7 +2,7 @@ const Promise = require('bluebird')
 const bcrypt = Promise.promisifyAll(require('bcrypt-nodejs'))
 
 function hashPassword (user, options) {
-  // Used by bcrypt in hashing password
+  // used by bcrypt in hashing password
   const SALT_FACTOR = 8
 
   if (!user.changed('password')) {
