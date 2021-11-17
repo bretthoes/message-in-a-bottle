@@ -11,6 +11,7 @@ import CreateQuiz from '@/components/CreateQuiz'
 import EditProfile from '@/components/EditProfile'
 import Inbox from '@/components/Inbox'
 import QuizSubmitted from '@/components/QuizSubmitted'
+import PageNotFound from '@/components/PageNotFound'
 
 Vue.use(Router)
 
@@ -20,6 +21,11 @@ export default new Router({
       path: '/',
       name: 'root',
       component: Home
+    },
+    {
+      path: '*',
+      name: 'page-not-found',
+      component: PageNotFound
     },
     {
       path: '/about',

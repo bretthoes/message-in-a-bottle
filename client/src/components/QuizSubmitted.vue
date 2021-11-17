@@ -1,21 +1,28 @@
 <template>
-  <div class='container-fluid'>
-      <h2>Quiz submitted!</h2>
-      <div class='img-container'>
-        <img src='@/assets/throwing-bottle.gif' alt='Avatar' class='avatar' />
-      </div>
-      <h5><i>Any new matches will appear in your inbox :)</i></h5>
-      <div class="button-container">
-        <button @click="navigateTo({name: 'root'})">return home</button>
-        <button @click="openQuizPage($store.state.isUserLoggedIn)">other quizzes</button>
-      </div>
+  <div>
+    <div class='container-fluid'>
+        <h2>Quiz submitted!</h2>
+        <div class='img-container'>
+          <img src='@/assets/throwing-bottle.gif' alt='Avatar' class='avatar' />
+        </div>
+        <h5><i>Any new matches will appear in your inbox :)</i></h5>
+        <div class="button-container">
+          <button @click="navigateTo({name: 'root'})">return home</button>
+          <button @click="openQuizPage($store.state.isUserLoggedIn)">other quizzes</button>
+        </div>
+    </div>
+    <footer-waves />
   </div>
 </template>
 
 <script>
 import navigateToMixin from '@/mixins/navigateToMixin'
+import FooterWaves from './FooterWaves.vue'
 export default {
   mixins: [navigateToMixin],
+  components: {
+    FooterWaves
+  },
   methods: {
     openQuizPage (isUserLoggedIn) {
       if (isUserLoggedIn) {

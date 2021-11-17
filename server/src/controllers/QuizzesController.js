@@ -1,7 +1,4 @@
-const { Quiz } = require('../models')
-const { Question } = require('../models')
-const { QuestionOption } = require('../models')
-const { sequelize } = require('../models')
+const { sequelize, Quiz, Question, QuestionOption } = require('../models')
 const { Op } = require('sequelize')
 
 module.exports = {
@@ -36,6 +33,10 @@ module.exports = {
             title: {
               [Op.like]: `%${search}%`
             }
+          },
+          include: {
+            model: Question,
+            include: QuestionOption
           }
         })
       } else {
@@ -74,7 +75,7 @@ module.exports = {
           }
         }
       })
-      return res.sendStatus(200)
+      return res.send(result)
     } catch (err) {
       // rollback will occur automatically if exception is
       // thrown in managed transaction

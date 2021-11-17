@@ -52,8 +52,8 @@ export default {
     }
   },
   watch: {
-    // set wait time to 500ms to prevent spam service calls 
-    // from within search bar
+    // set wait time to 500ms to prevent spam
+    // service calls from within search bar
     search: _.debounce(async function (value) {
       const route = {
         name: 'quizzes'

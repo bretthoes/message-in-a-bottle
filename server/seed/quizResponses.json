@@ -1,0 +1,22 @@
+[
+    {
+       "QuizId":1,
+       "UserId":2,
+       "answerKey":"011323"
+    },
+    {
+        "QuizId":1,
+        "UserId":3,
+        "answerKey":"010221"
+     },
+     {
+        "QuizId":2,
+        "UserId":2,
+        "answerKey":"010"
+     },
+     {
+        "QuizId":2,
+        "UserId":3,
+        "answerKey":"010"
+     }
+ ]

@@ -1,0 +1,152 @@
+[
+    {
+       "id":1,
+       "QuestionId":1,
+       "text":"I love it!"
+    },
+    {
+        "id":2,
+        "QuestionId":1,
+        "text":"Yuck! It tastes like soap!"
+     },
+     {
+        "id":3,
+        "QuestionId":1,
+        "text":"Meh."
+     },
+     {
+        "id":4,
+        "QuestionId":1,
+        "text":"What's that?"
+     },
+     {
+        "id":5,
+        "QuestionId":2,
+        "text":"The more the merrier!"
+     },
+     {
+         "id":6,
+         "QuestionId":2,
+         "text":"NOPE. Smells horrible, too."
+      },
+      {
+         "id":7,
+         "QuestionId":2,
+         "text":"It's okay."
+      },
+      {
+         "id":8,
+         "QuestionId":2,
+         "text":"Never tried it."
+      },
+      {
+         "id":9,
+         "QuestionId":3,
+         "text":"Butter."
+      },
+      {
+         "id":10,
+         "QuestionId":3,
+         "text":"Marjorin."
+      },
+      {
+         "id":11,
+         "QuestionId":3,
+         "text":"Neither."
+      },
+      {
+        "id":12,
+        "QuestionId":4,
+        "text":"Any steak is a good steak."
+      },
+      {
+        "id":13,
+        "QuestionId":4,
+        "text":"Medium rare, the way it should be."
+      },
+      {
+        "id":14,
+        "QuestionId":4,
+        "text":"Well done, I like my food to be cooked."
+      },
+      {
+        "id":15,
+        "QuestionId":4,
+        "text":"Burnt to a crisp - like chewing on a leather shoe."
+      },
+      {
+        "id":16,
+        "QuestionId":4,
+        "text":"Blue Rare! Bloodier than a war movie!"
+      },
+      {
+        "id":17,
+        "QuestionId":4,
+        "text":"Meat is murder!"
+      },
+      {
+        "id":18,
+        "QuestionId":5,
+        "text":"&^%# YES!!!"
+      },
+      {
+        "id":19,
+        "QuestionId":5,
+        "text":"%@#$ NO!!!"
+      },
+      {
+        "id":20,
+        "QuestionId":5,
+        "text":"Who really cares??"
+      },
+      {
+        "id":21,
+        "QuestionId":6,
+        "text":"Krabby Patty from Spongebob Squarepants!"
+      },
+      {
+        "id":22,
+        "QuestionId":6,
+        "text":"Scooby Snack from Scooby-Doo!"
+      },
+      {
+        "id":23,
+        "QuestionId":6,
+        "text":"Everlasting Gobstopper from Charlie and the Chocolate Factory!"
+      },
+      {
+        "id":24,
+        "QuestionId":6,
+        "text":"What's a Gobstopper?!"
+      },
+      {
+        "id":25,
+        "QuestionId":7,
+        "text":"Morning person."
+      },
+      {
+        "id":26,
+        "QuestionId":7,
+        "text":"Night person."
+      },
+      {
+        "id":27,
+        "QuestionId":8,
+        "text":"Indoors."
+      },
+      {
+        "id":28,
+        "QuestionId":8,
+        "text":"Outdoors."
+      },
+      {
+        "id":29,
+        "QuestionId":9,
+        "text":"Pessimist. :("
+      },
+      {
+        "id":30,
+        "QuestionId":9,
+        "text":"Optimist! :D"
+      }
+ ]

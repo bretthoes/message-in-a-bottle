@@ -3,50 +3,19 @@
     <h1>About</h1>
     <p>
       <br />
-      Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam diam tortor,
-      suscipit ut magna id, vestibulum ullamcorper purus. Phasellus scelerisque,
-      orci dictum malesuada molestie, tortor velit hendrerit tellus, ac
-      scelerisque sapien odio et purus. Duis porttitor lorem a lorem suscipit,
-      ac imperdiet ipsum lacinia. Sed dapibus dui et urna bibendum fermentum.
+      Welcome!<br />
+      This website has a bunch of fun quizzes that will match you with other users
+      only if you answer <i><b>every single question</b></i> the same. This means if
+      you get a match, you can revel in how unbelievably similar your preferences are!
+      This also means there will be an astronomically low amount of matches, but hey,
+      that's <strike>allegedly</strike> the fun!
       <br /><br />
-      Nullam commodo malesuada mi in accumsan. Nunc rutrum egestas mi sit amet
-      dictum. Nunc leo tellus, ornare varius felis a, viverra consequat risus.
-      Suspendisse potenti. Sed lacinia porta felis, porttitor porta ligula
-      auctor sed. Vivamus eget feugiat mi. Fusce sodales iaculis nisi, nec
-      vestibulum ante sollicitudin eget. Sed suscipit odio ut egestas pulvinar.
+      Head back to the home page and the use the other big button in the middle of the
+      screen to see all the quizzes. Before you start a quiz though, you'll have to make
+      an account. I know I know, it sucks, but we need a way to actually create those
+      matches, remember? It's really quick!
       <br /><br />
-      Donec vitae ipsum neque. Etiam turpis eros, lacinia sit amet arcu nec,
-      auctor laoreet ex. Fusce a elementum nisi. Nulla molestie magna at est
-      facilisis suscipit. Sed quis tincidunt mauris, eget volutpat enim. Aliquam
-      auctor tincidunt orci in rhoncus. Curabitur leo magna, sollicitudin vel
-      arcu sit amet, dictum tincidunt elit. Donec rutrum nisi in sem ultrices
-      facilisis. Suspendisse non bibendum libero, non porttitor sem. Sed in
-      dictum risus. Praesent ac porttitor mi. Cras mollis non ligula eu
-      fringilla. Donec blandit maximus risus sed rutrum.
-      <br /><br />
-      Duis rhoncus
-      consectetur posuere. Integer vestibulum magna libero, eget vestibulum nibh
-      convallis at. Nam ullamcorper tortor dolor, nec consequat arcu maximus
-      eget. Quisque elementum in nulla pulvinar laoreet. Donec gravida
-      scelerisque tincidunt. Suspendisse sit amet lobortis felis. Nunc ac mauris
-      ut nulla hendrerit tincidunt. Donec lobortis orci at ex porta
-      sollicitudin. Cras at consectetur orci, sit amet faucibus ipsum.
-      <br /><br />
-      Sed
-      efficitur libero non gravida ultricies. Morbi eros nibh, consequat sed
-      dolor et, vehicula blandit quam. Phasellus maximus lorem hendrerit
-      accumsan molestie. Morbi eget tempor ipsum. Mauris rutrum ac nibh et
-      eleifend. Nunc vestibulum augue vel elit porta, eu gravida nunc porttitor.
-      Donec pellentesque, ex eu ultrices placerat, erat ipsum fringilla risus,
-      nec ullamcorper est nunc facilisis ligula. Sed tempus eu leo eget rutrum.
-      <br /><br />
-      Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere
-      cubilia curae; Curabitur vel neque rhoncus, lobortis mi vitae, blandit
-      velit. Suspendisse in nibh non ex suscipit volutpat. Vivamus nisi est,
-      accumsan a est quis, rutrum fringilla sem. Fusce sagittis tortor vitae
-      purus pretium, cursus varius orci viverra. Proin ullamcorper justo dui,
-      vel volutpat sapien interdum ut. Donec vitae nulla id libero ullamcorper
-      pulvinar. Vestibulum id odio eget dolor ultrices commodo id nec lacus.
+      Good luck and have fun!
     </p>
   </div>
 </template>
