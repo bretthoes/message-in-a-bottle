@@ -6,7 +6,7 @@ module.exports = (sequelize, DataTypes) => {
       }
     })
     QuestionOption.associate = function (models) {
-      QuestionOption.belongsTo(models.Question)
+      QuestionOption.belongsTo(models.Question, { onDelete: 'cascade' })
     }
     
     return QuestionOption

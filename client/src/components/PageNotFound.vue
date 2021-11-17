@@ -1,7 +1,8 @@
 <template>
   <div class='container-fluid'>
       <img src='@/assets/page-not-found.png' alt='page-not-found' />
-      <h1>Sorry, we couldn't find that page...</h1>
+      <br /><br />
+      <h3><i>Sorry you ended up here...</i></h3>
   </div>
 </template>
 <script>

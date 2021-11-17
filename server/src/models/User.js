@@ -72,7 +72,7 @@ module.exports = (sequelize, DataTypes) => {
     }
   })
   User.associate = function (models) {
-    User.hasMany(models.QuizResponse)
+    User.hasMany(models.QuizResponse, { onDelete: 'cascade' })
   }
 
   // Compare password stored in bcrypt against model password

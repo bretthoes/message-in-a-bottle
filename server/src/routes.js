@@ -22,6 +22,9 @@ module.exports = (app) => {
   app.post('/quizzes',
     QuizzesController.post) // TODO possible policy for cleaner validation?
 
+  app.delete('/quizzes/:quizId',
+    QuizzesController.destroy)
+
   app.get('/quizzes/:quizId',
     QuizzesController.show)
 

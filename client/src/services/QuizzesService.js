@@ -13,5 +13,8 @@ export default {
   },
   post (quiz) {
     return Api().post('quizzes', quiz)
+  },
+  delete (quizId) {
+    return Api().delete(`quizzes/${quizId}`)
   }
 }

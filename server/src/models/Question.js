@@ -6,8 +6,8 @@ module.exports = (sequelize, DataTypes) => {
       }
     })
     Question.associate = function (models) {
-      Question.belongsTo(models.Quiz)
-      Question.hasMany(models.QuestionOption)
+      Question.belongsTo(models.Quiz, { onDelete: 'cascade' })
+      Question.hasMany(models.QuestionOption, { onDelete: 'cascade' })
     }
     
     return Question

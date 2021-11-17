@@ -93,5 +93,22 @@ module.exports = {
       }
       return res.status(400).send({error})
     }
+  }, async destroy (req, res) {
+    try {
+      // deleting quiz will delete all child and nested
+      // child objects (questions, question options, quiz
+      // responses) via cascade as defined in assocations
+      const quiz = await Quiz.destroy({
+        where: {
+          id: req.params.quizId
+        }
+      })
+      return res.sendStatus(200)
+    } catch (err) {
+      console.log(err)
+      return res.status(500).send({
+        error: 'an error has occurred trying to retrieve the user'
+      })
+    }
   }
 }

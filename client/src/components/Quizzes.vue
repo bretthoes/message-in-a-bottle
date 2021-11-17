@@ -31,8 +31,8 @@
           <td>{{ quiz.questionCount }}</td>
           <td>{{ quiz.createdAt.substring(0, 10) }}</td>
           <td>
-            <a href="#" @click="navigateTo({name: 'quiz', params: { quizId: quiz.id }})">Open Quiz</a> |&nbsp;
-            <a href="#" v-if="$store.state.isUserAdmin">Delete</a></td>
+            <a href="#" @click="navigateTo({name: 'quiz', params: { quizId: quiz.id }})">Open Quiz</a>
+            &nbsp;|&nbsp;<a href="#" v-if="$store.state.isUserAdmin" @click="deleteQuiz(quiz.id)">Delete</a></td>
         </tr>
       </tbody>
     </table>
@@ -85,6 +85,18 @@ export default {
       if (!this.$store.state.isUserLoggedIn) this.navigateTo({ name: 'root' })
     } catch (err) {
       console.log(err)
+    }
+  },
+  methods: {
+    async deleteQuiz (quizId) {
+      try {
+        // delete quiz
+        await QuizzesService.delete(quizId)
+        // refresh
+        this.quizzes = (await QuizzesService.index()).data
+      } catch (err) {
+        console.log(err)
+      }
     }
   }
 }

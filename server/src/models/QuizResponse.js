@@ -12,8 +12,8 @@ module.exports = (sequelize, DataTypes) => {
     })
 
     QuizResponse.associate = function (models) {
-      QuizResponse.belongsTo(models.Quiz)
-      QuizResponse.belongsTo(models.User)
+      QuizResponse.belongsTo(models.Quiz, { onDelete: 'cascade' })
+      QuizResponse.belongsTo(models.User, { onDelete: 'cascade' })
     }
 
     return QuizResponse
