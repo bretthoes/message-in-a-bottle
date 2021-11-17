@@ -44,4 +44,7 @@ module.exports = (app) => {
 
   app.post('/update',
     UsersController.update)
+
+  app.delete('/users/:userId',
+    UsersController.destroy)
 }

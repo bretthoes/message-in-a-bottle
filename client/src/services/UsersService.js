@@ -12,5 +12,8 @@ export default {
   },
   update (user) {
     return Api().post('update', user)
+  },
+  delete (userId) {
+    return Api().delete(`users/${userId}`)
   }
 }

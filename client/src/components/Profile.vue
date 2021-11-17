@@ -24,6 +24,10 @@
     })" v-if="$store.state.user.id == user.id" style="float:right;" type="button" class="btn btn-secondary">Edit
     </button>
   </div>
+  <a href="#"
+  @click="deleteUser($store.state.user.id)"
+  v-if="$store.state.user.id == user.id || $store.state.isUserAdmin"
+  class="delete-profile">delete profile</a>
 </div>
 </template>
 
@@ -55,6 +59,24 @@ export default {
       return this.user.blobUrl ? 'data:' + this.user.imageType + ';charset=utf-8;base64,' +
         this.user.blobUrl : require('../assets/default_profile_picture.png')
     }
+  },
+  methods: {
+    async deleteUser (userId) {
+      // make user manually type "DELETE" before proceeding with deletion
+      const text = await this.$prompt('This is non-reversible! Type "DELETE" to delete your account forever.')
+      if (text === 'DELETE') {
+        try {
+          // delete user
+          await UsersService.delete(userId)
+          // clear user and return to root page on delete
+          this.navigateTo({ name: 'root' })
+          this.$store.dispatch('setToken', null)
+          this.$store.dispatch('setUser', null)
+        } catch (err) {
+          console.log(err)
+        }
+      }
+    }
   }
 }
 </script>
@@ -68,6 +90,7 @@ export default {
   max-width: 80%;
   box-shadow: 5px 5px 5px gray;
   overflow: hidden;
+  margin-bottom:8px;
 }
 .row {
   padding: 12px;
@@ -88,5 +111,13 @@ textarea {
   height: 80%;
   box-shadow: 5px 5px 5px grey;
   background-color: #ececec;
+}
+.delete-profile {
+  text-align: left;
+  color: gray;
+  margin-top: 8px;
+}
+.delete-profile:hover {
+  color: lightgray;
 }
 </style>

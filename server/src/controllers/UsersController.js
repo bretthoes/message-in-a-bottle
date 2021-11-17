@@ -55,5 +55,19 @@ module.exports = {
         error: 'An error has occurred.'
       })
     }
+  }, async destroy (req, res) {
+    try {
+      const user = await User.destroy({
+        where: {
+          id: req.params.userId
+        }
+      })
+      return res.sendStatus(200)
+    } catch (err) {
+      console.log(err)
+      return res.status(500).send({
+        error: 'an error has occurred trying to retrieve the user'
+      })
+    }
   }
 }
