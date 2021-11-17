@@ -71,6 +71,9 @@ module.exports = (sequelize, DataTypes) => {
       beforeCreate: hashPassword
     }
   })
+  User.associate = function (models) {
+    User.hasMany(models.QuizResponse)
+  }
 
   // Compare password stored in bcrypt against model password
   User.prototype.comparePassword = function (password) {

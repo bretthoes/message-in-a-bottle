@@ -12,6 +12,7 @@ module.exports = (sequelize, DataTypes) => {
   })
   Quiz.associate = function (models) {
     Quiz.hasMany(models.Question)
+    Quiz.hasMany(models.QuizResponse)
   }
 
   return Quiz

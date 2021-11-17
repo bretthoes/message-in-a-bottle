@@ -19,24 +19,26 @@ module.exports = {
           QuizId: req.body.quizId
         }
       })
+      let quizResponse = null
       if (!foundQuizResponse) {
         // item not found, create
-        const quizResponse = await QuizResponse.create({
+        quizResponse = await QuizResponse.create({
           UserId: req.body.userId,
           QuizId: req.body.quizId,
           answerKey: req.body.answerKey
         })
         return res.send(quizResponse)
+      } else {
+        // item found, update
+        quizResponse = await QuizResponse.update({
+          answerKey: req.body.answerKey
+        }, {
+          where: {
+            UserId: req.body.userId,
+            QuizId: req.body.quizId
+          }
+        })
       }
-      // item found, update
-      const quizResponse = await QuizResponse.update({
-        answerKey: req.body.answerKey
-      }, {
-        where: {
-          UserId: req.body.userId,
-          QuizId: req.body.quizId
-        }
-      })
       return res.send(quizResponse)
     } catch (err) {
       console.log('err', err)

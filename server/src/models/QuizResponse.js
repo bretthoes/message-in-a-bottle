@@ -11,5 +11,10 @@ module.exports = (sequelize, DataTypes) => {
       answerKey: DataTypes.STRING
     })
 
+    QuizResponse.associate = function (models) {
+      QuizResponse.belongsTo(models.Quiz)
+      QuizResponse.belongsTo(models.User)
+    }
+
     return QuizResponse
   }

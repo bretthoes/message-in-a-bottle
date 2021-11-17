@@ -8,7 +8,7 @@
           <b-input-group-prepend is-text>
             <b-icon icon="search"></b-icon>
           </b-input-group-prepend>
-          <b-form-input type="search" placeholder="Search quizzes"></b-form-input>
+          <b-form-input v-model="search" type="search" placeholder="Search quizzes"></b-form-input>
         </b-input-group>
         </div>
       </div>
@@ -42,16 +42,47 @@
 <script>
 import QuizzesService from '@/services/QuizzesService'
 import navigateToMixin from '@/mixins/navigateToMixin'
+import _ from 'lodash'
 export default {
   mixins: [navigateToMixin],
   data () {
     return {
-      quizzes: null
+      quizzes: null,
+      search: ''
+    }
+  },
+  watch: {
+    // set wait time to 500ms to prevent spam service calls 
+    // from within search bar
+    search: _.debounce(async function (value) {
+      const route = {
+        name: 'quizzes'
+      }
+      if (this.search !== '') {
+        route.query = {
+          search: this.search
+        }
+      }
+      this.$router.push(route)
+    }, 500),
+    // when $route.query.search is defined/changed, call
+    // our handler to populate results from search
+    '$route.query.search': {
+      immediate: true,
+      async handler (value) {
+        this.search = value
+        try {
+          this.quizzes = (await QuizzesService.index(value)).data
+        } catch (err) {
+          console.log(err)
+        }
+      }
     }
   },
   async mounted () {
     try {
-      this.quizzes = (await QuizzesService.index()).data
+      // redirect home if not logged in
+      if (!this.$store.state.isUserLoggedIn) this.navigateTo({ name: 'root' })
     } catch (err) {
       console.log(err)
     }

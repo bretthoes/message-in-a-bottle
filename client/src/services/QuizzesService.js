@@ -4,8 +4,12 @@ export default {
   show (quizId) {
     return Api().get(`quizzes/${quizId}`)
   },
-  index () {
-    return Api().get('quizzes')
+  index (search) {
+    return Api().get('quizzes', {
+      params: {
+        search: search
+      }
+    })
   },
   post (quiz) {
     return Api().post('quizzes', quiz)

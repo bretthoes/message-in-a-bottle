@@ -2,6 +2,7 @@ const { Quiz } = require('../models')
 const { Question } = require('../models')
 const { QuestionOption } = require('../models')
 const { sequelize } = require('../models')
+const { Op } = require('sequelize')
 
 module.exports = {
   async show (req, res) {
@@ -27,10 +28,22 @@ module.exports = {
   },
   async index (req, res) {
     try {
-      // get all quizzes 
-      const quizzes = await Quiz.findAll({
-        limit: 99
-      })
+      let quizzes = null
+      if (req.query.search) {
+        const search = req.query.search
+        quizzes = await Quiz.findAll({
+          where: {
+            title: {
+              [Op.like]: `%${search}%`
+            }
+          }
+        })
+      } else {
+        // get all quizzes 
+        quizzes = await Quiz.findAll({
+          limit: 99
+        })
+      }
       return res.send(quizzes)
     } catch (err) {
       return res.status(400).send(err)
