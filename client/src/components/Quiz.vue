@@ -1,6 +1,6 @@
 <template>
 <div>
-  <div v-if="quiz && !quizAlreadySubmitted" class='quiz-container'>
+  <div v-if="quiz && !quizAlreadySubmitted && quizAlreadySubmitted !== null" class='quiz-container'>
     <h2>{{quiz.title}}</h2>
     <div
     class='quiz'
@@ -37,8 +37,23 @@
       </div>
     </div>
   </div>
-  <div class="quiz-results-container" v-if="quizAlreadySubmitted">
-
+  <!-- TODO refactor this out to something cleaner than conditional rendering -->
+  <div class="quiz-results-container container-fluid" v-if="quizAlreadySubmitted && quizAlreadySubmitted !== null">
+    <h2>You've already submitted this quiz!</h2>
+    <a href="#" @click="navigateTo({ name: 'quizzes' })">back to quizzes</a>
+    <h4>your answers:</h4>
+    <ul>
+      <li v-for="(question,index) in quiz.Questions" :key="index">
+        {{index+1}}. {{question.text}}
+        <ul>
+          <li v-for="(option,childIndex) in question.QuestionOptions" :key="childIndex">
+            {{childIndex+1}}. {{option.text}}
+          </li>
+          <li style="color:green;">Your answer: {{parseInt(answerKey[index]) + 1}}</li><br />
+        </ul>
+      </li>
+    </ul>
+    <a href="#" @click="navigateTo({ name: 'quizzes' })">back to quizzes</a>
   </div>
 </div>
 </template>
@@ -54,7 +69,7 @@ export default {
       questionStartIndex: 0,
       questionEndIndex: 1,
       answerKey: '',
-      quizAlreadySubmitted: false
+      quizAlreadySubmitted: null
     }
   },
   async mounted () {
@@ -67,7 +82,11 @@ export default {
       this.quiz = (await QuizzesService.show(quizId)).data
       // check if response already exists by quiz id and user id
       const quizResponseOnLoad = (await QuizResponsesService.show({'userId': this.$store.state.user.id, 'quizId': quizId})).data
-      if (quizResponseOnLoad) this.quizAlreadySubmitted = true
+      // set quiz to submitted and set existing answer key for user to view their responses to submitted quiz
+      if (quizResponseOnLoad) {
+        this.quizAlreadySubmitted = true
+        this.answerKey = quizResponseOnLoad.answerKey
+      }
     } catch (err) {
       console.log(err)
     }
@@ -151,11 +170,13 @@ h2 {
   font-family: "Montserrat", sans-serif;
   font-weight: 600;
 }
+h4 {
+  font-family: "Montserrat", sans-serif;
+}
 .question-options {
   display: grid;
   grid-template-columns: 1;
 }
-
 .question-options > div {
   text-align: center;
   padding: 20px 0;
@@ -207,5 +228,12 @@ h2 {
 }
 .exit:hover {
   background-color: #e49b99;
+}
+ul,li {
+  list-style-type: none;
+}
+.quiz-results-container {
+  max-width: 70%;
+  text-align: left;
 }
 </style>
