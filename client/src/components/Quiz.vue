@@ -1,5 +1,6 @@
 <template>
-  <div v-if="quiz" class='quiz-container'>
+<div>
+  <div v-if="quiz && !quizAlreadySubmitted" class='quiz-container'>
     <h2>{{quiz.title}}</h2>
     <div
     class='quiz'
@@ -36,6 +37,10 @@
       </div>
     </div>
   </div>
+  <div class="quiz-results-container" v-if="quizAlreadySubmitted">
+
+  </div>
+</div>
 </template>
 <script>
 import navigateToMixin from '@/mixins/navigateToMixin'
@@ -49,7 +54,7 @@ export default {
       questionStartIndex: 0,
       questionEndIndex: 1,
       answerKey: '',
-      quizSubmitted: false
+      quizAlreadySubmitted: false
     }
   },
   async mounted () {
@@ -60,6 +65,9 @@ export default {
       const quizId = this.$store.state.route.params.quizId
       // get quiz from quizId
       this.quiz = (await QuizzesService.show(quizId)).data
+      // check if response already exists by quiz id and user id
+      const quizResponseOnLoad = (await QuizResponsesService.show({'userId': this.$store.state.user.id, 'quizId': quizId})).data
+      if (quizResponseOnLoad) this.quizAlreadySubmitted = true
     } catch (err) {
       console.log(err)
     }
@@ -72,11 +80,11 @@ export default {
       this.answerKey += index
       // check if last question
       if (this.questionEndIndex === this.quiz.Questions.length) {
-        // check if quizSubmitted to prevent spam submissions
-        if (!this.quizSubmitted) {
+        // check if quizAlreadySubmitted to prevent spam submissions
+        if (!this.quizAlreadySubmitted) {
           try {
-            // update quizSubmitted
-            this.quizSubmitted = true
+            // update quizAlreadySubmitted
+            this.quizAlreadySubmitted = true
             // insert or update quiz response
             const quizResponse = {
               'userId': this.$store.state.user.id,

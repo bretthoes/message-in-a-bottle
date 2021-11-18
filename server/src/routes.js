@@ -35,6 +35,9 @@ module.exports = (app) => {
   app.get('/quiz-responses',
   QuizResponsesController.index)
 
+  app.get('/quiz-responses/:quizId/:userId',
+    QuizResponsesController.show)
+
   // Users controller routes
   app.get('/users/:userId',
     UsersController.show)

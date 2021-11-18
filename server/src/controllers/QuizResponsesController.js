@@ -10,6 +10,22 @@ module.exports = {
       return res.status(400).send(err)
     }
   },
+  async show (req, res) {
+    try {
+      const quizResponse = await QuizResponse.findOne({
+        where: {
+          QuizId: req.params.quizId,
+          UserId: req.params.userId
+        }
+      })
+      return res.send(quizResponse)
+    } catch (err) {
+      console.log(err)
+      return res.status(500).send({
+        error: 'an error has occurred trying to retrieve the user'
+      })
+    }
+  },
   async put (req, res) {
     try {
       // check if user has response to given quiz already
