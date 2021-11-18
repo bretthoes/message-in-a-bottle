@@ -1,8 +1,9 @@
 <template>
   <div class="container">
     <h3 class="p-3 text-center">All Quizzes</h3>
-    <div class="row">
-      <div class="col-sm-3">
+    <b-row>
+      <b-col md="3">
+        <br />
         <div class="search">
           <b-input-group size="sm">
           <b-input-group-prepend is-text>
@@ -11,31 +12,70 @@
           <b-form-input v-model="search" type="search" placeholder="Search quizzes"></b-form-input>
         </b-input-group>
         </div>
-      </div>
-      <div class="col-sm-9">
+      </b-col>
+      <b-col md="6" class="my-1">
+        <b-form-group
+          label="Per page:"
+          label-for="per-page-select"
+          label-cols-sm="6"
+          label-cols-md="4"
+          label-cols-lg="3"
+          label-align-sm="right"
+          label-size="sm"
+          align="left">
+          <b-form-select
+            id="per-page-select"
+            v-model="perPage"
+            :options="pageOptions"
+            size="sm">
+          </b-form-select>
+        </b-form-group>
+      </b-col>
+      <b-col md="3">
         <button @click="navigateTo({name: 'quizzes-create'})" v-if="$store.state.isUserAdmin">Add Quiz</button>
-      </div>
-    </div>
-    <table class="table table-striped table-bordered">
-      <thead>
-        <tr>
-          <th>Title</th>
-          <th>Questions</th>
-          <th>Date Added</th>
-          <th>Actions</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr v-for="quiz in quizzes" :key="quiz.id">
-          <td>{{ quiz.title }}</td>
-          <td>{{ quiz.questionCount }}</td>
-          <td>{{ quiz.createdAt.substring(0, 10) }}</td>
-          <td>
-            <a href="#" @click="navigateTo({name: 'quiz', params: { quizId: quiz.id }})">Open Quiz</a>
-            &nbsp;|&nbsp;<a href="#" v-if="$store.state.isUserAdmin" @click="deleteQuiz(quiz.id)">Delete</a></td>
-        </tr>
-      </tbody>
-    </table>
+      </b-col>
+    </b-row>
+    <br />
+    <b-table
+      striped
+      bordered
+      outlined
+      head-variant='light'
+      sort-icon-right
+      :items="quizzes"
+      :fields="fields"
+      :current-page="currentPage"
+      :per-page="perPage"
+      responsive="sm"
+      :sort-by.sync="sortBy"
+      :sort-desc.sync="sortDesc">
+      <template #cell(name)="data">
+        <a :href="`#${data.value.replace(/[^a-z]+/i,'-').toLowerCase()}`">{{ data.value }}</a>
+      </template>
+      <template #cell(actions)="row">
+        <p style="display:inline;">
+          <a href="#" @click="navigateTo({name: 'quiz', params: { quizId: row.item.id }})">Open</a>
+        </p>
+        <p style="display:inline;" v-if="$store.state.isUserAdmin">
+          &nbsp;|&nbsp;<a href="#" v-if="$store.state.isUserAdmin" @click="deleteQuiz(row.item.id)">Delete</a>
+        </p>
+      </template>
+      <template #cell(odds)="row">
+        <p>1 / {{calculateOdds(row.item.Questions)}}</p>
+      </template>
+    </b-table>
+    <br />
+    <b-row>
+      <b-col>
+        <b-pagination
+          v-model="currentPage"
+          :total-rows="quizzes.length"
+          :per-page="perPage"
+          size="md"
+          align="center"
+        ></b-pagination>
+      </b-col>
+    </b-row>
   </div>
 </template>
 
@@ -47,8 +87,35 @@ export default {
   mixins: [navigateToMixin],
   data () {
     return {
-      quizzes: null,
-      search: ''
+      quizzes: [],
+      sortBy: 'title',
+      sortDesc: false,
+      search: '',
+      currentPage: 1,
+      perPage: 10,
+      pageOptions: [5, 10, 15, { value: 50, text: 'Max' }],
+      fields: [
+        {
+          key: 'title', label: 'Title', sortable: true
+        },
+        {
+          key: 'questionCount', label: 'Questions', sortable: true
+        },
+        {
+          key: 'createdAt',
+          label: 'Date Added',
+          sortable: true,
+          formatter: (value) => {
+            return value.substring(0, 10)
+          }
+        },
+        {
+          key: 'odds', label: 'Odds of match', sortable: false
+        },
+        {
+          key: 'actions', label: 'Actions', sortable: false
+        }
+      ]
     }
   },
   watch: {
@@ -64,7 +131,7 @@ export default {
         }
       }
       this.$router.push(route)
-    }, 500),
+    }, 400),
     // when $route.query.search is defined/changed, call
     // our handler to populate results from search
     '$route.query.search': {
@@ -97,6 +164,13 @@ export default {
       } catch (err) {
         console.log(err)
       }
+    },
+    calculateOdds (questions) {
+      let odds = 1
+      for (let question of questions) {
+        odds += (odds * question.QuestionOptions.length) - odds
+      }
+      return odds.toString()
     }
   }
 }
@@ -124,11 +198,6 @@ button:hover {
 h3 {
   font-size: 32px;
   letter-spacing: 1px;
-  /* transform: scale(1.2, 1);
-  -ms-transform: scale(1.2, 1);
-  -moz-transform: scale(1.2, 1);
-  -webkit-transform: scale(1.2, 1);
-  -o-transform: scale(1.2, 1); */
   font-family: "Montserrat", sans-serif;
   font-weight: 900;
   text-transform: uppercase;

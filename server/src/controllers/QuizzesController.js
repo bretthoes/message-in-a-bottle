@@ -42,7 +42,11 @@ module.exports = {
       } else {
         // get all quizzes 
         quizzes = await Quiz.findAll({
-          limit: 99
+          limit: 99,
+          include: {
+            model: Question,
+            include: QuestionOption
+          }
         })
       }
       return res.send(quizzes)
