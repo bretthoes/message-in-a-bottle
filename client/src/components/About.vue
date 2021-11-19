@@ -5,15 +5,15 @@
       <br />
       Welcome!<br />
       This website has a bunch of fun quizzes that will match you with other users
-      only if you answer <i><b>every single question</b></i> the same. This means if
-      you get a match, you can revel in how unbelievably similar your preferences are!
-      This also means there will be an astronomically low amount of matches, but hey,
-      that's <strike>allegedly</strike> the fun!
+      only if you answer <i><b>every single question</b></i> with the same answer.
+      This means if you get a match, you can revel in how unbelievably similar your
+      preferences are! This also means there will be an astronomically low amount
+      of matches, but hey, that's <strike>allegedly</strike> the fun!
       <br /><br />
       Head back to the home page and the use the other big button in the middle of the
       screen to see all the quizzes. Before you start a quiz though, you'll have to make
       an account. I know I know, it sucks, but we need a way to actually create those
-      matches, remember? It's really quick!
+      matches, right? It's really quick!
       <br /><br />
       Good luck and have fun!
     </p>

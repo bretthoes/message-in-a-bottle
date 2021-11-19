@@ -8,7 +8,7 @@ function jwtSignUser(user) {
     expiresIn: ONE_WEEK
   })
 }
-
+// Controller for Authentication specific requests
 module.exports = {
   async register(req, res) {
     try {

@@ -62,19 +62,19 @@ export default {
   },
   methods: {
     async deleteUser (userId) {
-      // make user manually type "DELETE" before proceeding with deletion
-      const text = await this.$prompt('This is non-reversible! Type "DELETE" to delete your account forever.')
-      if (text === 'DELETE') {
-        try {
+      try {
+        // make user manually type "DELETE" before proceeding with deletion
+        const text = await this.$prompt('This is non-reversible! Type "DELETE" to delete your account forever.')
+        if (text === 'DELETE') {
           // delete user
           await UsersService.delete(userId)
           // clear user and return to root page on delete
           this.navigateTo({ name: 'root' })
           this.$store.dispatch('setToken', null)
           this.$store.dispatch('setUser', null)
-        } catch (err) {
-          console.log(err)
         }
+      } catch (err) {
+        if (err) console.log(err)
       }
     }
   }

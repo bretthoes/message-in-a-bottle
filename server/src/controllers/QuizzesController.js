@@ -1,59 +1,8 @@
 const { sequelize, Quiz, Question, QuestionOption } = require('../models')
 const { Op } = require('sequelize')
 
+// CRUD for Quiz model and child assocations (Question, QuestionOption)
 module.exports = {
-  async show (req, res) {
-    try {
-      // get quiz and include all belonging questions
-      // and each question's belonging QuestionOption 
-      const quiz = await Quiz.findOne({
-        where: {
-          id: req.params.quizId
-        },
-        include: {
-          model: Question,
-          include: QuestionOption
-        }
-      })
-      return res.send(quiz)
-    } catch (err) {
-      console.log(err)
-      return res.status(500).send({
-        error: 'an error has occurred trying to retrieve the user'
-      })
-    }
-  },
-  async index (req, res) {
-    try {
-      let quizzes = null
-      if (req.query.search) {
-        const search = req.query.search
-        quizzes = await Quiz.findAll({
-          where: {
-            title: {
-              [Op.like]: `%${search}%`
-            }
-          },
-          include: {
-            model: Question,
-            include: QuestionOption
-          }
-        })
-      } else {
-        // get all quizzes 
-        quizzes = await Quiz.findAll({
-          limit: 99,
-          include: {
-            model: Question,
-            include: QuestionOption
-          }
-        })
-      }
-      return res.send(quizzes)
-    } catch (err) {
-      return res.status(400).send(err)
-    }
-  },
   async post (req, res) {
     try {
       // create a transaction to handle bulk insert of
@@ -97,6 +46,58 @@ module.exports = {
       }
       return res.status(400).send({error})
     }
+  },
+  async show (req, res) {
+    try {
+      // get quiz and include all belonging questions
+      // and each question's belonging QuestionOption 
+      const quiz = await Quiz.findOne({
+        where: {
+          id: req.params.quizId
+        },
+        include: {
+          model: Question,
+          include: QuestionOption
+        }
+      })
+      return res.send(quiz)
+    } catch (err) {
+      console.log(err)
+      return res.status(500).send({
+        error: 'an error has occurred trying to retrieve the quiz.'
+      })
+    }
+  },
+  async index (req, res) {
+    try {
+      let quizzes = null
+      if (req.query.search) {
+        const search = req.query.search
+        quizzes = await Quiz.findAll({
+          where: {
+            title: {
+              [Op.like]: `%${search}%`
+            }
+          },
+          include: {
+            model: Question,
+            include: QuestionOption
+          }
+        })
+      } else {
+        // get all quizzes 
+        quizzes = await Quiz.findAll({
+          limit: 99,
+          include: {
+            model: Question,
+            include: QuestionOption
+          }
+        })
+      }
+      return res.send(quizzes)
+    } catch (err) {
+      return res.status(400).send(err)
+    }
   }, async destroy (req, res) {
     try {
       // deleting quiz will delete all child and nested
@@ -111,7 +112,7 @@ module.exports = {
     } catch (err) {
       console.log(err)
       return res.status(500).send({
-        error: 'an error has occurred trying to retrieve the user'
+        error: 'an error has occurred trying to delete the quiz.'
       })
     }
   }

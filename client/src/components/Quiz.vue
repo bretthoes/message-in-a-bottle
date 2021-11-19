@@ -54,6 +54,8 @@
       </li>
     </ul>
     <a href="#" @click="navigateTo({ name: 'quizzes' })">back to quizzes</a>
+    <br /><br />
+    <button @click="resetQuiz()" class="btn btn-outline-danger">Reset Quiz</button>
   </div>
 </div>
 </template>
@@ -66,10 +68,10 @@ export default {
     return {
       // TODO have quiz mode and view mode based on if user has taken quiz
       quiz: null,
+      quizAlreadySubmitted: null,
       questionStartIndex: 0,
       questionEndIndex: 1,
-      answerKey: '',
-      quizAlreadySubmitted: null
+      answerKey: ''
     }
   },
   async mounted () {
@@ -86,6 +88,8 @@ export default {
       if (quizResponseOnLoad) {
         this.quizAlreadySubmitted = true
         this.answerKey = quizResponseOnLoad.answerKey
+      } else {
+        this.quizAlreadySubmitted = false
       }
     } catch (err) {
       console.log(err)
@@ -130,6 +134,20 @@ export default {
         // Move to previous question
         this.questionStartIndex--
         this.questionEndIndex--
+      }
+    },
+    async resetQuiz () {
+      const confirmed = await this.$confirm('Resetting this quiz will delete any matches from your results. Are you sure you want to continue?')
+      if (confirmed) {
+        // delete QuizResponse and set quizAlreadySubmitted to false
+        try {
+          await QuizResponsesService.delete({'userId': this.$store.state.user.id, 'quizId': this.quiz.id})
+          this.quizAlreadySubmitted = false
+          // reset answerKey just in case
+          this.answerKey = ''
+        } catch (err) {
+          console.log(err)
+        }
       }
     }
   }

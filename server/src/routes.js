@@ -37,6 +37,9 @@ module.exports = (app) => {
 
   app.get('/quiz-responses/:quizId/:userId',
     QuizResponsesController.show)
+  
+  app.delete('/quiz-responses/:quizId/:userId',
+    QuizResponsesController.destroy)
 
   // Users controller routes
   app.get('/users/:userId',

@@ -1,5 +1,6 @@
 const { User } = require('../models')
 
+// CRUD for User model
 module.exports = {
   async show (req, res) {
     try {
