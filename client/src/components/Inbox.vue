@@ -15,6 +15,8 @@
 </template>
 
 <script>
+// import QuizzesService from '@/services/QuizzesService'
+// import QuizResponsesService from '@/services/QuizResponsesService'
 export default {
   async mounted () {
     // redirect home if not logged in

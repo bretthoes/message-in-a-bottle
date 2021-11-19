@@ -3,7 +3,7 @@
       <h1>MESSAGE</h1>
       <h1>IN A</h1>
       <h1><span class="blue">BOTTLE</span></h1>
-      <h2 class="subtitle">0 matches after {{totalQuizResponses}} bottles thrown to sea</h2>
+      <h2 class="subtitle">{{totalMatches}} matches after {{totalQuizResponses}} bottles thrown to sea</h2>
     <div class="button-container">
       <button @click="navigateTo({name: 'about'})">what is this?</button>
       <button @click="openQuizPage($store.state.isUserLoggedIn)">view quizzes</button>
@@ -27,7 +27,8 @@ export default {
   name: 'Home',
   data () {
     return {
-      totalQuizResponses: 0
+      totalQuizResponses: 0,
+      totalMatches: 0
     }
   },
   components: {
@@ -37,9 +38,14 @@ export default {
   mixins: [navigateToMixin, modalMixin],
   async mounted () {
     try {
+      // TODO find a cleaner way to get match count, need to filter totalQuizResponses
+      // with join query after retrieval here in view (should be possible since we
+      // have the data already)
       // get count of all quiz responses
       this.totalQuizResponses = ((await QuizResponsesService.index()).data).length
-      // TODO get count of all matches
+      // get count of all matches
+      const options = { matchCount: true }
+      this.totalMatches = ((await QuizResponsesService.index({options})).data).length
     } catch (err) {
       console.log(err)
     }

@@ -1,8 +1,10 @@
-const { QuizResponse } = require('../models')
+const { sequelize, QuizResponse } = require('../models')
 
 // CRUD for QuizResponse model
 module.exports = {
   // Create or update
+  // TODO can update this to just create since we handle
+  // quiz response deletions on resetting of quiz status
   async put (req, res) {
     try {
       // check if user has response to given quiz already
@@ -40,10 +42,32 @@ module.exports = {
   },
   async index (req, res) {
     try {
-      // get all quiz responses
-      const quizResponses = await QuizResponse.findAll()
-      return res.send(quizResponses)
+      if (req.query.count) {
+        // use raw query for self join
+        // to get total match count
+        const matches = await sequelize.query(
+          'SELECT A.:id as count ' + 
+          'FROM QuizResponses A, QuizResponses B  ' +
+          'WHERE A.:answerKey = B.:answerKey ' +
+          'AND A.:QuizId = B.:QuizId ' +
+          'AND A.:UserId < B.:UserId',
+        { 
+          model: QuizResponse,
+          replacements: {
+            answerKey: 'answerKey',
+            QuizId: 'QuizId',
+            UserId: 'UserId',
+            id: 'id',
+          }
+        });
+        return res.send(matches)
+      } else {
+        // get all quiz responses
+        const quizResponses = await QuizResponse.findAll()
+        return res.send(quizResponses)
+      }
     } catch (err) {
+      console.log(err)
       return res.status(400).send(err)
     }
   },

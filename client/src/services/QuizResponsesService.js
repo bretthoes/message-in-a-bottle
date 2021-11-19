@@ -1,8 +1,12 @@
 import Api from '@/services/Api'
 
 export default {
-  index () {
-    return Api().get('quiz-responses')
+  index (count) {
+    return Api().get('quiz-responses', {
+      params: {
+        count: count
+      }
+    })
   },
   show (compositeKeys) {
     return Api().get(`quiz-responses/${compositeKeys.quizId}/${compositeKeys.userId}`, compositeKeys)
