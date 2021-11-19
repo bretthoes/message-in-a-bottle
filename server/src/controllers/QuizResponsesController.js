@@ -40,11 +40,38 @@ module.exports = {
       return res.status(400).send(err)
     }
   },
+  async index (req, res) {
+    try {
+      //raw custom query to get all matches for a given user
+      const matches = await sequelize.query(
+        'SELECT A.:UserId AS UserId, A.:QuizId ' +
+        'FROM QuizResponses A, QuizResponses B ' +
+        'WHERE A.:answerKey = B.:answerKey ' +
+        'AND A.:QuizId = B.:QuizId ' +
+        'AND A.:UserId != B.:UserId ' +
+        'AND A.:UserId != :currentUserId ' +
+        'AND B.:UserId = :currentUserId',
+        {
+          model: QuizResponse,
+          replacements: {
+            answerKey: 'answerKey',
+            QuizId: 'QuizId',
+            UserId: 'UserId',
+            currentUserId: req.params.userId,
+          }
+        }
+      )
+      return res.send(matches)
+    } catch (err) {
+      console.log('err', err)
+      return res.status(400).send(err)
+    }
+  },
   // will return a count of both all total responses and total matches
   async count (req, res) {
     try {
       // get all quiz responses
-      const quizResponses = await QuizResponse.count()
+      const quizResponsesCount = await QuizResponse.count()
       // use raw query for self join
       // to get total match count
       const matches = await sequelize.query(
@@ -62,7 +89,7 @@ module.exports = {
           id: 'id',
         }
       });
-      return res.send({responses: (quizResponses).toString(), matches: (matches.length).toString()})
+      return res.send({responses: (quizResponsesCount).toString(), matches: (matches.length).toString()})
     } catch (err) {
       console.log(err)
       return res.status(400).send(err)

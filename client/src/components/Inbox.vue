@@ -5,6 +5,11 @@
       <div class="row">
         <div class="left col-md-4 col-sm-12">
           <h3>Matches</h3>
+          <ul>
+            <li v-for="(match,index) in matches" :key="index">
+              {{index+1}}. {{match.userId}}
+            </li>
+          </ul>
         </div>
         <div class="col-md-8 col-sm-12">
           <h3>Chat</h3>
@@ -15,14 +20,18 @@
 </template>
 
 <script>
-// import QuizzesService from '@/services/QuizzesService'
-// import QuizResponsesService from '@/services/QuizResponsesService'
+import QuizResponsesService from '@/services/QuizResponsesService'
 export default {
+  data () {
+    return {
+      matches: []
+    }
+  },
   async mounted () {
     // redirect home if not logged in
     if (!this.$store.state.isUserLoggedIn) this.navigateTo({ name: 'root' })
-    console.log('userId:', this.$store.state.user.id)
-    // TODO query all matches and populate list based on user id
+    this.matches = (await QuizResponsesService.index(this.$store.state.user.id)).data
+    // TODO query users table to get usernames for display in list above instead of ids
   }
 }
 </script>

@@ -1,6 +1,10 @@
 import Api from '@/services/Api'
 
 export default {
+  index (userId) {
+    return Api().get(`quiz-responses/${userId}`)
+  },
+  // returns count of quiz-responses
   count () {
     return Api().get('quiz-responses')
   },
