@@ -38,14 +38,10 @@ export default {
   mixins: [navigateToMixin, modalMixin],
   async mounted () {
     try {
-      // TODO find a cleaner way to get match count, need to filter totalQuizResponses
-      // with join query after retrieval here in view (should be possible since we
-      // have the data already)
-      // get count of all quiz responses
-      this.totalQuizResponses = ((await QuizResponsesService.index()).data).length
-      // get count of all matches
-      const options = { matchCount: true }
-      this.totalMatches = ((await QuizResponsesService.index({options})).data).length
+      // get count of all quiz responses and total matches
+      const totalResponsesAndMatches = (await QuizResponsesService.count()).data
+      this.totalQuizResponses = totalResponsesAndMatches.responses
+      this.totalMatches = totalResponsesAndMatches.matches
     } catch (err) {
       console.log(err)
     }

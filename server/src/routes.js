@@ -33,7 +33,7 @@ module.exports = (app) => {
     QuizResponsesController.put)
 
   app.get('/quiz-responses',
-  QuizResponsesController.index)
+  QuizResponsesController.count)
 
   app.get('/quiz-responses/:quizId/:userId',
     QuizResponsesController.show)

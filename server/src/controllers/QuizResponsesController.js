@@ -40,32 +40,29 @@ module.exports = {
       return res.status(400).send(err)
     }
   },
-  async index (req, res) {
+  // will return a count of both all total responses and total matches
+  async count (req, res) {
     try {
-      if (req.query.count) {
-        // use raw query for self join
-        // to get total match count
-        const matches = await sequelize.query(
-          'SELECT A.:id as count ' + 
-          'FROM QuizResponses A, QuizResponses B  ' +
-          'WHERE A.:answerKey = B.:answerKey ' +
-          'AND A.:QuizId = B.:QuizId ' +
-          'AND A.:UserId < B.:UserId',
-        { 
-          model: QuizResponse,
-          replacements: {
-            answerKey: 'answerKey',
-            QuizId: 'QuizId',
-            UserId: 'UserId',
-            id: 'id',
-          }
-        });
-        return res.send(matches)
-      } else {
-        // get all quiz responses
-        const quizResponses = await QuizResponse.findAll()
-        return res.send(quizResponses)
-      }
+      // get all quiz responses
+      const quizResponses = await QuizResponse.count()
+      // use raw query for self join
+      // to get total match count
+      const matches = await sequelize.query(
+        'SELECT A.:id as count ' + 
+        'FROM QuizResponses A, QuizResponses B  ' +
+        'WHERE A.:answerKey = B.:answerKey ' +
+        'AND A.:QuizId = B.:QuizId ' +
+        'AND A.:UserId < B.:UserId',
+      { 
+        model: QuizResponse,
+        replacements: {
+          answerKey: 'answerKey',
+          QuizId: 'QuizId',
+          UserId: 'UserId',
+          id: 'id',
+        }
+      });
+      return res.send({responses: (quizResponses).toString(), matches: (matches.length).toString()})
     } catch (err) {
       console.log(err)
       return res.status(400).send(err)
