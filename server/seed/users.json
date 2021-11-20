@@ -16,5 +16,11 @@
        "email":"user2@user2.com",
        "isAdmin":false,
        "password":"user2"
+    },
+    {
+      "username":"brett",
+       "email":"bretthoes@gmail.com",
+       "isAdmin":true,
+       "password":"brett"
     }
 ]

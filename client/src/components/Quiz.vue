@@ -106,8 +106,6 @@ export default {
         // check if quizAlreadySubmitted to prevent spam submissions
         if (!this.quizAlreadySubmitted) {
           try {
-            // update quizAlreadySubmitted
-            this.quizAlreadySubmitted = true
             // insert or update quiz response
             const quizResponse = {
               'userId': this.$store.state.user.id,

@@ -82,6 +82,7 @@
 <script>
 import QuizzesService from '@/services/QuizzesService'
 import navigateToMixin from '@/mixins/navigateToMixin'
+import dateFormat from 'dateformat'
 import _ from 'lodash'
 export default {
   mixins: [navigateToMixin],
@@ -106,7 +107,7 @@ export default {
           label: 'Date Added',
           sortable: true,
           formatter: (value) => {
-            return value.substring(0, 10)
+            return this.getFormmatedDate(value)
           }
         },
         {
@@ -171,6 +172,9 @@ export default {
         odds += (odds * question.QuestionOptions.length) - odds
       }
       return odds.toString()
+    },
+    getFormmatedDate (date) {
+      return dateFormat(date, 'mmmm dS, yyyy')
     }
   }
 }
