@@ -4,6 +4,13 @@ export default {
   post (user) {
     return Api().post('users', user)
   },
+  index (matchIds) {
+    return Api().get('users', {
+      params: {
+        matchIds: matchIds
+      }
+    })
+  },
   show (userId) {
     return Api().get(`users/${userId}`)
   },

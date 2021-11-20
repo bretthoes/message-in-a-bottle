@@ -94,7 +94,7 @@ export default {
       search: '',
       currentPage: 1,
       perPage: 10,
-      pageOptions: [5, 10, 15, { value: 50, text: 'Max' }],
+      pageOptions: [5, 10, 25, { value: 99, text: 'Max' }],
       fields: [
         {
           key: 'title', label: 'Title', sortable: true

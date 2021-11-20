@@ -2,6 +2,21 @@ const { User } = require('../models')
 
 // CRUD for User model
 module.exports = {
+  async index (req, res) {
+    try {
+      const users = await User.findAll({
+        where: {
+          id: req.query.matchIds
+        }
+      })
+      res.send(users)
+    } catch (err) {
+      console.log(err)
+      res.status(500).send({
+        error: 'An error has occurred fetching the users.'
+      })
+    }
+  },
   async show (req, res) {
     try {
       const user = await User.findByPk(req.params.userId)

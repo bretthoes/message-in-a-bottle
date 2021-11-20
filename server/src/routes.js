@@ -45,6 +45,10 @@ module.exports = (app) => {
     QuizResponsesController.destroy)
 
   // Users controller routes
+
+  app.get('/users',
+    UsersController.index)
+
   app.get('/users/:userId',
     UsersController.show)
   
