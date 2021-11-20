@@ -72,20 +72,40 @@ module.exports = {
     try {
       let quizzes = null
       if (req.query.search) {
-        const search = req.query.search
-        quizzes = await Quiz.findAll({
-          where: {
-            title: {
-              [Op.like]: `%${search}%`
-            }
-          },
-          include: {
-            model: Question,
-            include: QuestionOption
-          }
-        })
+        // different query based on search type
+        switch(typeof req.query.search) {
+          // if object passed in, return all quizzes 
+          // with id matching int array provided
+          case "object":
+            quizzes = await Quiz.findAll({
+              where: {
+                id: req.query.search
+              }
+            })
+            break
+          // if string passed in, return all quizzes
+          // with title containing search string
+          case "string":
+            const search = req.query.search
+            quizzes = await Quiz.findAll({
+              where: {
+                title: {
+                  [Op.like]: `%${search}%`
+                }
+              },
+              include: {
+                model: Question,
+                include: QuestionOption
+              }
+            })
+            break
+          // if no case, break out and return
+          // all quizzes with query below
+          default:
+            break
+        }
       } else {
-        // get all quizzes 
+        // return all quizzes 
         quizzes = await Quiz.findAll({
           limit: 99,
           include: {
