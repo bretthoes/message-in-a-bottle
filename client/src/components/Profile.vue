@@ -5,9 +5,11 @@
       <div class="col col-md-6 col-sm-12">
         <img class="profile-picture" alt="Profile picture" :src="imgUrl" width="500" />
         <br />
-        <h2 class="username field"><b-icon icon="person-fill"></b-icon> {{user.username}}</h2>
+        <h2 class="username field"><b-icon icon="person-fill"></b-icon> {{user.username}}
+          <span v-if="this.$store.state.isUserAdmin" style="color:green;">(admin)</span>
+        </h2>
         <br />
-        <h4 class="field"><b-icon icon="gift"></b-icon> {{user.birthdate || 'No birthday added.'}}</h4>
+        <h4 class="field"><b-icon icon="gift"></b-icon> {{getFormmatedDate(user.birthdate) || 'No birthday added.'}}</h4>
         <br />
         <h4 class="field"><b-icon icon="tags"></b-icon> {{user.location || 'No location added.'}}</h4>
       </div>
@@ -34,6 +36,7 @@
 <script>
 import UsersService from '@/services/UsersService'
 import navigateToMixin from '@/mixins/navigateToMixin'
+import dateFormat from 'dateformat'
 export default {
   data () {
     return {
@@ -76,6 +79,9 @@ export default {
       } catch (err) {
         if (err) console.log(err)
       }
+    },
+    getFormmatedDate (date) {
+      return dateFormat(date, 'mmmm dS, yyyy')
     }
   }
 }
