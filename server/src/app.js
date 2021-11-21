@@ -6,6 +6,7 @@ const fileUpload = require('express-fileupload')
 const path = require('path')
 const {sequelize} = require('./models')
 const config = require('./config/config')
+const _ = require("lodash")
 const app = express()
 app.use(morgan('combined'))
 app.use(bodyParser.json())
@@ -38,9 +39,33 @@ sequelize.sync({force: false})
         origin: '*'
       }
     })
+    // track online users from socket connects/disconnects
+    let users = {}
+    // handle connection
     io.on('connection', function (socket) {
-      console.log('New connection, socket.id: ' + socket.id)
-      socket.on('SEND_MESSAGE', function(data) {
+      // get user id from connection
+      const userId = socket.handshake.query.userId
+      // check if user exists
+      if (!users[userId]) users[userId] = []
+      // add socket id from user's connection
+      users[userId].push(socket.id)
+      // broadcast online status to all users
+      io.emit('online', users)
+
+      // handle disconnect
+      socket.on('disconnect', (reason) => {
+        // remove user from connected users
+        _.remove(users[userId], u => u === socket.id)
+        // no connections for user, delete and broadcast offline status
+        if (users[userId].length === 0) {
+          delete users[userId]
+          io.emit("offline", users)
+        }
+        // disconnect socket
+        socket.disconnect()
+      })
+      // handle send message
+      socket.on('SEND_MESSAGE', function (data) {
         io.emit('MESSAGE', data)
       })
     })

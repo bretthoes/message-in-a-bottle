@@ -22,7 +22,7 @@
               <b-card>
                 <ul class='dropdown'>
                   <li><a href='#'
-                  @click="navigateTo({
+                    @click="navigateTo({
                     name: 'user',
                     params: {
                       userId: $store.state.user.id

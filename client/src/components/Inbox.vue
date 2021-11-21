@@ -7,8 +7,18 @@
         <div class="left col-md-4 col-sm-12">
           <h3 style="text-align:left;">Matches</h3>
           <ul class="match-container">
-            <li v-for="(match,index) in matches" :key="index" @click="setCurrentChatTitle(match)" class="matched-user">
+            <li
+              v-for="(match,index) in matches"
+              :key="index"
+              @click="setCurrentChatTitle(match)"
+              class="matched-user">
               {{getUsernameById(match.UserId)}}
+              <span v-if="onlineUsers[match.UserId]"> <!-- TODO get online status here using userId -->
+                <b-icon style="float:right;" icon="circle-fill" variant="success" v-b-tooltip.hover title="Online"></b-icon>
+              </span>
+              <span v-else>
+                <b-icon style="float:right;" icon="circle" variant="secondary" v-b-tooltip.hover title="Offline"></b-icon>
+              </span>
             </li>
           </ul>
           <h5 style="text-align:center;" v-if="matches.length === 0">No matches!</h5>
@@ -49,7 +59,7 @@
                   class="message">
                   {{m.message}}
                 </div>
-                <span class="timestamp">{{getFormmatedCurrentMinute()}}</span>
+                <span class="timestamp">{{getFormattedCurrentMinute()}}</span>
               </div>
             </div>
             <form @submit.prevent="sendMessage">
@@ -85,22 +95,21 @@ export default {
       currentChatMatchName: '',
       currentChatQuizTitle: '',
       // for web socket
-      text: '',
       message: '',
       messages: [],
-      socket: {}
+      socket: {},
+      onlineUsers: {}
     }
   },
   components: {
     BasePanel, BaseTitle
   },
   mixins: [navigateToMixin],
-  created () {
-    // TODO will need to find a way to dynamically
-    // change what is passed in here based on dev
-    // or production, possibly using config file.
-    // pass in server domain
-    this.socket = io('localhost:8081')
+  // ensure socket connection is closed
+  // when this route is left
+  beforeRouteLeave (to, from, next) {
+    this.socket.close()
+    next()
   },
   async mounted () {
     try {
@@ -108,8 +117,31 @@ export default {
       if (!this.$store.state.isUserLoggedIn) this.navigateTo({ name: 'root' })
       this.matches = (await QuizResponsesService.index(this.$store.state.user.id)).data
 
-      // only fetch user and quiz data if user has matches
+      // only fetch user and quiz data and
+      // set up socket if user has matches
       if (this.matches.length > 0) {
+        // TODO will need to find a way to dynamically
+        // change what is passed in here based on dev
+        // or production, possibly using config file.
+        // pass in server domain
+        const queryParams = { userId: this.$store.state.user.id }
+        this.socket = io('localhost:8081', {
+          transports: ['websocket'],
+          query: queryParams,
+          reconnection: false,
+          rejectUnauthorized: false
+        })
+        // emit user logging in on connection
+        this.socket.once('connect', () => {
+          // user online
+          this.socket.on('online', (users) => {
+            this.onlineUsers = users
+          })
+          // user offline
+          this.socket.on('offline', (users) => {
+            this.onlineUsers = users
+          })
+        })
         // query users table to get usernames for display in list above instead of ids
         const matchIds = this.matches.map(m => m.UserId)
         this.matchProfiles = (await UsersService.index(matchIds)).data
@@ -119,7 +151,6 @@ export default {
 
         // listen for messages from web socket
         this.socket.on('MESSAGE', (data) => {
-          console.log('socket message from client')
           this.messages = [...this.messages, data]
         })
       }
@@ -162,8 +193,8 @@ export default {
       if (quiz) return quiz.id
       else return 0
     },
-    // return current minute formatted for display with message
-    getFormmatedCurrentMinute () {
+    // return current minute formatted for display with message1
+    getFormattedCurrentMinute () {
       const now = new Date()
       return dateFormat(now, 'h:MM TT')
     },
