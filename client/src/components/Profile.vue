@@ -1,6 +1,6 @@
 <template>
 <div>
-  <div class="container-fluid">
+  <base-panel>
     <div class="row">
       <div class="col col-md-6 col-sm-12">
         <img class="profile-picture" alt="Profile picture" :src="imgUrl" width="500" />
@@ -18,22 +18,23 @@
         <textarea v-model="user.biography" class="bio" readonly placeholder="No bio added yet..."></textarea>
       </div>
     </div>
-    <button @click="navigateTo({
-      name: 'user-edit',
-      params: {
-        userId: user.id
-      }
-    })" v-if="$store.state.user.id == user.id" style="float:right;" type="button" class="btn btn-secondary">Edit
-    </button>
-  </div>
+    <base-button
+      @click="navigateTo({ name: 'user-edit', params: { userId: user.id }})"
+      v-if="$store.state.user.id == user.id"
+      buttonPosition="right"
+      buttonColor="blue">Edit
+    </base-button>
+  </base-panel>
   <a href="#"
-  @click="deleteUser($store.state.user.id)"
-  v-if="$store.state.user.id == user.id || $store.state.isUserAdmin"
-  class="delete-profile">delete profile</a>
+    @click="deleteUser($store.state.user.id)"
+    v-if="$store.state.user.id == user.id || $store.state.isUserAdmin"
+    class="delete-profile">delete profile</a>
 </div>
 </template>
 
 <script>
+import BasePanel from '@/components/BasePanel'
+import BaseButton from './BaseButton'
 import UsersService from '@/services/UsersService'
 import navigateToMixin from '@/mixins/navigateToMixin'
 import dateFormat from 'dateformat'
@@ -54,6 +55,9 @@ export default {
     } catch (err) {
       console.log(err)
     }
+  },
+  components: {
+    BasePanel, BaseButton
   },
   mixins: [navigateToMixin],
   computed: {
@@ -89,15 +93,6 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-.container-fluid {
-  border: 1px solid #e6e6e6;
-  background-color: #F4F4F4;
-  padding: 12px;
-  max-width: 80%;
-  box-shadow: 5px 5px 5px gray;
-  overflow: hidden;
-  margin-bottom:8px;
-}
 .row {
   padding: 12px;
 }
@@ -119,9 +114,7 @@ textarea {
   background-color: #ececec;
 }
 .delete-profile {
-  text-align: left;
   color: gray;
-  margin-top: 8px;
 }
 .delete-profile:hover {
   color: lightgray;

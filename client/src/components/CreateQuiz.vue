@@ -1,7 +1,7 @@
 <template>
   <div>
     <h3 class="p-3 text-center">Quiz Builder</h3>
-    <div class="container">
+    <base-panel>
       <h4 style="text-align:left;">Quiz Title</h4>
       <div class="field-wrapper">
         <input v-model="quiz.title" class="text-input" placeholder="Quiz title here..."/>
@@ -11,7 +11,7 @@
         <div class="createdQuestion">
           <div class="field-wrapper">
             <input v-model="question.text"
-            class="text-input question-input"
+            class="text-input mb-4"
             placeholder="Question text here..."/>
             <div v-for="(questionResponse, childIndex) in question.questionOptions"
             :key="childIndex"
@@ -20,27 +20,50 @@
                 <input v-model="questionResponse.text" class="text-input question-response-input" placeholder="Question response text here..."/>
               </div>
             </div>
-            <button v-on:click="addQuestionResponse(index)" type="button" class="add-question-response-button">+</button>
+            <base-button
+              @click="addQuestionResponse(index)"
+              buttonPosition="right"
+              buttonSize="circle">+
+            </base-button>
           </div>
         </div>
       </div>
-      <button v-on:click="addQuestion" type="button" class="add-question-button">+ Add Question</button><br /><hr />
-      <button v-on:click="save" type="button" class="save">Save</button>
-      <button @click="navigateTo({name: 'quizzes'})" type="button" class="cancel">Cancel</button><br /><br />
+      <base-button
+        @click="addQuestion"
+        buttonPosition="center"
+        buttonSize="ultra-wide"
+        buttonColor="blue">+ Add Question
+      </base-button>
+      <br /><hr />
+      <base-button
+        @click="save"
+        v-if="$store.state.isUserAdmin"
+        buttonPosition="right"
+        buttonColor="blue">Save
+      </base-button>
+      <base-button
+        @click="navigateTo({name: 'quizzes'})"
+        v-if="$store.state.isUserAdmin"
+        buttonPosition="right"
+        buttonColor="red">Cancel
+      </base-button><br /><br />
       <p v-if="!this.validInput" v-html="error" style="color:red;font-size:20px;float:right;">No empty fields allowed.</p>
-    </div>
+    </base-panel>
   </div>
 </template>
 
 <script>
+import BaseButton from '@/components/BaseButton'
+import BasePanel from '@/components/BasePanel'
 import QuizzesService from '@/services/QuizzesService'
 import navigateToMixin from '@/mixins/navigateToMixin'
 export default {
+  components: {
+    BaseButton, BasePanel
+  },
   mixins: [navigateToMixin],
   data () {
     return {
-      // TODO create limits on total # of questions
-      // and questionOptions admin can create
       quiz: {
         title: '',
         questions: [{
@@ -56,7 +79,9 @@ export default {
         }]
       },
       validInput: true,
-      error: 'No empty fields allowed.'
+      error: 'No empty fields allowed.',
+      maxQuestions: 30,
+      maxOptionsPerQuestion: 6
     }
   },
   async mounted () {
@@ -66,23 +91,27 @@ export default {
   methods: {
     // each question should have a minumum of 2 questionOptions by default
     addQuestion () {
-      this.quiz.questions.push({
-        text: '',
-        displayQuestion: false,
-        questionOptions: [{
+      if (this.quiz.questions.length < this.maxQuestions) {
+        this.quiz.questions.push({
           text: '',
-          displayResponse: false
-        }, {
-          text: '',
-          displayResponse: false
-        }]
-      })
+          displayQuestion: false,
+          questionOptions: [{
+            text: '',
+            displayResponse: false
+          }, {
+            text: '',
+            displayResponse: false
+          }]
+        })
+      }
     },
     addQuestionResponse (index) {
-      this.quiz.questions[index].questionOptions.push({
-        text: '',
-        displayResponse: false
-      })
+      if (this.quiz.questions[index].questionOptions.length < this.maxOptionsPerQuestion) {
+        this.quiz.questions[index].questionOptions.push({
+          text: '',
+          displayResponse: false
+        })
+      }
     },
     async save () {
       // loop through all input fields; check for any empty strings
@@ -111,57 +140,10 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-button {
-  cursor: pointer;
-  width: 100px;
-  height: 40px;
-  font-size: 14px;
-  border: 1px solid black;
-  box-shadow: 1px 2px;
-}
-button:hover {
-  text-decoration: underline;
-  border: 3px solid black;
-  box-shadow: 2px 3px;
-  background-color: #B1D3E1;
-}
-.add-question-response-button {
-  margin-top: 8px;
-  width: 40px;
-  float: right;
-  border-radius: 33px;
-}
-.add-question-button {
-  width: 50%;
-  margin: auto;
-  background-color: #b1d3e1bb;
-}
-.add-question-button:hover {
-  background-color: #99cde4;
-}
-.save, .cancel {
-  float:right;
-  background-color: #b1d3e1bb;
-  margin:4px;
-}
-.cancel {
-  float:right;
-  background-color: #e1b1b1bb;
-  margin:4px;
-}
-.save:hover {
-  background-color: #99cde4;
-}
-.cancel:hover {
-  background-color: #e49b99;
-}
 .question-response-input {
   width: 92%;
   margin: 4px;
   float: right;
-}
-.question-input {
-  margin-bottom: 24px;
 }
 .text-input {
   border: 1px solid #e6e6e6;
@@ -176,27 +158,6 @@ button:hover {
   background-color: #b1d3e1af;
   overflow: hidden;
 }
-.container {
-  border: 1px solid #e6e6e6;
-  background-color: #F4F4F4;
-  width: 80%;
-  padding: 12px;
-  overflow: hidden;
-  margin-bottom: 80px;
-}
-table {
-  font-family: arial, sans-serif;
-  border-collapse: collapse;
-  width: 100%;
-}
-td, th {
-  border: 1px solid #dddddd;
-  text-align: left;
-  padding: 8px;
-}
-tr:nth-child(even) {
-  background-color: #dddddd;
-}
 input {
   width: 100%;
   height: 100%;
@@ -208,11 +169,6 @@ input {
 h3 {
   font-size: 32px;
   letter-spacing: 1px;
-  /* transform: scale(1.2, 1);
-  -ms-transform: scale(1.2, 1);
-  -moz-transform: scale(1.2, 1);
-  -webkit-transform: scale(1.2, 1);
-  -o-transform: scale(1.2, 1); */
   font-family: "Montserrat", sans-serif;
   font-weight: 900;
   text-transform: uppercase;

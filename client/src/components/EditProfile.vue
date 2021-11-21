@@ -1,5 +1,5 @@
 <template>
-  <div class="container-fluid">
+  <base-panel>
     <form @submit.prevent="submit" enctype="multipart/form-data">
       <div class="row">
           <div class="col col-md-6 col-sm-12">
@@ -25,25 +25,30 @@
           </div>
       </div>
       <div class="button-container">
-        <button type="submit" class="btn btn-primary">Save</button>
-        <button
-          @click="navigateTo({
-                    name: 'user',
-                    params: {
-                      userId: $store.state.user.id
-                    }
-                  })" type="button" class="btn btn-danger">Cancel
-        </button>
+        <base-button
+          v-if="$store.state.user.id == user.id"
+          buttonPosition="right"
+          type="submit"
+          buttonColor="blue">Save
+        </base-button>
+        <base-button
+          @click="navigateTo({ name: 'user', params: { userId: $store.state.user.id }})"
+          v-if="$store.state.user.id == user.id"
+          buttonPosition="right"
+          buttonColor="red">Cancel
+        </base-button>
         <br /><br />
         <div class='error' v-html='error' />
       </div>
     </form>
-  </div>
+  </base-panel>
 </template>
 
 <script>
+import BasePanel from '@/components/BasePanel'
 import UsersService from '@/services/UsersService'
 import navigateToMixin from '@/mixins/navigateToMixin'
+import BaseButton from './BaseButton.vue'
 export default {
   data () {
     return {
@@ -59,6 +64,9 @@ export default {
       file: null,
       required: (value) => !!value || 'Required'
     }
+  },
+  components: {
+    BasePanel, BaseButton
   },
   mixins: [navigateToMixin],
   async mounted () {
@@ -121,13 +129,6 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-.container-fluid {
-  border: 1px solid #e6e6e6;
-  background-color: #F4F4F4;
-  padding: 12px;
-  max-width: 80%;
-  overflow: hidden;
-}
 .row {
   padding: 12px;
 }
@@ -153,7 +154,9 @@ textarea {
   text-align: right;
 }
 .button-container {
-  float: right;
-  padding-top: 32px;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  flex-wrap: wrap;
 }
 </style>

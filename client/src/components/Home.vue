@@ -1,27 +1,33 @@
 <template>
   <div class="content">
-      <h1>MESSAGE</h1>
-      <h1>IN A</h1>
-      <h1><span class="blue">BOTTLE</span></h1>
-      <h2 class="subtitle">{{totalMatches}} matches after {{totalQuizResponses}} bottles thrown to sea</h2>
+    <h1>MESSAGE</h1>
+    <h1>IN A</h1>
+    <h1><span class="blue">BOTTLE</span></h1>
+    <h2 class="subtitle">{{totalMatches}} matches after {{totalQuizResponses}} bottles thrown to sea</h2>
     <div class="button-container">
-      <button @click="navigateTo({name: 'about'})">what is this?</button>
-      <button @click="openQuizPage($store.state.isUserLoggedIn)">view quizzes</button>
+      <base-button
+        @click="navigateTo({name: 'about'})"
+        buttonSize="large">what is this?
+      </base-button>
+      <base-button
+        @click="openQuizPage($store.state.isUserLoggedIn)"
+        buttonSize="large">view quizzes
+      </base-button>
     </div>
     <footer-waves />
-    <Modal
+    <modal
       v-show="isModalVisible"
       @close="closeModal"
-      ref="modalComponent"
-    />
+      ref="modalComponent" />
   </div>
 </template>
 
 <script>
+import BaseButton from '@/components/BaseButton'
+import Modal from '@/components/Modal.vue'
 import QuizResponsesService from '@/services/QuizResponsesService'
 import navigateToMixin from '@/mixins/navigateToMixin'
 import modalMixin from '@/mixins/modalMixin'
-import Modal from '@/components/Modal.vue'
 import FooterWaves from './FooterWaves.vue'
 export default {
   name: 'Home',
@@ -33,7 +39,8 @@ export default {
   },
   components: {
     Modal,
-    FooterWaves
+    FooterWaves,
+    BaseButton
   },
   mixins: [navigateToMixin, modalMixin],
   async mounted () {
@@ -65,42 +72,21 @@ export default {
   padding-top: 60px;
 }
 .button-container {
-  margin: auto;
   margin-top: 24px;
   margin-bottom: 60px;
-}
-button {
-  cursor: pointer;
-  width: 150px;
-  height: 60px;
-  font-size: 22px;
-  border: 1px solid black;
-  box-shadow: 1px 2px;
-  margin: 6px;
-}
-button:hover {
-  text-decoration: underline;
-  border: 3px solid black;
-  box-shadow: 2px 3px;
-  background-color: #B1D3E1;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  flex-wrap: wrap;
 }
 .blue {
-  /*background: linear-gradient(to right, #30cfd0 0%, aquamarine 100%);
-  background-clip: text;
-  -webkit-text-fill-color: transparent;*/
   color: #4696B8;
   text-shadow: 1px 0 black, 0 1px black, 1px 0 black, 0 -1px;
-  /* text-shadow: 2px 2px black; */
 }
 h1 {
   font-size: 52px;
   letter-spacing: 1px;
   margin-top: -26px;
-  /* transform: scale(1.2, 1);
-  -ms-transform: scale(1.2, 1);
-  -moz-transform: scale(1.2, 1);
-  -webkit-transform: scale(1.2, 1);
-  -o-transform: scale(1.2, 1); */
   font-family: "Montserrat", sans-serif;
   font-weight: 900;
   text-transform: uppercase;

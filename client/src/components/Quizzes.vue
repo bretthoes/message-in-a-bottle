@@ -32,7 +32,11 @@
         </b-form-group>
       </b-col>
       <b-col md="3">
-        <button @click="navigateTo({name: 'quizzes-create'})" v-if="$store.state.isUserAdmin">Add Quiz</button>
+        <base-button
+          @click="navigateTo({name: 'quizzes-create'})"
+          v-if="$store.state.isUserAdmin"
+          buttonPosition="right">Add Quiz
+        </base-button>
       </b-col>
     </b-row>
     <br />
@@ -80,11 +84,15 @@
 </template>
 
 <script>
+import BaseButton from '@/components/BaseButton'
 import QuizzesService from '@/services/QuizzesService'
 import navigateToMixin from '@/mixins/navigateToMixin'
 import dateFormat from 'dateformat'
 import _ from 'lodash'
 export default {
+  components: {
+    BaseButton
+  },
   mixins: [navigateToMixin],
   data () {
     return {
@@ -175,6 +183,9 @@ export default {
     },
     getFormmatedDate (date) {
       return dateFormat(date, 'mmmm dS, yyyy')
+    },
+    getFormattedDate: function (date) {
+      return dateFormat(date, 'mmmm dS, yyyy')
     }
   }
 }
@@ -182,23 +193,6 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-
-button {
-  cursor: pointer;
-  width: 100px;
-  height: 40px;
-  font-size: 14px;
-  border: 1px solid black;
-  box-shadow: 1px 2px;
-  float:right;
-  margin-bottom:8px;
-}
-button:hover {
-  text-decoration: underline;
-  border: 3px solid black;
-  box-shadow: 2px 3px;
-  background-color: #B1D3E1;
-}
 h3 {
   font-size: 32px;
   letter-spacing: 1px;

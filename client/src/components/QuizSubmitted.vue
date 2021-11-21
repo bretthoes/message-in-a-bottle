@@ -7,8 +7,14 @@
         </div>
         <h5><i>Any new matches will appear in your inbox :)</i></h5>
         <div class="button-container">
-          <button @click="navigateTo({name: 'root'})">return home</button>
-          <button @click="openQuizPage($store.state.isUserLoggedIn)">other quizzes</button>
+          <base-button
+            @click="navigateTo({name: 'inbox'})"
+            buttonSize="large">check inbox
+          </base-button>
+          <base-button
+            @click="openQuizPage($store.state.isUserLoggedIn)"
+            buttonSize="large">more quizzes
+          </base-button>
         </div>
     </div>
     <footer-waves />
@@ -16,12 +22,13 @@
 </template>
 
 <script>
+import BaseButton from '@/components/BaseButton'
+import FooterWaves from '@/components/FooterWaves'
 import navigateToMixin from '@/mixins/navigateToMixin'
-import FooterWaves from './FooterWaves.vue'
 export default {
   mixins: [navigateToMixin],
   components: {
-    FooterWaves
+    FooterWaves, BaseButton
   },
   methods: {
     openQuizPage (isUserLoggedIn) {
@@ -41,7 +48,6 @@ export default {
 .container-fluid {
     margin: auto;
     max-width: 800px;
-    border: 1px solid black;
 }
 h2 {
   font-family: "Montserrat", sans-serif;
@@ -49,23 +55,10 @@ h2 {
   display: block;
 }
 .button-container {
-  margin: auto;
   margin-top: 24px;
-  margin-bottom: 60px;
-}
-button {
-  cursor: pointer;
-  width: 150px;
-  height: 60px;
-  font-size: 22px;
-  border: 1px solid black;
-  box-shadow: 1px 2px;
-  margin: 6px;
-}
-button:hover {
-  text-decoration: underline;
-  border: 3px solid black;
-  box-shadow: 2px 3px;
-  background-color: #B1D3E1;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  flex-wrap: wrap;
 }
 </style>
