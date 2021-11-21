@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <h3 class="p-3 text-center">All Quizzes</h3>
+    <base-title>All Quizzes</base-title>
     <b-row>
       <b-col md="3">
         <br />
@@ -85,15 +85,17 @@
 
 <script>
 import BaseButton from '@/components/BaseButton'
+import BaseTitle from '@/components/BaseTitle'
 import QuizzesService from '@/services/QuizzesService'
 import navigateToMixin from '@/mixins/navigateToMixin'
 import dateFormat from 'dateformat'
 import _ from 'lodash'
 export default {
   components: {
-    BaseButton
+    BaseButton, BaseTitle
   },
-  mixins: [navigateToMixin],
+  mixins:
+    [navigateToMixin],
   data () {
     return {
       quizzes: [],
@@ -193,12 +195,4 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-h3 {
-  font-size: 32px;
-  letter-spacing: 1px;
-  font-family: "Montserrat", sans-serif;
-  font-weight: 900;
-  text-transform: uppercase;
-  display: block;
-}
 </style>

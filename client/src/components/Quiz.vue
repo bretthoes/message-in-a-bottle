@@ -40,7 +40,6 @@
   <!-- TODO refactor this out to something cleaner than conditional rendering -->
   <div class="quiz-results-container container-fluid" v-if="quizAlreadySubmitted && quizAlreadySubmitted !== null">
     <h2>You've already submitted this quiz!</h2>
-    <a href="#" @click="navigateTo({ name: 'quizzes' })">back to quizzes</a>
     <h4>your answers:</h4>
     <ul>
       <li v-for="(question,index) in quiz.Questions" :key="index">

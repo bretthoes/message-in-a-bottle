@@ -1,6 +1,6 @@
 <template>
   <div class="content">
-    <h1>Inbox</h1>
+    <base-title>Inbox</base-title>
     <br />
     <base-panel>
       <div class="row">
@@ -69,6 +69,7 @@
 
 <script>
 import BasePanel from '@/components/BasePanel'
+import BaseTitle from '@/components/BaseTitle'
 import UsersService from '@/services/UsersService'
 import QuizResponsesService from '@/services/QuizResponsesService'
 import QuizzesService from '@/services/QuizzesService'
@@ -91,7 +92,7 @@ export default {
     }
   },
   components: {
-    BasePanel
+    BasePanel, BaseTitle
   },
   mixins: [navigateToMixin],
   created () {
@@ -177,13 +178,6 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-h1 {
-  font-size: 32px;
-  font-family: "Montserrat", sans-serif;
-  font-weight: 900;
-  text-transform: uppercase;
-  display: block;
-}
 h3 {
   font-size: 24px;
   letter-spacing: 1px;

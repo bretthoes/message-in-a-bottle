@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h1>About</h1>
+    <base-title>About</base-title>
     <p>
       <br />
       Welcome!<br />
@@ -23,19 +23,17 @@
 </template>
 
 <script>
-export default {}
+import BaseTitle from '@/components/BaseTitle'
+export default {
+  components: {
+    BaseTitle
+  }
+}
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
+<!-- Add "scop
+BaseTitleed" attribute to limit CSS to this component only -->
 <style scoped>
-h1 {
-  font-family: "Montserrat", sans-serif;
-  -webkit-animation: fadein 1s; /* Safari, Chrome and Opera > 12.1 */
-     -moz-animation: fadein 1s; /* Firefox < 16 */
-      -ms-animation: fadein 1s; /* Internet Explorer */
-       -o-animation: fadein 1s; /* Opera < 12.1 */
-          animation: fadein 1s;
-}
 p {
   text-align: justify;
   margin: auto;
@@ -81,18 +79,5 @@ p {
 @-o-keyframes fadein {
     from { opacity: 0; }
     to   { opacity: 1; }
-}
-h1 {
-  font-size: 32px;
-  letter-spacing: 1px;
-  /* transform: scale(1.2, 1);
-  -ms-transform: scale(1.2, 1);
-  -moz-transform: scale(1.2, 1);
-  -webkit-transform: scale(1.2, 1);
-  -o-transform: scale(1.2, 1); */
-  font-family: "Montserrat", sans-serif;
-  font-weight: 900;
-  text-transform: uppercase;
-  display: block;
 }
 </style>

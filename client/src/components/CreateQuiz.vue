@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h3 class="p-3 text-center">Quiz Builder</h3>
+    <base-title>Quiz Builder</base-title>
     <base-panel>
       <h4 style="text-align:left;">Quiz Title</h4>
       <div class="field-wrapper">
@@ -55,11 +55,12 @@
 <script>
 import BaseButton from '@/components/BaseButton'
 import BasePanel from '@/components/BasePanel'
+import BaseTitle from '@/components/BaseTitle'
 import QuizzesService from '@/services/QuizzesService'
 import navigateToMixin from '@/mixins/navigateToMixin'
 export default {
   components: {
-    BaseButton, BasePanel
+    BaseButton, BasePanel, BaseTitle
   },
   mixins: [navigateToMixin],
   data () {
@@ -165,13 +166,5 @@ input {
 }
 .title {
   text-align: left;
-}
-h3 {
-  font-size: 32px;
-  letter-spacing: 1px;
-  font-family: "Montserrat", sans-serif;
-  font-weight: 900;
-  text-transform: uppercase;
-  display: block;
 }
 </style>
