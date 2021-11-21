@@ -7,7 +7,7 @@
         <div class="left col-md-4 col-sm-12">
           <h3 style="text-align:left;">Matches</h3>
           <ul class="match-container">
-            <li v-for="(match,index) in matches" :key="index" @click="getQuizNameFromMatch(match)" class="matched-user">
+            <li v-for="(match,index) in matches" :key="index" @click="setCurrentChatTitle(match)" class="matched-user">
               {{getUsernameById(match.UserId)}}
             </li>
           </ul>
@@ -38,13 +38,25 @@
           </div>
           <div class="chat-container">
             <div class="chat-screen">
+              <div class="message-container"
+                v-for="(m,index) in messages"
+                :key="index"
+                v-bind:class="{self: m.userId === $store.state.user.id}">
+                <div
+                  class="message">
+                  {{m.message}}
+                </div>
+                <span class="timestamp">{{getFormmatedCurrentMinute()}}</span>
+              </div>
             </div>
-            <b-input-group class="mt-3">
-              <b-form-input></b-form-input>
-              <b-input-group-append>
-                <button>Send</button>
-              </b-input-group-append>
-            </b-input-group>
+            <form @submit.prevent="sendMessage">
+              <b-input-group class="mt-3">
+                <b-form-input placeholder="Send message..." type="text" v-model="message"></b-form-input>
+                <b-input-group-append>
+                  <button type="submit">Send</button>
+                </b-input-group-append>
+              </b-input-group>
+            </form>
         </div>
         </div>
       </div>
@@ -57,6 +69,8 @@ import UsersService from '@/services/UsersService'
 import QuizResponsesService from '@/services/QuizResponsesService'
 import QuizzesService from '@/services/QuizzesService'
 import navigateToMixin from '@/mixins/navigateToMixin'
+import dateFormat from 'dateformat'
+import io from 'socket.io-client'
 export default {
   data () {
     return {
@@ -65,48 +79,88 @@ export default {
       matchProfiles: [],
       currentChatMatchName: '',
       currentChatQuizTitle: '',
-      text: ''
+      // for web socket
+      text: '',
+      message: '',
+      messages: [],
+      socket: {}
     }
   },
   mixins: [navigateToMixin],
+  created () {
+    // TODO will need to find a way to dynamically
+    // change what is passed in here based on dev
+    // or production, possibly using config file.
+    // pass in server domain
+    this.socket = io('localhost:8081')
+  },
   async mounted () {
     try {
       // redirect home if not logged in
       if (!this.$store.state.isUserLoggedIn) this.navigateTo({ name: 'root' })
       this.matches = (await QuizResponsesService.index(this.$store.state.user.id)).data
-      // query users table to get usernames for display in list above instead of ids
-      const matchIds = this.matches.map(m => m.UserId)
-      this.matchProfiles = (await UsersService.index(matchIds)).data
-      // TODO query quizzes table to get quiz names for display in match list
-      const quizIds = this.matches.map(m => m.QuizId)
-      this.quizzes = (await QuizzesService.index(quizIds)).data
+
+      // only fetch user and quiz data if user has matches
+      if (this.matches.length > 0) {
+        // query users table to get usernames for display in list above instead of ids
+        const matchIds = this.matches.map(m => m.UserId)
+        this.matchProfiles = (await UsersService.index(matchIds)).data
+        // TODO query quizzes table to get quiz names for display in match list
+        const quizIds = this.matches.map(m => m.QuizId)
+        this.quizzes = (await QuizzesService.index(quizIds)).data
+
+        // listen for messages from web socket
+        this.socket.on('MESSAGE', (data) => {
+          console.log('socket message from client')
+          this.messages = [...this.messages, data]
+        })
+      }
     } catch (err) {
       console.log(err)
     }
   },
   methods: {
+    sendMessage (e) {
+      e.preventDefault()
+      this.socket.emit('SEND_MESSAGE', {
+        username: this.$store.state.user.username,
+        userId: this.$store.state.user.id,
+        message: this.message
+      })
+      this.message = ''
+    },
+    /* various getters/setters for use on page */
+    // get username from id in matchProfiles
     getUsernameById (id) {
-      // find username from id in matchProfiles
       const user = this.matchProfiles.find(p => p.id === id)
       if (user) return user.username
       else return ''
     },
+    // get id from username in matchProfiles
     getIdByUsername (username) {
       const user = this.matchProfiles.find(p => p.username === username)
       if (user) return user.id
       else return 0
     },
+    // get quiz title from id in quizzes
     getQuizTitleById (id) {
       const quiz = this.quizzes.find(q => q.id === id)
       if (quiz) return quiz.title
       else return ''
     },
+    // get quiz id from title in quizzes
     getQuizIdByTitle (title) {
       const quiz = this.quizzes.find(q => q.title === title)
       if (quiz) return quiz.id
       else return 0
     },
-    getQuizNameFromMatch (match) {
+    // return current minute formatted for display with message
+    getFormmatedCurrentMinute () {
+      const now = new Date()
+      return dateFormat(now, 'h:MM TT')
+    },
+    // set matched user and quiz name for display in chat
+    setCurrentChatTitle (match) {
       this.currentChatMatchName = this.getUsernameById(match.UserId)
       this.currentChatQuizTitle = this.getQuizTitleById(match.QuizId)
     }
@@ -134,13 +188,13 @@ h3 {
 .container-fluid {
   border: 1px solid #e6e6e6;
   background-color: #F4F4F4;
-  width: 70%;
+  width: 90%;
   padding: 12px;
   overflow: hidden;
   margin-bottom: 80px;
 }
 .left {
-  border-right: 2px solid black;
+  border-right: 2px solid #65a8c48c;
 }
 .matched-user {
   padding: 14px;
@@ -158,12 +212,18 @@ h3 {
 }
 .chat-screen {
   background-color: white;
-  min-height: 300px;
+  min-height: 500px;
+  max-height: 500px;
   margin: auto;
-  border: 1px solid black;
+  border: 1px solid lightgray;
+  border-radius: 3px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
 }
 .chat-container {
-  width: 80%;
+  width: 90%;
   margin: auto;
 }
 button {
@@ -180,5 +240,40 @@ button:hover {
   border: 3px solid black;
   box-shadow: 2px 3px;
   background-color: #B1D3E1;
+}
+.message-container {
+  padding: 8px;
+  margin: 4px;
+  text-align: left;
+  word-wrap: break-all;
+}
+.message {
+  border: 1px solid #e6e6e6;
+  background-color: #e6e6e6;
+  border-radius: 10px;
+  width: fit-content;
+  padding: 8px;
+  margin: 4px;
+  -ms-word-break: break-all;
+  word-break: break-all;
+
+ /* Non standard for webkit */
+  word-break: break-word;
+
+  -webkit-hyphens: auto;
+     -moz-hyphens: auto;
+      -ms-hyphens: auto;
+          hyphens: auto;
+}
+.self {
+  align-self: flex-end;
+  text-align: right;
+}
+.self > div {
+  background-color: aliceblue;
+}
+.timestamp {
+  font-size: 12px;
+  color: darkgray;
 }
 </style>

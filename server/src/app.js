@@ -31,6 +31,17 @@ require('./routes')(app)
 // Pass {force: true} into sync method to clear database
 sequelize.sync({force: false})
   .then(() => {
-    app.listen(config.port)
+    const server = app.listen(config.port)
     console.log('Server started on port ' + config.port)
+    const io = require('socket.io')(server, {
+      cors: {
+        origin: '*'
+      }
+    })
+    io.on('connection', function (socket) {
+      console.log('New connection, socket.id: ' + socket.id)
+      socket.on('SEND_MESSAGE', function(data) {
+        io.emit('MESSAGE', data)
+      })
+    })
   })
