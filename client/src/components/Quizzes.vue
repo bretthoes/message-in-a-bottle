@@ -34,7 +34,7 @@
       <b-col md="3">
         <base-button
           @click="navigateTo({name: 'quizzes-create'})"
-          v-if="$store.state.isUserAdmin"
+          v-if="$store.state.user.isAdmin"
           buttonPosition="right">Add Quiz
         </base-button>
       </b-col>
@@ -60,8 +60,8 @@
         <p style="display:inline;">
           <a href="#" @click="navigateTo({name: 'quiz', params: { quizId: row.item.id }})">Open</a>
         </p>
-        <p style="display:inline;" v-if="$store.state.isUserAdmin">
-          &nbsp;|&nbsp;<a href="#" v-if="$store.state.isUserAdmin" @click="deleteQuiz(row.item.id)">Delete</a>
+        <p style="display:inline;" v-if="$store.state.user.isAdmin">
+          &nbsp;|&nbsp;<a href="#" @click="deleteQuiz(row.item.id)">Delete</a>
         </p>
       </template>
       <template #cell(odds)="row">

@@ -45,17 +45,21 @@ sequelize.sync({force: false})
     io.on('connection', function (socket) {
       // get user id from connection
       const userId = socket.handshake.query.userId
+
       // check if user exists
       if (!users[userId]) users[userId] = []
+
       // add socket id from user's connection
       users[userId].push(socket.id)
+
       // broadcast online status to all users
       io.emit('online', users)
 
       // handle disconnect
-      socket.on('disconnect', (reason) => {
+      socket.on('disconnect', () => {
         // remove user from connected users
         _.remove(users[userId], u => u === socket.id)
+
         // no connections for user, delete and broadcast offline status
         if (users[userId].length === 0) {
           delete users[userId]
@@ -65,8 +69,8 @@ sequelize.sync({force: false})
         socket.disconnect()
       })
       // handle send message
-      socket.on('SEND_MESSAGE', function (data) {
-        io.emit('MESSAGE', data)
+      socket.on('SEND_MESSAGE', (message) => {
+        io.emit('MESSAGE', message)
       })
     })
   })

@@ -37,13 +37,13 @@
       <br /><hr />
       <base-button
         @click="save"
-        v-if="$store.state.isUserAdmin"
+        v-if="$store.state.user.isAdmin"
         buttonPosition="right"
         buttonColor="blue">Save
       </base-button>
       <base-button
         @click="navigateTo({name: 'quizzes'})"
-        v-if="$store.state.isUserAdmin"
+        v-if="$store.state.user.isAdmin"
         buttonPosition="right"
         buttonColor="red">Cancel
       </base-button><br /><br />
@@ -87,7 +87,7 @@ export default {
   },
   async mounted () {
     // redirect home if not logged in or user is not admin
-    if (!this.$store.state.isUserLoggedIn || !this.$store.state.isUserAdmin) this.navigateTo({ name: 'root' })
+    if (!this.$store.state.isUserLoggedIn || !this.$store.state.user.isAdmin) this.navigateTo({ name: 'root' })
   },
   methods: {
     // each question should have a minumum of 2 questionOptions by default

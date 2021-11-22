@@ -6,7 +6,7 @@
         <img class="profile-picture" alt="Profile picture" :src="imgUrl" width="500" />
         <br />
         <h2 class="username field"><b-icon icon="person-fill"></b-icon> {{user.username}}
-          <span v-if="this.$store.state.isUserAdmin" style="color:green;">(admin)</span>
+          <span v-if="this.$store.state.user.isAdmin" style="color:green;">(admin)</span>
         </h2>
         <br />
         <h4 class="field"><b-icon icon="gift"></b-icon> {{getFormmatedDate(user.birthdate) || 'No birthday added.'}}</h4>
@@ -27,7 +27,7 @@
   </base-panel>
   <a href="#"
     @click="deleteUser($store.state.user.id)"
-    v-if="$store.state.user.id == user.id || $store.state.isUserAdmin"
+    v-if="$store.state.user.id == user.id || $store.state.user.isAdmin"
     class="delete-profile">delete profile</a>
 </div>
 </template>
