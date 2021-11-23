@@ -151,12 +151,12 @@ export default {
 
         // Close modal upon successful login
         this.$emit('close')
-        // TODO: Display toast on successful login
-        // this.makeToast(
-        //   'primary',
-        //   'Login Successful!',
-        //   'Welcome back, ' + this.username + '!'
-        // ) // maybe try toast component
+        // Display toast on successful register
+        this.$toasted.show('Successfully Registered!', {
+          theme: 'outline',
+          position: 'bottom-center',
+          duration: 5000
+        })
       } catch (err) {
         this.error = err.response.data.error
       }
@@ -174,12 +174,12 @@ export default {
         this.$store.dispatch('setUser', response.data.user)
         // Close modal upon successful login
         this.$emit('close')
-        // TODO: Display toast on successful login
-        // this.makeToast(
-        //   'primary',
-        //   'Login Successful!',
-        //   'Welcome back, ' + this.username + '!'
-        // )
+        // Display toast on successful login
+        this.$toasted.show('Welcome back!', {
+          theme: 'outline',
+          position: 'bottom-center',
+          duration: 5000
+        })
       } catch (err) {
         this.error = err.response.data.error
       }
@@ -213,14 +213,12 @@ export default {
   background-color: rgba(0, 0, 0, 0.4); /* Black w/ opacity */
   padding-top: 60px;
 }
-
 .modal {
   box-shadow: 2px 2px 20px 1px;
   overflow-x: auto;
   display: flex;
   flex-direction: column;
 }
-
 /* Modal Content/Box */
 .modal-content {
   background-color: white;
@@ -228,7 +226,6 @@ export default {
   border: 1px solid #888;
   width: 330px; /* Could be more or less, depending on screen size */
 }
-
 /* The Close Button (x) */
 .close {
   position: absolute;
@@ -238,20 +235,17 @@ export default {
   font-size: 45px;
   font-weight: bold;
 }
-
 .close:hover,
 .close:focus {
   color: red;
   cursor: pointer;
 }
-
 .modal-content {
   background-color: white;
   margin: 5% auto 15% auto; /* 5% from the top, 15% from the bottom and centered */
   border: 1px solid #888;
   width: 330px; /* Could be more or less, depending on screen size */
 }
-
 /* Full-width input fields */
 input[type='text'],
 input[type='password'] {
@@ -267,7 +261,6 @@ input:focus {
   padding: 9px 15px;
   background-color: beige;
 }
-
 .modal-button {
   background-color: #006f9e;
   color: white;
@@ -277,45 +270,36 @@ input:focus {
   cursor: pointer;
   width: 100%;
 }
-
 .modal-button:hover {
   opacity: 0.8;
 }
-
 /* Center the image and position the close button */
 .img-container {
   text-align: center;
   margin: 24px 0 12px 0;
   position: relative;
 }
-
 img.avatar {
   width: 40%;
   border-radius: 50%;
 }
-
 .container {
   padding: 16px;
 }
-
 span.psw {
   margin: auto;
   padding-top: 9px;
   font-size: 12px;
 }
-
 .error {
   color: red;
 }
-
 .modal-fade-enter,
 .modal-fade-leave-to {
   opacity: 0;
 }
-
 .modal-fade-enter-active,
 .modal-fade-leave-active {
   transition: opacity .5s ease;
 }
-
 </style>

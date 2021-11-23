@@ -5,6 +5,7 @@ import { sync } from 'vuex-router-sync'
 import { BootstrapVue, IconsPlugin } from 'bootstrap-vue'
 import store from './store/store'
 import VueSimpleAlert from 'vue-simple-alert'
+import Toasted from 'vue-toasted'
 
 // Import Bootstrap an BootstrapVue CSS files
 import 'bootstrap/dist/css/bootstrap.css'
@@ -16,6 +17,8 @@ Vue.use(BootstrapVue)
 Vue.use(IconsPlugin)
 // Make alerts available throughout project
 Vue.use(VueSimpleAlert)
+// make toasts available throughout project
+Vue.use(Toasted)
 
 Vue.config.productionTip = false
 

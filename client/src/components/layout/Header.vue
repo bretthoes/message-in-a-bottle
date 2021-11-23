@@ -82,6 +82,12 @@ export default {
       // TODO verify this works from all pages
       this.$store.dispatch('setToken', null)
       this.$store.dispatch('setUser', null)
+      // Display toast on logout
+      this.$toasted.show('Logout Successful.', {
+        theme: 'outline',
+        position: 'bottom-center',
+        duration: 5000
+      })
     }
   }
 }
