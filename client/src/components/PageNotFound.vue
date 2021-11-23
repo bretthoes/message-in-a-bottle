@@ -1,11 +1,11 @@
 <template>
-  <div class='container-fluid'>
+  <div class="container-fluid">
     <div class="title-container">
       <h1>404 not found</h1>
     </div>
-    <img src='@/assets/page-not-found.png' alt='page-not-found' />
+    <img src="@/assets/page-not-found.png" alt="page-not-found" />
     <br /><br />
-    <a href='#' @click='(navigateTo({ name: "root" }))'>[ Take me back home. ]</a>
+    <a href="#" @click="navigateTo({ name: 'root' })">[ Take me back home. ]</a>
   </div>
 </template>
 <script>

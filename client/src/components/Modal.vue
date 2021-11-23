@@ -12,7 +12,10 @@
               title='Close Modal'
               >&times;</span
             >
-            <img src='@/assets/avatar_bottle.png' alt='Avatar' class='avatar' />
+            <img
+              src='@/assets/avatar_bottle.png'
+              alt='Avatar'
+              class='avatar' />
           </div>
           <div>
             <ul class='nav nav-tabs'>
@@ -81,16 +84,29 @@
               required
             />
             <div class='error' v-html='error' />
-            <div class='container' style='background-color:#f1f1f1'>
-              <button class='modal-button' @click='register' v-if='isRegister'>
+            <div
+              class='container'
+              style='background-color:#f1f1f1'>
+              <button
+                class='modal-button'
+                @click='register'
+                v-if='isRegister'>
                 Register
               </button>
-              <button class='modal-button' @click='login' v-if='!isRegister'>
+              <button
+                class='modal-button'
+                @click='login'
+                v-if='!isRegister'>
                 Login
               </button>
-              <span class='psw' v-if='!isRegister'
+              <span
+                class='psw'
+                v-if='!isRegister'
                 >Forgot
-                <a href='#' @click='(navigateTo({ name: "account-recovery" }))'>password?</a>
+                <a
+                  href='#'
+                  @click='(navigateTo({ name: "account-recovery" }))'>
+                  password?</a>
               </span>
             </div>
           </div>

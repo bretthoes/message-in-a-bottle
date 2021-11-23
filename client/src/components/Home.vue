@@ -3,7 +3,10 @@
     <h1>MESSAGE</h1>
     <h1>IN A</h1>
     <h1><span class="blue">BOTTLE</span></h1>
-    <h2 class="subtitle">{{totalMatches}} matches after {{totalQuizResponses}} bottles thrown to sea</h2>
+    <h2 class="subtitle">
+      {{totalMatches}} matches after
+      {{totalQuizResponses}} bottles thrown to sea
+    </h2>
     <div class="button-container">
       <base-button
         @click="navigateTo({name: 'about'})"

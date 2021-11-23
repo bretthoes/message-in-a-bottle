@@ -6,7 +6,9 @@
       v-bind="$attrs"
       class="button"
       :class="[buttonColor, buttonPosition, buttonSize]">
-      <slot>Button</slot>
+      <slot>
+        Button
+      </slot>
     </button>
   </div>
 </template>

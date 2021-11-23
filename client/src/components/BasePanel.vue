@@ -1,7 +1,9 @@
 
 <template>
   <div class="container-fluid">
-      <slot>Panel.</slot>
+      <slot>
+        Panel.
+      </slot>
   </div>
 </template>
 <script>
@@ -19,10 +21,12 @@ export default {}
   overflow: hidden;
   margin-bottom: 80px;
 }
-/* .container-fluid {
-  margin-bottom:8px;
+@media only screen and (max-width: 600px) {
+  .container-fluid {
+    margin-bottom:8px;
+  }
+  .container-fluid {
+    width: 90%;
+  }
 }
-.container-fluid {
-  width: 90%;
-} */
 </style>

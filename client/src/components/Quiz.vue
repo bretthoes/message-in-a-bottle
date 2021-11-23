@@ -1,64 +1,89 @@
 <template>
-<div>
-  <div v-if="quiz && !quizAlreadySubmitted && quizAlreadySubmitted !== null" class='quiz-container'>
-    <h2>{{quiz.title}}</h2>
+  <div>
     <div
-    class='quiz'
-    v-for="(question,index) in quiz.Questions.slice(questionStartIndex,questionEndIndex)"
-    :key="index">
-      <div class='question-header'>
-        <p>{{questionEndIndex}} / {{quiz.Questions.length}}</p>
-        <h2>{{question.text}}</h2>
-      </div>
-      <div class='question-options'>
-        <div
-        v-for="(option,index) in question.QuestionOptions"
+      v-if="quiz && !quizAlreadySubmitted && quizAlreadySubmitted !== null"
+      class="quiz-container"
+    >
+      <h2>{{ quiz.title }}</h2>
+      <div
+        class="quiz"
+        v-for="(question, index) in quiz.Questions.slice(
+          questionStartIndex,
+          questionEndIndex
+        )"
         :key="index"
-        @click="selectResponse(index)">
-          <div style='float:left;padding-left:10px;'>{{index+1}}.</div>
-          {{option.text}}
+      >
+        <div class="question-header">
+          <p>{{ questionEndIndex }} / {{ quiz.Questions.length }}</p>
+          <h2>{{ question.text }}</h2>
         </div>
-      </div>
-      <div class='question-footer'>
-        <p v-if="questionEndIndex === quiz.Questions.length"><b>Final question!</b> Choosing an option above will submit quiz.</p>
-        <div class='footer-buttons'>
-          <button @click="previousQuestion" class="back">Back</button>
-          <button  @click="navigateTo({ name: 'quizzes' })" class="exit">Exit</button>
+        <div class="question-options">
+          <div
+            v-for="(option, index) in question.QuestionOptions"
+            :key="index"
+            @click="selectResponse(index)"
+          >
+            <div style="float:left;padding-left:10px;">{{ index + 1 }}.</div>
+            {{ option.text }}
+          </div>
         </div>
-        <b-progress
-        :value="questionStartIndex"
-        :max="quiz.Questions.length"
-        variant="info"
-        striped
-        :animated="true"
-        class="mt-2"
-        show-progress>
-        </b-progress>
+        <div class="question-footer">
+          <p v-if="questionEndIndex === quiz.Questions.length">
+            <b>Final question!</b> Choosing an option above will submit quiz.
+          </p>
+          <div class="footer-buttons">
+            <button @click="previousQuestion" class="back">Back</button>
+            <button @click="navigateTo({ name: 'quizzes' })" class="exit">
+              Exit
+            </button>
+          </div>
+          <b-progress
+            :value="questionStartIndex"
+            :max="quiz.Questions.length"
+            variant="info"
+            striped
+            :animated="true"
+            class="mt-2"
+            show-progress
+          >
+          </b-progress>
+        </div>
       </div>
     </div>
+    <!-- TODO refactor this out to something cleaner than conditional rendering -->
+    <div
+      class="quiz-results-container container-fluid"
+      v-if="quizAlreadySubmitted && quizAlreadySubmitted !== null"
+    >
+      <h2>You've already submitted this quiz!</h2>
+      <h4>your answers:</h4>
+      <ul>
+        <li v-for="(question, index) in quiz.Questions" :key="index">
+          {{ index + 1 }}. {{ question.text }}
+          <ul>
+            <li
+              v-for="(option, childIndex) in question.QuestionOptions"
+              :key="childIndex"
+            >
+              {{ childIndex + 1 }}. {{ option.text }}
+            </li>
+            <li style="color:green;">
+              Your answer: {{ parseInt(answerKey[index]) + 1 }}
+            </li>
+            <br />
+          </ul>
+        </li>
+      </ul>
+      <a href="#" @click="navigateTo({ name: 'quizzes' })">back to quizzes</a>
+      <br /><br />
+      <button @click="resetQuiz()" class="btn btn-outline-danger">
+        Reset Quiz
+      </button>
+      <br /><br />
+    </div>
   </div>
-  <!-- TODO refactor this out to something cleaner than conditional rendering -->
-  <div class="quiz-results-container container-fluid" v-if="quizAlreadySubmitted && quizAlreadySubmitted !== null">
-    <h2>You've already submitted this quiz!</h2>
-    <h4>your answers:</h4>
-    <ul>
-      <li v-for="(question,index) in quiz.Questions" :key="index">
-        {{index+1}}. {{question.text}}
-        <ul>
-          <li v-for="(option,childIndex) in question.QuestionOptions" :key="childIndex">
-            {{childIndex+1}}. {{option.text}}
-          </li>
-          <li style="color:green;">Your answer: {{parseInt(answerKey[index]) + 1}}</li><br />
-        </ul>
-      </li>
-    </ul>
-    <a href="#" @click="navigateTo({ name: 'quizzes' })">back to quizzes</a>
-    <br /><br />
-    <button @click="resetQuiz()" class="btn btn-outline-danger">Reset Quiz</button>
-    <br /><br />
-  </div>
-</div>
 </template>
+
 <script>
 import navigateToMixin from '@/mixins/navigateToMixin'
 import QuizzesService from '@/services/QuizzesService'

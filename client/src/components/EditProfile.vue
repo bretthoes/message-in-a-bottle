@@ -1,44 +1,84 @@
 <template>
   <base-panel>
-    <form @submit.prevent="submit" enctype="multipart/form-data">
+    <form
+      @submit.prevent="submit"
+      enctype="multipart/form-data">
       <div class="row">
-          <div class="col col-md-6 col-sm-12">
-            <img class="profile-picture" alt="Profile picture" :src="imgUrl" width="500" />
-            <br />
-              <input @change="selectFile($event)" type="file" name="blobUrl" id="file" />
-            <br /><br />
-            <h2><b-icon icon="person-fill">
-              </b-icon><input type="text" v-model="user.username" required :rules="[required]" minlength="4" maxlength="16" />
-            </h2>
-            <br />
-            <h4 class="field">
-              <b-icon icon="gift"> </b-icon><input type="date" v-model="user.birthdate" :rules="[required]" />
-            </h4>
-            <br />
-            <h4 class="field">
-              <b-icon icon="tags"></b-icon> <input type="text" v-model="user.location" :rules="[required]" />
-            </h4>
-          </div>
-          <div class="col col-md-6 col-sm-12">
-            <h4>About me:</h4>
-            <textarea v-model="user.biography" class="bio" :rules="[required]"></textarea>
-          </div>
+        <div class="col col-md-6 col-sm-12">
+          <img
+            class="profile-picture"
+            alt="Profile picture"
+            :src="imgUrl"
+            width="500"
+          />
+          <br />
+          <input
+            @change="selectFile($event)"
+            type="file"
+            name="blobUrl"
+            id="file"
+          />
+          <br /><br />
+          <h2>
+            <b-icon icon="person-fill"> </b-icon>
+            <input
+              type="text"
+              v-model="user.username"
+              required
+              :rules="[required]"
+              minlength="4"
+              maxlength="16"
+            />
+          </h2>
+          <br />
+          <h4 class="field">
+            <b-icon icon="gift"> </b-icon
+            ><input
+              type="date"
+              v-model="user.birthdate"
+              :rules="[required]" />
+          </h4>
+          <br />
+          <h4 class="field">
+            <b-icon icon="tags"></b-icon>
+            <input
+              type="text"
+              v-model="user.location"
+              :rules="[required]" />
+          </h4>
+        </div>
+        <div class="col col-md-6 col-sm-12">
+          <h4>About me:</h4>
+          <textarea
+            v-model="user.biography"
+            class="bio"
+            :rules="[required]"
+          ></textarea>
+        </div>
       </div>
       <div class="button-container">
         <base-button
           v-if="$store.state.user.id == user.id"
           buttonPosition="right"
           type="submit"
-          buttonColor="blue">Save
+          buttonColor="blue"
+          >Save
         </base-button>
         <base-button
-          @click="navigateTo({ name: 'user', params: { userId: $store.state.user.id }})"
+          @click="
+            navigateTo({
+              name: 'user',
+              params: { userId: $store.state.user.id }
+            })
+          "
           v-if="$store.state.user.id == user.id"
           buttonPosition="right"
-          buttonColor="red">Cancel
+          buttonColor="red"
+          >Cancel
         </base-button>
-        <br /><br />
-        <div class='error' v-html='error' />
+        <br />
+        <br />
+        <div class="error" v-html="error" />
       </div>
     </form>
   </base-panel>

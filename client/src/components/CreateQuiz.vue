@@ -2,22 +2,33 @@
   <div>
     <base-title>Quiz Builder</base-title>
     <base-panel>
-      <h4 style="text-align:left;">Quiz Title</h4>
+      <h4 style="text-align:left;">
+        Quiz Title
+      </h4>
       <div class="field-wrapper">
-        <input v-model="quiz.title" class="text-input" placeholder="Quiz title here..."/>
+        <input
+          v-model="quiz.title"
+          class="text-input"
+          placeholder="Quiz title here..."/>
       </div>
       <h4 style="text-align:left;">Questions</h4>
-      <div v-for="(question, index) in quiz.questions" :key="index">
+      <div
+        v-for="(question, index) in quiz.questions"
+        :key="index">
         <div class="createdQuestion">
           <div class="field-wrapper">
             <input v-model="question.text"
             class="text-input mb-4"
-            placeholder="Question text here..."/>
-            <div v-for="(questionResponse, childIndex) in question.questionOptions"
-            :key="childIndex"
-            class="question-responses">
+            placeholder="Question text here..." />
+            <div
+              v-for="(questionResponse, childIndex) in question.questionOptions"
+              :key="childIndex"
+              class="question-responses">
               <div class="createdQuestionResponse">
-                <input v-model="questionResponse.text" class="text-input question-response-input" placeholder="Question response text here..."/>
+                <input
+                  v-model="questionResponse.text"
+                  class="text-input question-response-input"
+                  placeholder="Question response text here..."/>
               </div>
             </div>
             <base-button
@@ -47,7 +58,12 @@
         buttonPosition="right"
         buttonColor="red">Cancel
       </base-button><br /><br />
-      <p v-if="!this.validInput" v-html="error" style="color:red;font-size:20px;float:right;">No empty fields allowed.</p>
+      <p
+        v-if="!this.validInput"
+        v-html="error"
+        style="color:red;font-size:20px;float:right;">
+        No empty fields allowed.
+      </p>
     </base-panel>
   </div>
 </template>

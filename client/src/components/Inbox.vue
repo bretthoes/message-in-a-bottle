@@ -8,71 +8,106 @@
           <h3 style="text-align:left;">Matches</h3>
           <ul class="match-container">
             <li
-              v-for="(match,index) in matches"
+              v-for="(match, index) in matches"
               :key="index"
               @click="setCurrentChatCulture(match, index)"
-              :class="{'active': index === activeIndex}"
-              class="matched-user">
-              {{getUsernameById(match.UserId)}}
-              <span v-if="onlineUsers[match.UserId]"> <!-- get online status here using userId -->
-                <b-icon style="float:right;" icon="circle-fill" variant="success" v-b-tooltip.hover title="Online"></b-icon>
+              :class="{ active: index === activeIndex }"
+              class="matched-user"
+            >
+              {{ getUsernameById(match.UserId) }}
+              <span v-if="onlineUsers[match.UserId]">
+                <!-- get online status here using userId -->
+                <b-icon
+                  style="float:right;"
+                  icon="circle-fill"
+                  variant="success"
+                  v-b-tooltip.hover
+                  title="Online"
+                ></b-icon>
               </span>
               <span v-else>
-                <b-icon style="float:right;" icon="circle" variant="secondary" v-b-tooltip.hover title="Offline"></b-icon>
+                <b-icon
+                  style="float:right;"
+                  icon="circle"
+                  variant="secondary"
+                  v-b-tooltip.hover
+                  title="Offline"
+                ></b-icon>
               </span>
             </li>
           </ul>
-          <h5 style="text-align:center;" v-if="matches.length === 0">No matches!</h5>
+          <h5 style="text-align:center;" v-if="matches.length === 0">
+            No matches!
+          </h5>
         </div>
         <div class="col-md-8 col-sm-12">
           <h3>Chat</h3>
           <!-- TODO use a tag below to navigate to quiz response AND to user profile -->
-          <div v-if="currentChatMatchName !== '' && currentChatQuizTitle !== ''">
-            <h4>Chatting with
+          <div
+            v-if="currentChatMatchName !== '' && currentChatQuizTitle !== ''"
+          >
+            <h4>
+              Chatting with
               <a
-                @click="navigateTo({
-                  name: 'user',
-                  params: {
-                    userId: getIdByUsername(currentChatMatchName)
-                  }
-                })"
-                href='#'
-                class="title-link">{{currentChatMatchName}}</a>, you matched on:
+                @click="
+                  navigateTo({
+                    name: 'user',
+                    params: {
+                      userId: getIdByUsername(currentChatMatchName)
+                    }
+                  })
+                "
+                href="#"
+                class="title-link"
+                >{{ currentChatMatchName }}</a
+              >, you matched on:
               <a
-              @click="navigateTo({
-                name: 'quiz',
-                params: {
-                  quizId: getQuizIdByTitle(currentChatQuizTitle)
-                }
-              })"
-              href="#"
-              class="title-link">{{currentChatQuizTitle}}
+                @click="
+                  navigateTo({
+                    name: 'quiz',
+                    params: {
+                      quizId: getQuizIdByTitle(currentChatQuizTitle)
+                    }
+                  })
+                "
+                href="#"
+                class="title-link"
+                >{{ currentChatQuizTitle }}
               </a>
             </h4>
           </div>
           <div class="chat-container">
             <div class="chat-screen">
-              <div class="message-container"
-                v-for="(m,index) in messages.slice().reverse()"
+              <div
+                class="message-container"
+                v-for="(m, index) in messages.slice().reverse()"
                 :key="index"
-                v-bind:class="{self: m.userId === $store.state.user.id}">
-                <div
-                  v-if="m.roomId === matchId"
-                  class="message">
-                  {{m.message}}
+                v-bind:class="{ self: m.userId === $store.state.user.id }"
+              >
+                <div v-if="m.roomId === matchId" class="message">
+                  {{ m.message }}
                 </div>
-                <span class="timestamp" v-if="m.roomId === matchId">{{getFormattedCurrentMinute()}}</span>
+                <span class="timestamp" v-if="m.roomId === matchId">{{
+                  getFormattedCurrentMinute()
+                }}</span>
               </div>
             </div>
             <form @submit.prevent="sendMessage">
               <b-input-group class="mt-3">
-                <b-form-input placeholder="Send message..." type="text" v-model="message" :disabled="currentChatMatchName === ''"></b-form-input>
+                <b-form-input
+                  placeholder="Send message..."
+                  type="text"
+                  v-model="message"
+                  :disabled="currentChatMatchName === ''"
+                ></b-form-input>
                 <b-input-group-append>
-                  <button type="submit" :disabled="currentChatMatchName === ''">Send</button>
+                  <button type="submit" :disabled="currentChatMatchName === ''">
+                    Send
+                  </button>
                 </b-input-group-append>
               </b-input-group>
             </form>
-        </div>
+          </div>
         </div>
       </div>
     </base-panel>
@@ -111,7 +146,7 @@ export default {
   mixins: [navigateToMixin],
   // ensure socket connection is closed
   // when this route is left
-  beforeRouteLeave (next) {
+  beforeRouteLeave (to, from, next) {
     if (this.socket.id) {
       console.log('closing socket on route exit...')
       this.socket.close()

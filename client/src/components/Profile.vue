@@ -1,23 +1,43 @@
 <template>
 <div>
   <base-panel>
-    <div class="row">
-      <div class="col col-md-6 col-sm-12">
-        <img class="profile-picture" alt="Profile picture" :src="imgUrl" width="500" />
+    <b-row>
+      <b-col
+        md="6"
+        sm="12">
+        <img
+          class="profile-picture"
+          alt="Profile picture"
+          :src="imgUrl"
+          width="500" />
         <br />
-        <h2 class="username field"><b-icon icon="person-fill"></b-icon> {{user.username}}
-          <span v-if="this.$store.state.user.isAdmin" style="color:green;">(admin)</span>
+        <h2 class="username field">
+          <b-icon icon="person-fill"></b-icon> {{user.username}}
+          <span
+            v-if="this.$store.state.user.isAdmin"
+            style="color:green;">(admin)
+          </span>
         </h2>
         <br />
-        <h4 class="field"><b-icon icon="gift"></b-icon> {{getFormmatedDate(user.birthdate) || 'No birthday added.'}}</h4>
+        <h4 class="field">
+          <b-icon icon="gift"></b-icon> {{getFormmatedDate(user.birthdate) || 'No birthday added.'}}
+        </h4>
         <br />
-        <h4 class="field"><b-icon icon="tags"></b-icon> {{user.location || 'No location added.'}}</h4>
-      </div>
-      <div class="col col-md-6 col-sm-12">
+        <h4 class="field" >
+          <b-icon icon="tags"></b-icon> {{user.location || 'No location added.'}}
+        </h4>
+      </b-col>
+      <b-col
+        md="6"
+        sm="12">
         <h4>About me:</h4>
-        <textarea v-model="user.biography" class="bio" readonly placeholder="No bio added yet..."></textarea>
-      </div>
-    </div>
+        <textarea
+          v-model="user.biography"
+          class="bio"
+          readonly
+          placeholder="No bio added yet..."></textarea>
+      </b-col>
+    </b-row>
     <base-button
       @click="navigateTo({ name: 'user-edit', params: { userId: user.id }})"
       v-if="$store.state.user.id == user.id"
@@ -101,9 +121,8 @@ export default {
 }
 .profile-picture {
   border-radius: 300px;
-  margin-bottom: 8px;
+  margin-bottom: 16px;
   max-width: 100%;
-  height: auto;
   box-shadow: 5px 5px 5px grey;
 }
 textarea {

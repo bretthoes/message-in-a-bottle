@@ -15,13 +15,24 @@
           :disabled="submitted"
         />
         <br />
-        <button type="submit" class="btn-sm btn-secondary" :disabled="submitted || this.email == null || this.email == ''">Send</button>
+        <button
+          type="submit"
+          class="btn-sm btn-secondary"
+          :disabled="submitted || this.email == null || this.email == ''">
+          Send
+        </button>
         <br />
-        <div class='error' v-html='error' />
+        <div
+          class='error'
+          v-html='error' />
       </form>
       <div v-if="submitted">
-        <p style="color:green;">Success! If an account exists for this email, instructions have been sent to get back into your account.</p>
-        <a href='#' @click='(navigateTo({ name: "root" }))'>Return home.</a>
+        <p style="color:green;">
+          Success! If an account exists for this email, instructions have been sent to get back into your account.
+        </p>
+        <a href='#' @click='(navigateTo({ name: "root" }))'>
+          Return home.
+        </a>
       </div>
   </div>
 </template>

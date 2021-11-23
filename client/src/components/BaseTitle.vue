@@ -1,8 +1,9 @@
 <template>
   <div>
-    <h1
-      :class="[fontCasing]">
-      <slot>Title</slot>
+    <h1 :class="[fontCasing]">
+      <slot>
+        Title
+      </slot>
     </h1>
   </div>
 </template>
