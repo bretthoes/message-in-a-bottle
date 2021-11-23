@@ -26,12 +26,12 @@
 </template>
 
 <script>
-import BaseButton from '@/components/BaseButton'
+import BaseButton from '@/components/ui/BaseButton'
 import Modal from '@/components/Modal.vue'
 import QuizResponsesService from '@/services/QuizResponsesService'
 import navigateToMixin from '@/mixins/navigateToMixin'
 import modalMixin from '@/mixins/modalMixin'
-import FooterWaves from './FooterWaves.vue'
+import FooterWaves from '@/components/layout/FooterWaves'
 export default {
   name: 'Home',
   data () {

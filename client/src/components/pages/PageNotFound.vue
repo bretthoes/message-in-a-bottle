@@ -11,6 +11,7 @@
 <script>
 import navigateToMixin from '@/mixins/navigateToMixin'
 export default {
+  name: 'PageNotFound',
   mixins: [navigateToMixin]
 }
 </script>

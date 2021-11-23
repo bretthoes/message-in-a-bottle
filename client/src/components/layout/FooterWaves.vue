@@ -28,7 +28,11 @@
   </footer>
 </template>
 
-<script></script>
+<script>
+export default {
+  name: 'FooterWaves'
+}
+</script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>

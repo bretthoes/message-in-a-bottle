@@ -53,12 +53,13 @@
 </template>
 
 <script>
-import BasePanel from '@/components/BasePanel'
-import BaseButton from './BaseButton'
+import BasePanel from '@/components/ui/BasePanel'
+import BaseButton from '@/components/ui/BaseButton'
 import UsersService from '@/services/UsersService'
 import navigateToMixin from '@/mixins/navigateToMixin'
 import dateFormat from 'dateformat'
 export default {
+  name: 'Profile',
   data () {
     return {
       user: {}
@@ -84,7 +85,7 @@ export default {
     // computed property to load user profile image after user is defined
     imgUrl () {
       return this.user.blobUrl ? 'data:' + this.user.imageType + ';charset=utf-8;base64,' +
-        this.user.blobUrl : require('../assets/default_profile_picture.png')
+        this.user.blobUrl : require('@/assets/default_profile_picture.png')
     }
   },
   methods: {

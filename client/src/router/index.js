@@ -1,17 +1,16 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import Home from '@/components/Home'
-import About from '@/components/About'
-import Quiz from '@/components/Quiz'
-import Profile from '@/components/Profile'
-import AccountRecovery from '@/components/AccountRecovery'
-import Modal from '@/components/Modal'
-import Quizzes from '@/components/Quizzes'
-import CreateQuiz from '@/components/CreateQuiz'
-import EditProfile from '@/components/EditProfile'
-import Inbox from '@/components/Inbox'
-import QuizSubmitted from '@/components/QuizSubmitted'
-import PageNotFound from '@/components/PageNotFound'
+import About from '@/components/pages/About'
+import AccountRecovery from '@/components/pages/AccountRecovery'
+import CreateQuiz from '@/components/pages/CreateQuiz'
+import EditProfile from '@/components/pages/EditProfile'
+import Inbox from '@/components/pages/Inbox'
+import PageNotFound from '@/components/pages/PageNotFound'
+import Profile from '@/components/pages/Profile'
+import Quiz from '@/components/pages/Quiz'
+import QuizSubmitted from '@/components/pages/QuizSubmitted'
+import Quizzes from '@/components/pages/Quizzes'
 
 Vue.use(Router)
 
@@ -46,11 +45,6 @@ export default new Router({
       path: '/account-recovery',
       name: 'account-recovery',
       component: AccountRecovery
-    },
-    {
-      path: '/modal',
-      name: 'modal',
-      component: Modal
     },
     {
       path: '/quizzes',

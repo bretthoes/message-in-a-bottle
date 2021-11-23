@@ -85,13 +85,14 @@
 </template>
 
 <script>
-import BasePanel from '@/components/BasePanel'
+import BasePanel from '@/components/ui/BasePanel'
 import UsersService from '@/services/UsersService'
 import navigateToMixin from '@/mixins/navigateToMixin'
-import BaseButton from './BaseButton.vue'
+import BaseButton from '@/components/ui/BaseButton'
 export default {
   data () {
     return {
+      name: 'EditProfile',
       user: {
         username: null,
         blobUrl: null,
@@ -125,7 +126,7 @@ export default {
     // computed property to load user profile image after user is defined
     imgUrl () {
       return this.user.blobUrl ? 'data:' + this.user.imageType + ';charset=utf-8;base64,' +
-        this.user.blobUrl : require('../assets/default_profile_picture.png')
+        this.user.blobUrl : require('@/assets/default_profile_picture.png')
     }
   },
   methods: {

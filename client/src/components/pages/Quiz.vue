@@ -89,6 +89,7 @@ import navigateToMixin from '@/mixins/navigateToMixin'
 import QuizzesService from '@/services/QuizzesService'
 import QuizResponsesService from '@/services/QuizResponsesService'
 export default {
+  name: 'Quiz',
   data () {
     return {
       // TODO have quiz mode and view mode based on if user has taken quiz

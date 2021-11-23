@@ -69,12 +69,13 @@
 </template>
 
 <script>
-import BaseButton from '@/components/BaseButton'
-import BasePanel from '@/components/BasePanel'
-import BaseTitle from '@/components/BaseTitle'
+import BaseButton from '@/components/ui/BaseButton'
+import BasePanel from '@/components/ui/BasePanel'
+import BaseTitle from '@/components/ui/BaseTitle'
 import QuizzesService from '@/services/QuizzesService'
 import navigateToMixin from '@/mixins/navigateToMixin'
 export default {
+  name: 'Create Quiz',
   components: {
     BaseButton, BasePanel, BaseTitle
   },

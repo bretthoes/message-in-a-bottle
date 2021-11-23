@@ -115,8 +115,8 @@
 </template>
 
 <script>
-import BasePanel from '@/components/BasePanel'
-import BaseTitle from '@/components/BaseTitle'
+import BasePanel from '@/components/ui/BasePanel'
+import BaseTitle from '@/components/ui/BaseTitle'
 import UsersService from '@/services/UsersService'
 import QuizResponsesService from '@/services/QuizResponsesService'
 import QuizzesService from '@/services/QuizzesService'
@@ -124,6 +124,7 @@ import navigateToMixin from '@/mixins/navigateToMixin'
 import dateFormat from 'dateformat'
 import io from 'socket.io-client'
 export default {
+  name: 'Inbox',
   data () {
     return {
       socket: {},

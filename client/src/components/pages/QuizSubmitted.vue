@@ -22,11 +22,12 @@
 </template>
 
 <script>
-import BaseButton from '@/components/BaseButton'
-import BaseTitle from './BaseTitle'
-import FooterWaves from '@/components/FooterWaves'
+import BaseButton from '@/components/ui/BaseButton'
+import BaseTitle from '@/components/ui/BaseTitle'
+import FooterWaves from '@/components/layout/FooterWaves'
 import navigateToMixin from '@/mixins/navigateToMixin'
 export default {
+  name: 'QuizSubmitted',
   mixins: [navigateToMixin],
   components: {
     FooterWaves, BaseButton, BaseTitle

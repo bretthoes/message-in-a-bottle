@@ -100,13 +100,14 @@
 </template>
 
 <script>
-import BaseButton from '@/components/BaseButton'
-import BaseTitle from '@/components/BaseTitle'
+import BaseButton from '@/components/ui/BaseButton'
+import BaseTitle from '@/components/ui/BaseTitle'
 import QuizzesService from '@/services/QuizzesService'
 import navigateToMixin from '@/mixins/navigateToMixin'
 import dateFormat from 'dateformat'
 import _ from 'lodash'
 export default {
+  name: 'Quizzes',
   components: {
     BaseButton, BaseTitle
   },

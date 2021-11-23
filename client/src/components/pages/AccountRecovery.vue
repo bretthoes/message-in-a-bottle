@@ -40,6 +40,7 @@
 <script>
 import navigateToMixin from '@/mixins/navigateToMixin'
 export default {
+  name: 'AccountRecovery',
   data () {
     return {
       email: null,

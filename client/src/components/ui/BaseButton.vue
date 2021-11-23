@@ -14,6 +14,7 @@
 </template>
 <script>
 export default {
+  name: 'BaseButton',
   inheritAttrs: false,
   props: {
     buttonSize: {

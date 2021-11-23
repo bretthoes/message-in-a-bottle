@@ -26,8 +26,9 @@
 </template>
 
 <script>
-import BaseTitle from '@/components/BaseTitle'
+import BaseTitle from '@/components/ui/BaseTitle'
 export default {
+  name: 'About',
   components: {
     BaseTitle
   }
