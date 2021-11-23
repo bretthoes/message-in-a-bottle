@@ -10,10 +10,11 @@
             <li
               v-for="(match,index) in matches"
               :key="index"
-              @click="setCurrentChatTitle(match)"
+              @click="setCurrentChatCulture(match, index)"
+              :class="{'active': index === activeIndex}"
               class="matched-user">
               {{getUsernameById(match.UserId)}}
-              <span v-if="onlineUsers[match.UserId]"> <!-- TODO get online status here using userId -->
+              <span v-if="onlineUsers[match.UserId]"> <!-- get online status here using userId -->
                 <b-icon style="float:right;" icon="circle-fill" variant="success" v-b-tooltip.hover title="Online"></b-icon>
               </span>
               <span v-else>
@@ -52,14 +53,15 @@
           <div class="chat-container">
             <div class="chat-screen">
               <div class="message-container"
-                v-for="(m,index) in messages"
+                v-for="(m,index) in messages.slice().reverse()"
                 :key="index"
                 v-bind:class="{self: m.userId === $store.state.user.id}">
                 <div
+                  v-if="m.roomId === matchId"
                   class="message">
                   {{m.message}}
                 </div>
-                <span class="timestamp">{{getFormattedCurrentMinute()}}</span>
+                <span class="timestamp" v-if="m.roomId === matchId">{{getFormattedCurrentMinute()}}</span>
               </div>
             </div>
             <form @submit.prevent="sendMessage">
@@ -89,16 +91,18 @@ import io from 'socket.io-client'
 export default {
   data () {
     return {
+      socket: {},
+      onlineUsers: {},
       matches: [],
       quizzes: [],
+      rooms: [],
       matchProfiles: [],
+      messages: [],
       currentChatMatchName: '',
       currentChatQuizTitle: '',
-      // for web socket
       message: '',
-      messages: [],
-      socket: {},
-      onlineUsers: {}
+      matchId: 0,
+      activeIndex: null
     }
   },
   components: {
@@ -107,8 +111,11 @@ export default {
   mixins: [navigateToMixin],
   // ensure socket connection is closed
   // when this route is left
-  beforeRouteLeave (to, from, next) {
-    this.socket.close()
+  beforeRouteLeave (next) {
+    if (this.socket.id) {
+      console.log('closing socket on route exit...')
+      this.socket.close()
+    }
     next()
   },
   async mounted () {
@@ -116,15 +123,25 @@ export default {
       // redirect home if not logged in
       if (!this.$store.state.isUserLoggedIn) this.navigateTo({ name: 'root' })
       this.matches = (await QuizResponsesService.index(this.$store.state.user.id)).data
-
       // only fetch user and quiz data and
       // set up socket if user has matches
       if (this.matches.length > 0) {
-        // TODO will need to find a way to dynamically
-        // change what is passed in here based on dev
-        // or production, possibly using config file.
-        // pass in server domain
-        const queryParams = { userId: this.$store.state.user.id }
+        // query users table to get usernames for display in list above instead of ids
+        const matchedUserIds = this.matches.map(m => m.UserId)
+        this.matchProfiles = (await UsersService.index(matchedUserIds)).data
+        //  query quizzes table to get quiz names for display in match list
+        const quizIds = this.matches.map(m => m.QuizId)
+        this.quizzes = (await QuizzesService.index(quizIds)).data
+
+        console.log('matchedUserIds', matchedUserIds)
+        console.log('matches', this.matches)
+        // uniquely create array of rooms from match info
+        for (const match of this.matches) {
+          this.rooms.push(this.getRoomId(match.QuizId, match.UserId, this.$store.state.user.id))
+        }
+        // declare queryParams to send to server
+        const queryParams = { userId: this.$store.state.user.id, rooms: this.rooms }
+        // join all match chat rooms
         this.socket = io('localhost:8081', {
           transports: ['websocket'],
           query: queryParams,
@@ -142,15 +159,11 @@ export default {
             this.onlineUsers = users
           })
         })
-        // query users table to get usernames for display in list above instead of ids
-        const matchIds = this.matches.map(m => m.UserId)
-        this.matchProfiles = (await UsersService.index(matchIds)).data
-        // TODO query quizzes table to get quiz names for display in match list
-        const quizIds = this.matches.map(m => m.QuizId)
-        this.quizzes = (await QuizzesService.index(quizIds)).data
 
         // listen for messages from web socket
         this.socket.on('MESSAGE', (data) => {
+          console.log('MESSAGE:', data)
+          // append message to messages array
           this.messages = [...this.messages, data]
         })
       }
@@ -160,13 +173,18 @@ export default {
   },
   methods: {
     sendMessage (e) {
-      e.preventDefault()
-      this.socket.emit('SEND_MESSAGE', {
-        username: this.$store.state.user.username,
-        userId: this.$store.state.user.id,
-        message: this.message
-      })
-      this.message = ''
+      // ensure message is not blank before send
+      if (this.message.trim() !== '') {
+        // send message to socket
+        this.socket.emit('SEND_MESSAGE', {
+          username: this.$store.state.user.username,
+          userId: this.$store.state.user.id,
+          message: this.message,
+          roomId: this.matchId
+        })
+        // reset message input
+        this.message = ''
+      }
     },
     /* various getters/setters for use on page */
     // get username from id in matchProfiles
@@ -199,9 +217,29 @@ export default {
       return dateFormat(now, 'h:MM TT')
     },
     // set matched user and quiz name for display in chat
-    setCurrentChatTitle (match) {
-      this.currentChatMatchName = this.getUsernameById(match.UserId)
-      this.currentChatQuizTitle = this.getQuizTitleById(match.QuizId)
+    setCurrentChatCulture (match, index) {
+      // no need to switch chats if we're already on the user
+      if (this.activeIndex !== index) {
+        // toggle active match to add background color
+        this.toggle(index)
+        // update match name and quiz title
+        this.currentChatMatchName = this.getUsernameById(match.UserId)
+        this.currentChatQuizTitle = this.getQuizTitleById(match.QuizId)
+        // meed to set roomId here
+        this.matchId = this.getRoomId(match.QuizId, match.UserId, this.$store.state.user.id)
+      }
+    },
+    // generate unique match id for private room creation.
+    // concatenates both userIds of a match and adds
+    // quizId to string to create unique matchid for room
+    getRoomId (quizId, matchedUserId, thisUserId) {
+      // sort ids to ensure strings are identical for both users
+      // connecting to private room
+      const userIds = [matchedUserId, thisUserId].sort((a, b) => a - b)
+      return userIds.join('').toString() + quizId.toString()
+    },
+    toggle (index) {
+      this.activeIndex = index
     }
   }
 }
@@ -230,6 +268,10 @@ h3 {
   background-color: #B1D3E1;
   cursor: pointer;
 }
+.active {
+  background-color: #B1D3E1;
+  cursor:not-allowed;
+}
 .match-container {
   border-top: 4px solid #e6e6e6;
 }
@@ -242,7 +284,7 @@ h3 {
   border-radius: 3px;
   overflow-y: auto;
   display: flex;
-  flex-direction: column;
+  flex-direction: column-reverse;
   align-items: flex-start;
 }
 .chat-container {

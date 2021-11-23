@@ -55,6 +55,7 @@
     <a href="#" @click="navigateTo({ name: 'quizzes' })">back to quizzes</a>
     <br /><br />
     <button @click="resetQuiz()" class="btn btn-outline-danger">Reset Quiz</button>
+    <br /><br />
   </div>
 </div>
 </template>

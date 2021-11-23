@@ -43,8 +43,13 @@ sequelize.sync({force: false})
     let users = {}
     // handle connection
     io.on('connection', function (socket) {
-      // get user id from connection
+      // get user id from connection and room ids
       const userId = socket.handshake.query.userId
+      const rooms = (socket.handshake.query.rooms).split(',')
+      // join all rooms
+     for (const room of rooms) {
+       socket.join(room)
+     }
 
       // check if user exists
       if (!users[userId]) users[userId] = []
@@ -52,13 +57,19 @@ sequelize.sync({force: false})
       // add socket id from user's connection
       users[userId].push(socket.id)
 
-      // broadcast online status to all users
-      io.emit('online', users)
+      // broadcast online status to all other matches
+      for (const room of rooms) {
+        io.to(room).emit('online', users)
+      }
 
       // handle disconnect
       socket.on('disconnect', () => {
         // remove user from connected users
         _.remove(users[userId], u => u === socket.id)
+        // leave all connections
+        for (const room of rooms) {
+          socket.leave(room)
+        }
 
         // no connections for user, delete and broadcast offline status
         if (users[userId].length === 0) {
@@ -68,9 +79,9 @@ sequelize.sync({force: false})
         // disconnect socket
         socket.disconnect()
       })
-      // handle send message
+      // handle send message to specified room
       socket.on('SEND_MESSAGE', (message) => {
-        io.emit('MESSAGE', message)
+        io.to(message.roomId).emit('MESSAGE', message)
       })
     })
   })
