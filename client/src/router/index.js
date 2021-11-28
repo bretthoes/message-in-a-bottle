@@ -11,6 +11,7 @@ import Profile from '@/components/pages/Profile'
 import Quiz from '@/components/pages/Quiz'
 import QuizSubmitted from '@/components/pages/QuizSubmitted'
 import Quizzes from '@/components/pages/Quizzes'
+import Stats from '@/components/pages/stats'
 
 Vue.use(Router)
 
@@ -70,6 +71,11 @@ export default new Router({
       path: '/quiz-submitted',
       name: 'quiz-submitted',
       component: QuizSubmitted
+    },
+    {
+      path: '/stats',
+      name: 'stats',
+      component: Stats
     }
   ]
 })

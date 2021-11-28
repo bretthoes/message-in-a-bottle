@@ -57,12 +57,11 @@
         v-if="$store.state.user.isAdmin"
         buttonPosition="right"
         buttonColor="red">Cancel
-      </base-button><br /><br />
+      </base-button><br /><br /><br />
       <p
         v-if="!this.validInput"
-        v-html="error"
-        style="color:red;font-size:20px;float:right;">
-        No empty fields allowed.
+        style="color:red;font-size:20px;text-align:right;">
+        {{error}}
       </p>
     </base-panel>
   </div>
@@ -75,7 +74,7 @@ import BaseTitle from '@/components/ui/BaseTitle'
 import QuizzesService from '@/services/QuizzesService'
 import navigateToMixin from '@/mixins/navigateToMixin'
 export default {
-  name: 'Create Quiz',
+  name: 'CreateQuiz',
   components: {
     BaseButton, BasePanel, BaseTitle
   },
@@ -145,6 +144,12 @@ export default {
       if (this.validInput) {
         try {
           await QuizzesService.post(this.quiz)
+          // Display toast on successful register
+          this.$toasted.show('Quiz Created!', {
+            theme: 'outline',
+            position: 'top-center',
+            duration: 2000
+          })
           this.navigateTo({name: 'quizzes'})
         } catch (err) {
           this.error = err.response.data.error

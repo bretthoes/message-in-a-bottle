@@ -3,8 +3,10 @@
     <form
       @submit.prevent="submit"
       enctype="multipart/form-data">
-      <div class="row">
-        <div class="col col-md-6 col-sm-12">
+      <b-row class="row">
+        <b-col
+          md="6"
+          sm="12">
           <img
             class="profile-picture"
             alt="Profile picture"
@@ -46,16 +48,18 @@
               v-model="user.location"
               :rules="[required]" />
           </h4>
-        </div>
-        <div class="col col-md-6 col-sm-12">
+        </b-col>
+        <b-col
+        md="6"
+        sm="12">
           <h4>About me:</h4>
           <textarea
             v-model="user.biography"
             class="bio"
             :rules="[required]"
           ></textarea>
-        </div>
-      </div>
+        </b-col>
+      </b-row>
       <div class="button-container">
         <base-button
           v-if="$store.state.user.id == user.id"
@@ -172,10 +176,7 @@ export default {
 <style scoped>
 .row {
   padding: 12px;
-}
-.col {
   text-align: left;
-  position: relative;
 }
 .profile-picture {
   border-radius: 300px;

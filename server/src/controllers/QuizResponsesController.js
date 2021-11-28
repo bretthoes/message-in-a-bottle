@@ -43,6 +43,7 @@ module.exports = {
   async index (req, res) {
     try {
       //raw custom query to get all matches for a given user
+      // TODO replace with sequelize self join statement
       const matches = await sequelize.query(
         'SELECT A.:UserId AS UserId, A.:QuizId ' +
         'FROM QuizResponses A, QuizResponses B ' +
@@ -74,6 +75,7 @@ module.exports = {
       const quizResponsesCount = await QuizResponse.count()
       // use raw query for self join
       // to get total match count
+      // TODO replace with sequelize self join statement
       const matches = await sequelize.query(
         'SELECT A.:id as count ' + 
         'FROM QuizResponses A, QuizResponses B  ' +

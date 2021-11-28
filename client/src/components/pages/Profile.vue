@@ -1,7 +1,7 @@
 <template>
 <div>
   <base-panel>
-    <b-row>
+    <b-row class="row">
       <b-col
         md="6"
         sm="12">
@@ -116,8 +116,6 @@ export default {
 <style scoped>
 .row {
   padding: 12px;
-}
-.col {
   text-align: left;
 }
 .profile-picture {

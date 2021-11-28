@@ -83,7 +83,7 @@
               autocomplete='off'
               required
             />
-            <div class='error' v-html='error' />
+            <div class='error'>{{error}}</div>
             <div
               class='container'
               style='background-color:#f1f1f1'>
@@ -154,8 +154,8 @@ export default {
         // Display toast on successful register
         this.$toasted.show('Successfully Registered!', {
           theme: 'outline',
-          position: 'bottom-center',
-          duration: 5000
+          position: 'top-center',
+          duration: 200
         })
       } catch (err) {
         this.error = err.response.data.error
@@ -177,8 +177,8 @@ export default {
         // Display toast on successful login
         this.$toasted.show('Welcome back!', {
           theme: 'outline',
-          position: 'bottom-center',
-          duration: 5000
+          position: 'top-center',
+          duration: 2000
         })
       } catch (err) {
         this.error = err.response.data.error

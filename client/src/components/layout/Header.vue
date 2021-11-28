@@ -1,20 +1,25 @@
 <template>
-  <div class="content">
+  <div>
     <!-- nav -->
     <nav>
       <ul>
         <li>
-          <a href="#"
-            ><span @click="navigateTo({ name: 'root' })">&nbsp;home</span></a
-          >
+          <a href="#">
+            <span @click="navigateTo({ name: 'root' })">&nbsp;home</span>
+            </a>
         </li>
-        <li>
-          <a href="#" v-if="$store.state.isUserLoggedIn">
+        <li v-if="$store.state.isUserLoggedIn">
+          <a href="#" v-if="$store.state.user.isAdmin">
+            <span @click="navigateTo({ name: 'stats' })">&nbsp;stats</span>
+          </a>
+        </li>
+        <li v-if="$store.state.isUserLoggedIn">
+          <a href="#">
             <span @click="navigateTo({ name: 'inbox' })">&nbsp;inbox</span>
           </a>
         </li>
-        <li>
-          <a href="#" v-if="$store.state.isUserLoggedIn">
+        <li v-if="$store.state.isUserLoggedIn">
+          <a href="#">
             <span v-b-toggle="'collapse-1'">
               &#x25BE;{{ $store.state.user.username }}
             </span>
@@ -22,6 +27,7 @@
               <b-card>
                 <ul class='dropdown'>
                   <li><a href='#'
+                    v-b-toggle="'collapse-1'"
                     @click="navigateTo({
                     name: 'user',
                     params: {
@@ -39,18 +45,16 @@
             </b-collapse>
           </a>
         </li>
-        <li>
+        <li v-if="!$store.state.isUserLoggedIn">
           <a
             href="#"
-            v-if="!$store.state.isUserLoggedIn"
             @click="openModal(false)"
             ><span>&nbsp;login</span></a
           >
         </li>
-        <li>
+        <li v-if="!$store.state.isUserLoggedIn">
           <a
             href="#"
-            v-if="!$store.state.isUserLoggedIn"
             @click="openModal(true)"
             ><span>&nbsp;register</span></a
           >
@@ -94,22 +98,20 @@ export default {
 </script>
 
 <style scoped>
-label {
-  display: block;
-  text-align: left;
-  font-size: 16px;
-  font-weight: bold;
-  padding-left: 3px;
-
-}
-.dropdown > li > a {
-  color: black;
+* {
   list-style-type: none;
   text-decoration: none;
+  text-transform: lowercase;
+  color: black;
+  font-size: 22px;
+}
+.dropdown > li > a {
+  transform: skew(12deg);
+  display: inline-block;
 }
 .dropdown > li > a:hover {
-  transition: 0.25s ease;
   text-decoration: underline;
+  color: black;
 }
 nav {
   text-align: right;
@@ -117,14 +119,8 @@ nav {
 nav > ul > li > a,
 nav > ul,
 nav > ul > li {
-  list-style-type: none;
-  text-decoration: none;
-  color: black;
   padding-right: 12px;
-  font-size: 22px;
-  text-transform: lowercase;
 }
-
 nav > ul > li > a {
   display: inline-block;
   transform: skew(-12deg);
@@ -134,15 +130,6 @@ nav > ul > li > a > span {
   transform: skew(12deg);
 }
 nav > ul > li > a:hover {
-  transition: 0.75s ease;
-  /*color: aquamarine;*/
   outline: 1px solid black;
-}
-
-/* Change styles for span and cancel button on extra small screens */
-@media screen and (max-width: 300px) {
-  .cancelbtn {
-    width: 100%;
-  }
 }
 </style>

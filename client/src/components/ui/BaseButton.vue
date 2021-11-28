@@ -42,7 +42,7 @@ button {
   cursor: pointer;
   width: 100px;
   height: 40px;
-  font-size: 14px;
+  font-size: 16px;
   border: 1px solid black;
   box-shadow: 1px 2px;
   margin: 6px;
@@ -80,9 +80,14 @@ button {
   height: 60px;
 }
 .button.medium {
-  font-size: 14px;
+  font-size: 16px;
   width: 100px;
   height: 40px;
+}
+.button.small {
+  font-size: 14px;
+  width: 80px;
+  height: 30px;
 }
 .button.ultra-wide {
   width: 50%;

@@ -22,9 +22,7 @@
           Send
         </button>
         <br />
-        <div
-          class='error'
-          v-html='error' />
+        <div class='error'>{{error}}</div>
       </form>
       <div v-if="submitted">
         <p style="color:green;">

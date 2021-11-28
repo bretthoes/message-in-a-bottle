@@ -67,18 +67,21 @@
         }}</a>
       </template>
       <template #cell(actions)="row">
-        <p style="display:inline;">
-          <a
-            href="#"
-            @click="
-              navigateTo({ name: 'quiz', params: { quizId: row.item.id } })
-            "
-            >Open</a
-          >
-        </p>
-        <p style="display:inline;" v-if="$store.state.user.isAdmin">
-          &nbsp;|&nbsp;<a href="#" @click="deleteQuiz(row.item.id)">Delete</a>
-        </p>
+        <div style="display:flex;flex-direction:row;justify-content:center;">
+          <base-button
+            @click="navigateTo({ name: 'quiz', params: { quizId: row.item.id } })"
+            buttonColor="blue"
+            buttonSize="small"
+            >Open
+          </base-button>
+          <base-button
+            v-if="$store.state.user.isAdmin"
+            @click="deleteQuiz(row.item.id)"
+            buttonColor="red"
+            buttonSize="small"
+            >Delete
+          </base-button>
+        </div>
       </template>
       <template #cell(odds)="row">
         <p>1 / {{ calculateOdds(row.item.Questions) }}</p>
