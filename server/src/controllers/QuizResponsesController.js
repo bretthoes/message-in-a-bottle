@@ -42,27 +42,37 @@ module.exports = {
   },
   async index (req, res) {
     try {
-      //raw custom query to get all matches for a given user
-      // TODO replace with sequelize self join statement
-      const matches = await sequelize.query(
-        'SELECT A.:UserId AS UserId, A.:QuizId ' +
-        'FROM QuizResponses A, QuizResponses B ' +
-        'WHERE A.:answerKey = B.:answerKey ' +
-        'AND A.:QuizId = B.:QuizId ' +
-        'AND A.:UserId != B.:UserId ' +
-        'AND A.:UserId != :currentUserId ' +
-        'AND B.:UserId = :currentUserId',
-        {
-          model: QuizResponse,
-          replacements: {
-            answerKey: 'answerKey',
-            QuizId: 'QuizId',
-            UserId: 'UserId',
-            currentUserId: req.params.userId,
+      // return matched responses for user if id 
+      // passed in, else return all quizz responses
+      console.log('req.params.userId',req.params.userId)
+      console.log('req.params',req.params)
+      if (!req.params.userId === null) {
+        console.log('asdasdsasda')
+        // raw custom query to get all matches for a given user
+        // TODO replace with sequelize self join statement
+        const matches = await sequelize.query(
+          'SELECT A.:UserId AS UserId, A.:QuizId ' +
+          'FROM QuizResponses A, QuizResponses B ' +
+          'WHERE A.:answerKey = B.:answerKey ' +
+          'AND A.:QuizId = B.:QuizId ' +
+          'AND A.:UserId != B.:UserId ' +
+          'AND A.:UserId != :currentUserId ' +
+          'AND B.:UserId = :currentUserId',
+          {
+            model: QuizResponse,
+            replacements: {
+              answerKey: 'answerKey',
+              QuizId: 'QuizId',
+              UserId: 'UserId',
+              currentUserId: req.params.userId,
+            }
           }
-        }
-      )
-      return res.send(matches)
+        )
+        return res.send(matches)
+      } else { // no user id, return all quiz responses
+        const quizResponses = await QuizResponse.findAll()
+        return res.send(quizResponses)
+      }
     } catch (err) {
       console.log('err', err)
       return res.status(400).send(err)
