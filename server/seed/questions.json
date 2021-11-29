@@ -43,5 +43,35 @@
         "id":9,
         "QuizId":2,
         "text":"You are a..."
+     },
+     {
+        "id":10,
+        "QuizId":2,
+        "text":"These are said to be the Big Five personality traits. Pick one without thinking!"
+     },
+     {
+        "id":11,
+        "QuizId":3,
+        "text":"Which of these is your favourite colour?"
+     },
+     {
+        "id":12,
+        "QuizId":3,
+        "text":"What's your favourite of the Big Four professional sports leagues?"
+     },
+     {
+        "id":13,
+        "QuizId":3,
+        "text":"Pick a genre of music!"
+     },
+     {
+        "id":14,
+        "QuizId":3,
+        "text":"Favourite season?"
+     },
+     {
+        "id":15,
+        "QuizId":3,
+        "text":"Favourite meal?"
      }
  ]

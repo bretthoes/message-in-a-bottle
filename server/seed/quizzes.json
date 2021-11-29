@@ -7,6 +7,11 @@
     {
         "id":2,
         "title":"Compatibility Quiz",
-        "questionCount":3
+        "questionCount":4
+     },
+     {
+         "id":3,
+         "title":"Favourite Things Quiz",
+         "questionCount":5
      }
  ]

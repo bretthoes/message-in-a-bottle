@@ -42,12 +42,12 @@ module.exports = {
   },
   async index (req, res) {
     try {
-      // return matched responses for user if id 
-      // passed in, else return all quizz responses
-      console.log('req.params.userId',req.params.userId)
-      console.log('req.params',req.params)
-      if (!req.params.userId === null) {
-        console.log('asdasdsasda')
+      // return all quiz responses if no user id
+      // defined, else return matched quiz responses
+      if (req.params.userId === 'undefined') {
+        const quizResponses = await QuizResponse.findAll()
+        return res.send(quizResponses)
+      } else { // user id specified, return matched quiz responses
         // raw custom query to get all matches for a given user
         // TODO replace with sequelize self join statement
         const matches = await sequelize.query(
@@ -69,9 +69,6 @@ module.exports = {
           }
         )
         return res.send(matches)
-      } else { // no user id, return all quiz responses
-        const quizResponses = await QuizResponse.findAll()
-        return res.send(quizResponses)
       }
     } catch (err) {
       console.log('err', err)

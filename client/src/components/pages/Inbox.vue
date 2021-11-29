@@ -149,7 +149,6 @@ export default {
   // when this route is left
   beforeRouteLeave (to, from, next) {
     if (this.socket.id) {
-      console.log('closing socket on route exit...')
       this.socket.close()
     }
     next()
@@ -168,9 +167,6 @@ export default {
         //  query quizzes table to get quiz names for display in match list
         const quizIds = this.matches.map(m => m.QuizId)
         this.quizzes = (await QuizzesService.index(quizIds)).data
-
-        console.log('matchedUserIds', matchedUserIds)
-        console.log('matches', this.matches)
         // uniquely create array of rooms from match info
         for (const match of this.matches) {
           this.rooms.push(this.getRoomId(match.QuizId, match.UserId, this.$store.state.user.id))
