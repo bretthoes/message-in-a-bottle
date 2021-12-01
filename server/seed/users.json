@@ -3,24 +3,28 @@
        "username":"admin",
        "email":"admin@admin.com",
        "isAdmin":true,
-       "password":"admin"
+       "password":"admin",
+       "createdAt":"2021-11-29T07:06:44.402Z"
     },
     {
        "username":"user",
        "email":"user@user.com",
        "isAdmin":false,
-       "password":"user"
+       "password":"user",
+       "createdAt":"2021-11-29T07:06:44.402Z"
     },
     {
        "username":"user2",
        "email":"user2@user2.com",
        "isAdmin":false,
-       "password":"user2"
+       "password":"user2",
+       "createdAt":"2021-11-26T07:06:44.402Z"
     },
     {
       "username":"brett",
        "email":"bretthoes@gmail.com",
        "isAdmin":true,
-       "password":"brett"
+       "password":"brett",
+       "createdAt":"2021-11-25T07:06:44.402Z"
     }
 ]

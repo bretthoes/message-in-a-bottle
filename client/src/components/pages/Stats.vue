@@ -1,25 +1,33 @@
 <template>
   <div>
     <base-title>Stats</base-title>
-    <GChart
+    <br />
+    <b-form-select v-model="selectedChart" :options="chartSelectionOptions"></b-form-select>
+    <br /><br />
+    <div v-if="selectedChart === 'userStatistics'">
+      <h2>Users Joined</h2>
+      <GChart
       type="ColumnChart"
-      :data="chartData"
-      :options="chartOptions"
-    />
-    <h2>Pie Chart</h2>
-    <GChart
-      type="PieChart"
-      :options="pieChartOptions"
-      :data="pieChartData"
-    />
+      :data="columnChartData"
+      :options="columnChartOptions" />
+    </div>
+    <div v-if="selectedChart === 'quizStatistics'">
+      <h2>Quiz Popularity</h2>
+      <GChart
+        type="PieChart"
+        :options="pieChartOptions"
+        :data="pieChartData" />
+    </div>
   </div>
 </template>
 
 <script>
 import BaseTitle from '@/components/ui/BaseTitle'
+import UsersService from '@/services/UsersService'
 import QuizzesService from '@/services/QuizzesService'
 import QuizResponsesService from '@/services/QuizResponsesService'
 import { GChart } from 'vue-google-charts'
+import dateFormat from 'dateformat'
 export default {
   name: 'Stats',
   components: {
@@ -27,17 +35,9 @@ export default {
   },
   data () {
     return {
-      chartData: [
-        ['Year', 'Sales', 'Expenses', 'Profit'],
-        ['2014', 1000, 400, 200],
-        ['2015', 1170, 460, 250],
-        ['2016', 660, 1120, 300],
-        ['2017', 1030, 540, 350]
-      ],
-      chartOptions: {
+      columnChartOptions: {
         chart: {
-          title: 'Company Performance',
-          subtitle: 'Sales, Expenses, and Profit: 2014-2017'
+          title: 'New Users Joined'
         }
       },
       pieChartOptions: {
@@ -45,8 +45,15 @@ export default {
         height: 450,
         width: 1100
       },
+      chartSelectionOptions: [
+        { value: null, text: 'Please select a chart to display' },
+        { value: 'quizStatistics', text: 'Total quizzes taken stats' },
+        { value: 'userStatistics', text: 'Total users joined stats' }
+      ],
+      users: [],
       quizzes: [],
-      quizResponses: []
+      quizResponses: [],
+      selectedChart: null
     }
   },
   computed: {
@@ -61,10 +68,23 @@ export default {
       }
       // return object mapped to array for Vue Google Charts formatting
       return Object.keys(counts).map((key) => [(key), counts[key]])
+    },
+    columnChartData () {
+      const counts = {'Date': 'Users joined'}
+      const copyUsers = this.users
+      const usersSorted = copyUsers.sort((a, b) => a.createdAt > b.createdAt)
+      for (const u of usersSorted) {
+        const createdDate = dateFormat(new Date(u.createdAt), 'm/d/yy')
+        counts[createdDate] = counts[createdDate] ? counts[createdDate] + 1 : 1
+      }
+      // map object to an array
+      return Object.keys(counts).map((key) => [(key), counts[key]])
     }
   },
   async created () {
     try {
+      // fetch all users
+      this.users = (await UsersService.index()).data
       // fetch all quizzes
       this.quizzes = (await QuizzesService.index()).data
       // fetch all quiz responses
@@ -78,6 +98,9 @@ export default {
       const quiz = this.quizzes.find(q => q.id === id)
       if (quiz) return quiz.title
       else return ''
+    },
+    getFormattedDate (utcDate) {
+      return utcDate
     }
   }
 }

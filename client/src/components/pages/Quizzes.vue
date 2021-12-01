@@ -1,9 +1,9 @@
 <template>
   <div class="container">
     <base-title>All Quizzes</base-title>
+    <br /><br />
     <b-row>
-      <b-col md="3">
-        <br />
+      <b-col md="3" sm="12">
         <div class="search">
           <b-input-group size="sm">
             <b-input-group-prepend is-text>
@@ -17,7 +17,7 @@
           </b-input-group>
         </div>
       </b-col>
-      <b-col md="6" class="my-1">
+      <b-col md="6" sm="12">
         <b-form-group
           label="Per page:"
           label-for="per-page-select"
@@ -26,23 +26,21 @@
           label-cols-lg="3"
           label-align-sm="right"
           label-size="sm"
-          align="left"
-        >
+          align="left">
           <b-form-select
             id="per-page-select"
             v-model="perPage"
             :options="pageOptions"
-            size="sm"
-          >
+            size="sm">
           </b-form-select>
         </b-form-group>
       </b-col>
-      <b-col md="3">
+      <b-col md="3" sm="12">
         <base-button
           @click="navigateTo({ name: 'quizzes-create' })"
           v-if="$store.state.user.isAdmin"
-          buttonPosition="right"
-          >Add Quiz
+          buttonPosition="right">
+          Add Quiz
         </base-button>
       </b-col>
     </b-row>
@@ -59,8 +57,7 @@
       :per-page="perPage"
       responsive="sm"
       :sort-by.sync="sortBy"
-      :sort-desc.sync="sortDesc"
-    >
+      :sort-desc.sync="sortDesc">
       <template #cell(name)="data">
         <a :href="`#${data.value.replace(/[^a-z]+/i, '-').toLowerCase()}`">{{
           data.value

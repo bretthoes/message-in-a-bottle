@@ -4,11 +4,20 @@ const { User } = require('../models')
 module.exports = {
   async index (req, res) {
     try {
-      const users = await User.findAll({
-        where: {
-          id: req.query.matchIds
-        }
-      })
+      // check for params
+      let empty
+      for (const q in req.query) empty = false
+      empty = true
+      let users
+      if (empty) {
+        users = await User.findAll()
+      } else {
+        users = await User.findAll({
+          where: {
+            id: req.query.matchIds
+          }
+        })
+      }      
       res.send(users)
     } catch (err) {
       console.log(err)
@@ -24,7 +33,7 @@ module.exports = {
     } catch (err) {
       console.log(err)
       res.status(500).send({
-        error: 'an error has occurred trying to retrieve the user'
+        error: 'an error has occurred trying to retrieve the user.'
       })
     }
   },

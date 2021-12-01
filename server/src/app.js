@@ -46,6 +46,7 @@ sequelize.sync({force: false})
       // get user id from connection and room ids
       const userId = socket.handshake.query.userId
       const rooms = (socket.handshake.query.rooms).split(',')
+      
       // join all rooms
      for (const room of rooms) {
        socket.join(room)

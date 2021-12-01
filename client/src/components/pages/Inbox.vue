@@ -80,16 +80,17 @@
             <div class="chat-screen">
               <div
                 class="message-container"
-                v-for="(m, index) in messages.slice().reverse()"
+                v-for="(m, index) in formattedMessages"
                 :key="index"
-                v-bind:class="{ self: m.userId === $store.state.user.id }"
-              >
-                <div v-if="m.roomId === matchId" class="message">
+                v-bind:class="{ self: m.userId === $store.state.user.id }">
+                <div class="message" v-if="m.roomId === matchId">
                   {{ m.message }}
                 </div>
-                <span class="timestamp" v-if="m.roomId === matchId">{{
-                  getFormattedCurrentMinute()
-                }}</span>
+                <span
+                  class="timestamp"
+                  v-if="m.roomId === matchId">
+                  {{ getFormattedTimestamp(m.timestamp) }}
+                </span>
               </div>
             </div>
             <form @submit.prevent="sendMessage">
@@ -203,6 +204,11 @@ export default {
       console.log(err)
     }
   },
+  computed: {
+    formattedMessages () {
+      return this.messages.slice().reverse()
+    }
+  },
   methods: {
     sendMessage (e) {
       // ensure message is not blank before send
@@ -212,7 +218,8 @@ export default {
           username: this.$store.state.user.username,
           userId: this.$store.state.user.id,
           message: this.message,
-          roomId: this.matchId
+          roomId: this.matchId,
+          timestamp: new Date()
         })
         // reset message input
         this.message = ''
@@ -243,9 +250,8 @@ export default {
       if (quiz) return quiz.id
       else return 0
     },
-    // return current minute formatted for display with message1
-    getFormattedCurrentMinute () {
-      const now = new Date()
+    // return current minute formatted for display with message
+    getFormattedTimestamp (now) {
       return dateFormat(now, 'h:MM TT')
     },
     // set matched user and quiz name for display in chat
