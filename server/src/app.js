@@ -20,8 +20,9 @@ router.get('/', function(req, res, next){
  next();
 })
 
-app.use(router)
 app.use(cors())
+app.use(router)
+app.use(express.static('dist'))
 
 // use static path for production
 if (process.env.NODE_ENV === 'production') {
