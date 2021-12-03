@@ -26,7 +26,7 @@
       </form>
       <div v-if="submitted">
         <p style="color:green;">
-          Success! If an account exists for this email, instructions have been sent to get back into your account.
+          Success! Please check your email for instructions to get back into your account.
         </p>
         <a href='#' @click='(navigateTo({ name: "root" }))'>
           Return home.
@@ -37,6 +37,7 @@
 
 <script>
 import navigateToMixin from '@/mixins/navigateToMixin'
+import AuthenticationService from '@/services/AuthenticationService'
 export default {
   name: 'AccountRecovery',
   data () {
@@ -52,6 +53,7 @@ export default {
     async submit () {
       this.error = null
       try {
+        const response = await AuthenticationService.reset({email: this.email})
         this.submitted = true
       } catch (err) {
         this.error = err.response.data.error

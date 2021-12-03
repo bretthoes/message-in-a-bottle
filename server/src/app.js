@@ -4,7 +4,7 @@ const cors =  require('cors')
 const morgan = require('morgan')
 const fileUpload = require('express-fileupload')
 const path = require('path')
-const {sequelize} = require('./models')
+const { sequelize } = require('./models')
 const config = require('./config/config')
 const _ = require("lodash")
 const app = express()
@@ -18,13 +18,11 @@ router.get('/', function(req, res, next){
 })
 
 app.use(router)
+app.use(cors())
 
 if (process.env.NODE_ENV === 'production') {
   app.use(express.static(path.join(__dirname, "../dist")))
-  console.log(process.env.NODE_ENV)
 }
-
-app.use(cors())
 
 // Pass our app and attach all endpoints
 require('./routes')(app)

@@ -2,10 +2,10 @@ const { User } = require('../models')
 const jwt = require('jsonwebtoken')
 const config = require('../config/config')
 
-function jwtSignUser(user) {
-  const ONE_WEEK = 604800 // seconds
+function jwtSignUser(user, expirationTime = 604800) {
+   // 604800 is default value in seconds (one week for expiry)
   return jwt.sign(user, config.authentication.jwtSecret, {
-    expiresIn: ONE_WEEK
+    expiresIn: expirationTime
   })
 }
 // Controller for Authentication specific requests
@@ -71,6 +71,40 @@ module.exports = {
         user: userJson,
         token: jwtSignUser(userJson)
       })
+    } catch (err) {
+      console.error(err)
+      res.status(500).send({
+        error: 'An error has occurred.'
+      })
+    }
+  },
+  async reset (req, res) {
+    try {
+      // find user with email
+      const {email} = req.body
+      let user = await User.findOne({
+        where: {
+          email: email
+        }
+      })
+      // If email nor username found, send error message for display
+      if (!user) {
+        return res.status(403).send({
+          error: 'Email not found.'
+        })
+      }
+      // get JSON data for token
+      const userJson = user.toJSON()
+      // sign token and set expiration for 20 mins
+      // (time allotment to reset password)
+      const token = jwtSignUser(userJson, 1200)
+      const data = {
+        from: 'noreply@reset.com',
+        to: email,
+        subject: 'Reset Password',
+        html: '<p>test</p>'
+      }
+      res.sendStatus(200)
     } catch (err) {
       console.error(err)
       res.status(500).send({

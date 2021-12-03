@@ -15,6 +15,9 @@ module.exports = (app) => {
   app.post('/login',
     AuthenticationController.login)
 
+  app.post('/reset',
+    AuthenticationController.reset)
+
   // Quizzes controller routes
   app.get('/quizzes',
     QuizzesController.index)
