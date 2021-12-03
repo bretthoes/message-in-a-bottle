@@ -1,19 +1,31 @@
+/**
+ * Controller for authentication requests.
+ */
 const { User } = require('../models')
 const jwt = require('jsonwebtoken')
 const config = require('../config/config')
 
+/**
+ * Sign user with json web token
+ * @param {User} user 
+ * @param {int} expirationTime 
+ * @returns json web token
+ */
 function jwtSignUser(user, expirationTime = 604800) {
    // 604800 is default value in seconds (one week for expiry)
   return jwt.sign(user, config.authentication.jwtSecret, {
     expiresIn: expirationTime
   })
 }
-// Controller for Authentication specific requests
 module.exports = {
+  /**
+   * Register a user.
+   * @param {Request} req 
+   * @param {Response} res 
+   */
   async register(req, res) {
     try {
       const user = await User.create(req.body)
-      // TODO set isAdmin store here from user
       const userJson = user.toJSON()
       res.send({
         user: userJson,
@@ -31,6 +43,11 @@ module.exports = {
       res.status(400).send({error})
     }
   },
+  /**
+   * Log a user in.
+   * @param {Request} req 
+   * @param {Response} res 
+   */
   async login(req, res) {
     try {
       const {
@@ -78,6 +95,12 @@ module.exports = {
       })
     }
   },
+  /**
+   * Send email to reset user password.
+   * @param {Request} req 
+   * @param {Response} res 
+   * @returns 
+   */
   async reset (req, res) {
     try {
       // find user with email

@@ -1,3 +1,8 @@
+/**
+ * Index for database seed, will drop and repopulate database
+ * with initial sample data for testing. To use, run command
+ * 'npm run seed' in server directory.
+ */
 const { sequelize, User, Quiz, Question, QuestionOption, QuizResponse } = require('../src/models')
 
 const Promise = require('bluebird')
@@ -7,6 +12,9 @@ const questions = require('./questions.json')
 const questionOptions = require('./questionOptions.json')
 const quizResponses = require('./quizResponses.json')
 
+/**
+ * Iterate through json files in directory and add object models.
+ */
 sequelize.sync({
     force: true
   })

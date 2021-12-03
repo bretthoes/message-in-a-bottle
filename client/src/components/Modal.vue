@@ -119,6 +119,9 @@
 <script>
 import AuthenticationService from '@/services/AuthenticationService'
 import navigateToMixin from '@/mixins/navigateToMixin'
+/**
+ * Component for conditional login/register modal.
+ */
 export default {
   name: 'Modal',
   data () {
@@ -133,6 +136,9 @@ export default {
   },
   mixins: [navigateToMixin],
   methods: {
+    /**
+     * Attempt to register a user with given credentials.
+     */
     async register (e) {
       e.preventDefault()
       // Ensure confirmation password matches
@@ -148,7 +154,6 @@ export default {
         })
         this.$store.dispatch('setToken', response.data.token)
         this.$store.dispatch('setUser', response.data.user)
-
         // Close modal upon successful login
         this.$emit('close')
         // Display toast on successful register
@@ -161,6 +166,9 @@ export default {
         this.error = err.response.data.error
       }
     },
+    /**
+     * Attempt to log a user in with given credentials.
+     */
     async login (e) {
       e.preventDefault()
       try {
@@ -184,9 +192,15 @@ export default {
         this.error = err.response.data.error
       }
     },
+    /**
+     * Close modal.
+     */
     close () {
       this.$emit('close')
     },
+    /**
+     * Update modal culture (login vs register).
+     */
     updateIsRegister (isRegister) {
       this.isRegister = isRegister
     }

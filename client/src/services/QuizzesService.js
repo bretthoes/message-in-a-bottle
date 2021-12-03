@@ -1,3 +1,6 @@
+/**
+ * Services for quizzes.
+ */
 import Api from '@/services/Api'
 
 export default {

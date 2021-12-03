@@ -1,3 +1,6 @@
+/**
+ * Backend start up.
+ */
 const express = require('express')
 const bodyParser = require('body-parser')
 const cors =  require('cors')
@@ -20,6 +23,7 @@ router.get('/', function(req, res, next){
 app.use(router)
 app.use(cors())
 
+// use static path for production
 if (process.env.NODE_ENV === 'production') {
   app.use(express.static(path.join(__dirname, "../dist")))
 }

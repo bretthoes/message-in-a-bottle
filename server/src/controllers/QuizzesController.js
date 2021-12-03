@@ -1,8 +1,17 @@
+/**
+ * Controller for quiz requests.
+ */
 const { sequelize, Quiz, Question, QuestionOption } = require('../models')
 const { Op } = require('sequelize')
 
 // CRUD for Quiz model and child assocations (Question, QuestionOption)
 module.exports = {
+  /**
+   * Create quiz.
+   * @param {Request} req 
+   * @param {Response} res 
+   * @returns transaction result
+   */
   async post (req, res) {
     try {
       // create a transaction to handle bulk insert of
@@ -47,6 +56,12 @@ module.exports = {
       return res.status(400).send({error})
     }
   },
+  /**
+   * Retrieve single quiz.
+   * @param {Request} req 
+   * @param {Response} res 
+   * @returns quiz
+   */
   async show (req, res) {
     try {
       // get quiz and include all belonging questions
@@ -68,6 +83,12 @@ module.exports = {
       })
     }
   },
+  /**
+   * Get quizzes.
+   * @param {Request} req 
+   * @param {Response} res 
+   * @returns quizzes
+   */
   async index (req, res) {
     try {
       let quizzes = null
@@ -118,7 +139,14 @@ module.exports = {
     } catch (err) {
       return res.status(400).send(err)
     }
-  }, async destroy (req, res) {
+  },
+  /**
+   * Destroy quiz.
+   * @param {Request} req 
+   * @param {Response} res 
+   * @returns status of destroy
+   */
+  async destroy (req, res) {
     try {
       // deleting quiz will delete all child and nested
       // child objects (questions, question options, quiz

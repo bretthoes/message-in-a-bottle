@@ -1,3 +1,7 @@
+/**
+ * Mixin to navigate to specified routes.
+ * Allows functionality for any route-specific settings.
+ */
 export default {
   methods: {
     navigateTo (route) {

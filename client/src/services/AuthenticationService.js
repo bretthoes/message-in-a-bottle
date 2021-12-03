@@ -1,3 +1,6 @@
+/**
+ * Services for authentication.
+ */
 import Api from '@/services/Api'
 
 export default {

@@ -1,3 +1,6 @@
+/**
+ * Services for users.
+ */
 import Api from '@/services/Api'
 
 export default {

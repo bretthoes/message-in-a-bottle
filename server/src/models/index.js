@@ -1,3 +1,6 @@
+/**
+ * Handle adding all models and associations to database.
+ */
 const fs = require('fs')
 const path = require('path')
 const Sequelize = require('sequelize')

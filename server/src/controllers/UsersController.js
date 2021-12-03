@@ -1,7 +1,15 @@
+/**
+ * Controller for user requests.
+ */
 const { User } = require('../models')
 
 // CRUD for User model
 module.exports = {
+  /**
+   * Get users.
+   * @param {Request} req 
+   * @param {Response} res 
+   */
   async index (req, res) {
     try {
       // check for params
@@ -9,9 +17,10 @@ module.exports = {
       for (const q in req.query) empty = false
       empty = true
       let users
+      // if no params, return all users
       if (empty) {
         users = await User.findAll()
-      } else {
+      } else { // if params, return matched users
         users = await User.findAll({
           where: {
             id: req.query.matchIds
@@ -26,6 +35,11 @@ module.exports = {
       })
     }
   },
+  /**
+   * Get specific user.
+   * @param {Request} req 
+   * @param {Resonse} res 
+   */
   async show (req, res) {
     try {
       const user = await User.findByPk(req.params.userId)
@@ -37,6 +51,11 @@ module.exports = {
       })
     }
   },
+  /**
+   * Update user.
+   * @param {Request} req 
+   * @param {Response} res 
+   */
   async put (req, res) {
     try {
       // ensure a blobUrl is never updated from an endpoint with invalid header/encoder
@@ -61,6 +80,14 @@ module.exports = {
       res.status(400).send({error})
     }
   },
+  /**
+   * Update user with attached image.
+   * Separated from above update as
+   * FormData will not be required to
+   * send if image not being updated.
+   * @param {Request} req 
+   * @param {Response} res 
+   */
   async update (req, res) {
     try {
       await User.update(
@@ -80,7 +107,14 @@ module.exports = {
         error: 'An error has occurred.'
       })
     }
-  }, async destroy (req, res) {
+  },
+  /**
+   * Destroys user.
+   * @param {Request} req 
+   * @param {Response} res 
+   * @returns status of destroy
+   */
+  async destroy (req, res) {
     try {
       const user = await User.destroy({
         where: {

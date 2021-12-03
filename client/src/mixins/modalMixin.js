@@ -1,3 +1,6 @@
+/**
+ * Mixin to open/close modal.
+ */
 export default {
   data () {
     return {

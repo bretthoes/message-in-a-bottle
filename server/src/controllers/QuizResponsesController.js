@@ -1,10 +1,16 @@
+/**
+ * Controller for quiz response requests.
+ */
 const { sequelize, QuizResponse } = require('../models')
 
 // CRUD for QuizResponse model
 module.exports = {
-  // Create or update
-  // TODO can update this to just create since we handle
-  // quiz response deletions on resetting of quiz status
+  /**
+   * Create or update quiz response.
+   * @param {Request} req 
+   * @param {Response} res 
+   * @returns quizResponse
+   */
   async put (req, res) {
     try {
       // check if user has response to given quiz already
@@ -40,6 +46,12 @@ module.exports = {
       return res.status(400).send(err)
     }
   },
+  /**
+   * Retrieve quiz responses.
+   * @param {Request} req 
+   * @param {Response} res 
+   * @returns quizResponses
+   */
   async index (req, res) {
     try {
       // return all quiz responses if no user id
@@ -75,7 +87,12 @@ module.exports = {
       return res.status(400).send(err)
     }
   },
-  // will return a count of both all total responses and total matches
+  /**
+   * Will return a count of both all total responses and total matches.
+   * @param {Request} req 
+   * @param {Response} res 
+   * @returns count of quiz responses
+   */
   async count (req, res) {
     try {
       // get all quiz responses
@@ -104,6 +121,12 @@ module.exports = {
       return res.status(400).send(err)
     }
   },
+  /**
+   * Return single quiz response.
+   * @param {Request} req 
+   * @param {Response} res 
+   * @returns single quizResponse
+   */
   async show (req, res) {
     try {
       // get quiz response by userId and quizId
@@ -120,7 +143,14 @@ module.exports = {
         error: 'an error has occurred trying to retrieve the quiz response.'
       })
     }
-  }, async destroy (req, res) {
+  },
+  /**
+   * Destroys a quiz response when user resets quiz.
+   * @param {Request} req 
+   * @param {Response} res 
+   * @returns status of destroy
+   */
+  async destroy (req, res) {
     try {
       // delete quizResponse by quizId and userId
       const quizResponse = await QuizResponse.destroy({

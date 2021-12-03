@@ -1,3 +1,6 @@
+/**
+ * Define all routes for app.
+ */
 const AuthenticationController = require('./controllers/AuthenticationController')
 const AuthenticationControllerPolicy = require('./policies/AuthenticationControllerPolicy')
 const QuizzesController = require('./controllers/QuizzesController')
