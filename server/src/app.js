@@ -20,13 +20,15 @@ router.get('/', function(req, res, next){
  next();
 })
 
-app.use(cors())
 app.use(router)
-app.use(express.static('dist'))
+app.use(cors())
 
 // use static path for production
-app.use(express.static(path.join(__dirname, "../dist")))
-
+console.log(process.env.NODE_ENV)
+if (process.env.NODE_ENV === 'production') {
+  app.use(express.static(path.join(__dirname, "../dist")))
+  console.log('==========STATIC==========')
+}
 
 // Pass our app and attach all endpoints
 require('./routes')(app)
