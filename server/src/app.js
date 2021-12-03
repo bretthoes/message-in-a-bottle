@@ -25,9 +25,8 @@ app.use(router)
 app.use(express.static('dist'))
 
 // use static path for production
-if (process.env.NODE_ENV === 'production') {
-  app.use(express.static(path.join(__dirname, "../dist")))
-}
+app.use(express.static(path.join(__dirname, "../dist")))
+
 
 // Pass our app and attach all endpoints
 require('./routes')(app)
