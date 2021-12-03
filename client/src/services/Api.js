@@ -7,6 +7,6 @@ import axios from 'axios'
 
 export default () => {
   return axios.create({
-    baseURL: 'https://capstone-000794169.herokuapp.com'
+    baseURL: 'https://bretthoes000794169.herokuapp.com/'
   })
 }
