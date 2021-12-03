@@ -1,6 +1,6 @@
 client/node_modules/
-client/build/
-client/dist/
 server/node_modules/
+client/dist/
 server/dist/
+client/build/
 *.sqlite

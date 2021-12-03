@@ -24,7 +24,9 @@ app.use(router)
 app.use(cors())
 
 // use static path for production
+console.log('********NODE_ENV**********: ' + process.env.NODE_ENV)
 if (process.env.NODE_ENV === 'production') {
+  console.log('app.js production')
   app.use(express.static(path.join(__dirname, "../dist")))
 }
 

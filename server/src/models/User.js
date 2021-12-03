@@ -1,6 +1,12 @@
 const Promise = require('bluebird')
 const bcrypt = Promise.promisifyAll(require('bcrypt-nodejs'))
 
+/**
+ * Hash a users password from register.
+ * @param {User} user 
+ * @param {*} options 
+ * @returns hashed password
+ */
 function hashPassword (user, options) {
   // used by bcrypt in hashing password
   const SALT_FACTOR = 8

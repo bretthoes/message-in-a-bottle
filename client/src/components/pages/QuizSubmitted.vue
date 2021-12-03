@@ -5,7 +5,7 @@
       <div class='img-container'>
         <img src='@/assets/throwing-bottle.gif' alt='Avatar' class='avatar' />
       </div>
-      <h5><i>Any new matches will appear in your inbox :)</i></h5>
+      <h5><i>Any new matches will appear in your inbox</i></h5>
       <div class="button-container">
         <base-button
           @click="navigateTo({name: 'inbox'})"
@@ -17,14 +17,12 @@
         </base-button>
       </div>
     </div>
-    <footer-waves />
   </div>
 </template>
 
 <script>
 import BaseButton from '@/components/ui/BaseButton'
 import BaseTitle from '@/components/ui/BaseTitle'
-import FooterWaves from '@/components/layout/FooterWaves'
 import navigateToMixin from '@/mixins/navigateToMixin'
 /**
  * Component for view displayed after user submits a quiz.
@@ -33,7 +31,7 @@ export default {
   name: 'QuizSubmitted',
   mixins: [navigateToMixin],
   components: {
-    FooterWaves, BaseButton, BaseTitle
+    BaseButton, BaseTitle
   }
 }
 </script>

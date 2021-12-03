@@ -26,5 +26,12 @@
        "isAdmin":true,
        "password":"brett",
        "createdAt":"2021-11-25T07:06:44.402Z"
+    },
+    {
+      "username":"test",
+      "email":"test@test.com",
+      "isAdmin":false,
+      "password":"test",
+      "createdAt":"2021-08-25T07:06:44.402Z"
     }
 ]
