@@ -1,6 +1,5 @@
 <template>
   <div>
-    <!-- nav -->
     <nav>
       <ul>
         <li>
@@ -73,6 +72,9 @@
 import navigateToMixin from '@/mixins/navigateToMixin'
 import Modal from '@/components/Modal.vue'
 import modalMixin from '@/mixins/modalMixin'
+/**
+ * Component for header nav used on all pages of app.
+ */
 export default {
   name: 'Header',
   components: {
@@ -80,10 +82,13 @@ export default {
   },
   mixins: [navigateToMixin, modalMixin],
   methods: {
+    /**
+     * Gets called when the user logs out.
+     */
     logout () {
       // Return to root page on logout
       this.navigateTo({ name: 'root' })
-      // TODO verify this works from all pages
+      // dispatch current token and user on logout
       this.$store.dispatch('setToken', null)
       this.$store.dispatch('setUser', null)
       // Display toast on logout

@@ -10,6 +10,9 @@
 </template>
 <script>
 import navigateToMixin from '@/mixins/navigateToMixin'
+/**
+ * Component for Page not found view.
+ */
 export default {
   name: 'PageNotFound',
   mixins: [navigateToMixin]

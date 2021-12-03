@@ -1,7 +1,7 @@
 <template>
   <base-panel>
     <form
-      @submit.prevent="submit"
+      @submit.prevent="save"
       enctype="multipart/form-data">
       <b-row class="row">
         <b-col
@@ -26,8 +26,6 @@
             <input
               type="text"
               v-model="user.username"
-              required
-              :rules="[required]"
               minlength="4"
               maxlength="16"
             />
@@ -37,16 +35,14 @@
             <b-icon icon="gift"> </b-icon
             ><input
               type="date"
-              v-model="user.birthdate"
-              :rules="[required]" />
+              v-model="user.birthdate"/>
           </h4>
           <br />
           <h4 class="field">
             <b-icon icon="tags"></b-icon>
             <input
               type="text"
-              v-model="user.location"
-              :rules="[required]" />
+              v-model="user.location"/>
           </h4>
         </b-col>
         <b-col
@@ -56,7 +52,6 @@
           <textarea
             v-model="user.biography"
             class="bio"
-            :rules="[required]"
           ></textarea>
         </b-col>
       </b-row>
@@ -93,6 +88,9 @@ import BasePanel from '@/components/ui/BasePanel'
 import UsersService from '@/services/UsersService'
 import navigateToMixin from '@/mixins/navigateToMixin'
 import BaseButton from '@/components/ui/BaseButton'
+/**
+ * Component for edit profile view, allow user to edit profile info.
+ */
 export default {
   data () {
     return {
@@ -106,14 +104,16 @@ export default {
         biography: null
       },
       error: null,
-      file: null,
-      required: (value) => !!value || 'Required'
+      file: null
     }
   },
   components: {
     BasePanel, BaseButton
   },
   mixins: [navigateToMixin],
+  /**
+   * Called on component mounted.
+   */
   async mounted () {
     try {
       // redirect home if not logged in
@@ -134,10 +134,17 @@ export default {
     }
   },
   methods: {
+    /**
+     * Selects uploaded file from user.
+     */
     selectFile (event) {
       this.file = event.target.files[0]
     },
-    async submit () {
+    /**
+     * Attempt to save new user info.
+     */
+    async save () {
+      // reset error on save attempt
       this.error = null
       try {
         // hit update endpoint if file was added to update user
@@ -146,15 +153,17 @@ export default {
         if (this.file) {
           // declare FormData object and append file
           let formData = new FormData()
-          // TODO add validation/security for file uploads to ensure only png/jpg
+          // TODO add validation/security for file uploads to ensure only png/jpg,
+          // enforce size limitations, other upload validations
           formData.append('file', this.file)
-
           // append user fields to formData being sent to backend
           for (var key in this.user) {
             formData.append(key, this.user[key])
           }
+          // attempt update with form data
           await UsersService.update(formData)
         } else {
+          // attempt put without form data
           await UsersService.put(this.user)
         }
         // redirect back to user profile upon successful submit

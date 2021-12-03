@@ -27,6 +27,9 @@
 
 <script>
 import BaseTitle from '@/components/ui/BaseTitle'
+/**
+ * Component for about about view displaying info about the app.
+ */
 export default {
   name: 'About',
   components: {
@@ -35,8 +38,7 @@ export default {
 }
 </script>
 
-<!-- Add "scop
-BaseTitleed" attribute to limit CSS to this component only -->
+<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 p {
   text-align: justify;

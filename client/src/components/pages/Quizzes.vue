@@ -106,6 +106,9 @@ import QuizzesService from '@/services/QuizzesService'
 import navigateToMixin from '@/mixins/navigateToMixin'
 import dateFormat from 'dateformat'
 import _ from 'lodash'
+/**
+ * Component for view of all quizzes.
+ */
 export default {
   name: 'Quizzes',
   components: {
@@ -122,6 +125,7 @@ export default {
       currentPage: 1,
       perPage: 10,
       pageOptions: [5, 10, 25, { value: 99, text: 'Max' }],
+      // columns for quizzes table
       fields: [
         {
           key: 'title', label: 'Title', sortable: true
@@ -134,7 +138,7 @@ export default {
           label: 'Date Added',
           sortable: true,
           formatter: (value) => {
-            return this.getFormmatedDate(value)
+            return this.getFormattedDate(value)
           }
         },
         {
@@ -147,8 +151,11 @@ export default {
     }
   },
   watch: {
-    // set wait time to 500ms to prevent spam
-    // service calls from within search bar
+    /**
+     * Watch value in search bar to filter quizzes.
+     * set wait time to 500ms to prevent spam
+     * service calls from within search bar
+     */
     search: _.debounce(async function (value) {
       const route = {
         name: 'quizzes'
@@ -174,6 +181,9 @@ export default {
       }
     }
   },
+  /**
+   * Called on component mounted.
+   */
   async mounted () {
     try {
       // redirect home if not logged in
@@ -183,6 +193,9 @@ export default {
     }
   },
   methods: {
+    /**
+     * Attempt to delete quiz (admin only).
+     */
     async deleteQuiz (quizId) {
       try {
         // delete quiz
@@ -193,16 +206,24 @@ export default {
         console.log(err)
       }
     },
+    /**
+     * Calculate odds of match in table for quiz.
+     */
     calculateOdds (questions) {
+      // set initial odds to 1
       let odds = 1
+      // iterate through all questions of quiz,
+      // summing odds by multiplying option count
+      // of each question by current odds, then
+      // subtracting to offset added value.
       for (let question of questions) {
         odds += (odds * question.QuestionOptions.length) - odds
       }
       return odds.toString()
     },
-    getFormmatedDate (date) {
-      return dateFormat(date, 'mmmm dS, yyyy')
-    },
+    /**
+     * Get formatted date for display in table.
+     */
     getFormattedDate: function (date) {
       return dateFormat(date, 'mmmm dS, yyyy')
     }

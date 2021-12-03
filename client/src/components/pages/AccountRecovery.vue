@@ -38,22 +38,30 @@
 <script>
 import navigateToMixin from '@/mixins/navigateToMixin'
 import AuthenticationService from '@/services/AuthenticationService'
+/**
+ * Component for Account Recovery view.
+ */
 export default {
   name: 'AccountRecovery',
   data () {
     return {
       email: null,
       error: null,
-      submitted: false,
-      required: (value) => !!value || 'Required'
+      submitted: false
     }
   },
   mixins: [navigateToMixin],
   methods: {
+    /**
+     * Submit form to receive password reset instructions by email.
+     */
     async submit () {
+      // reset error on each submission attempt
       this.error = null
       try {
         const response = await AuthenticationService.reset({email: this.email})
+        console.log(response)
+        // form successfully submitted, update value
         this.submitted = true
       } catch (err) {
         this.error = err.response.data.error

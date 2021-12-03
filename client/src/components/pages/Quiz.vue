@@ -88,11 +88,16 @@
 import navigateToMixin from '@/mixins/navigateToMixin'
 import QuizzesService from '@/services/QuizzesService'
 import QuizResponsesService from '@/services/QuizResponsesService'
+/**
+ * Component for quiz view.
+ * Will conditionally display quiz questions
+ * or quiz results based on if user has taken
+ * the particular quiz.
+ */
 export default {
   name: 'Quiz',
   data () {
     return {
-      // TODO have quiz mode and view mode based on if user has taken quiz
       quiz: null,
       quizAlreadySubmitted: null,
       questionStartIndex: 0,
@@ -100,6 +105,9 @@ export default {
       answerKey: ''
     }
   },
+  /**
+   * Called on component mounted.
+   */
   async mounted () {
     try {
       // redirect home if not logged in
@@ -123,7 +131,9 @@ export default {
   },
   mixins: [navigateToMixin],
   methods: {
-    // selecting question also advances to next question
+    /**
+     * Selecting question also advances to next question.
+     */
     async selectResponse (index) {
       // Append answer to answer key
       this.answerKey += index
@@ -151,6 +161,9 @@ export default {
         this.questionEndIndex++
       }
     },
+    /**
+     * Move to previous question if viable.
+     */
     previousQuestion () {
       if (this.questionStartIndex > 0 && this.questionEndIndex > 0) {
         // Remove answer from answer key
@@ -160,6 +173,9 @@ export default {
         this.questionEndIndex--
       }
     },
+    /**
+     * Reset quiz so user can re-submit if current quiz has already been taken.
+     */
     async resetQuiz () {
       const confirmed = await this.$confirm('Resetting this quiz will delete any matches from your results. Are you sure you want to continue?')
       if (confirmed) {
@@ -167,7 +183,7 @@ export default {
         try {
           await QuizResponsesService.delete({'userId': this.$store.state.user.id, 'quizId': this.quiz.id})
           this.quizAlreadySubmitted = false
-          // reset answerKey just in case
+          // reset answerKey
           this.answerKey = ''
         } catch (err) {
           console.log(err)

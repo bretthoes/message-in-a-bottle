@@ -13,7 +13,7 @@
         buttonSize="large">what is this?
       </base-button>
       <base-button
-        @click="openQuizPage($store.state.isUserLoggedIn)"
+        @click="openQuizzes($store.state.isUserLoggedIn)"
         buttonSize="large">view quizzes
       </base-button>
     </div>
@@ -32,6 +32,9 @@ import QuizResponsesService from '@/services/QuizResponsesService'
 import navigateToMixin from '@/mixins/navigateToMixin'
 import modalMixin from '@/mixins/modalMixin'
 import FooterWaves from '@/components/layout/FooterWaves'
+/**
+ * Component for landing/home page.
+ */
 export default {
   name: 'Home',
   data () {
@@ -46,6 +49,9 @@ export default {
     BaseButton
   },
   mixins: [navigateToMixin, modalMixin],
+  /**
+   * Called on component mounted.
+   */
   async mounted () {
     try {
       // get count of all quiz responses and total matches
@@ -57,11 +63,14 @@ export default {
     }
   },
   methods: {
-    openQuizPage (isUserLoggedIn) {
+    /**
+     * Navigate to quizzes page if logged in,
+     * else redirect to login/register modal.
+     */
+    openQuizzes (isUserLoggedIn) {
       if (isUserLoggedIn) {
         this.navigateTo({name: 'quizzes'})
       } else {
-        // Open modal if not logged in
         this.openModal(true)
       }
     }

@@ -73,6 +73,9 @@ import BasePanel from '@/components/ui/BasePanel'
 import BaseTitle from '@/components/ui/BaseTitle'
 import QuizzesService from '@/services/QuizzesService'
 import navigateToMixin from '@/mixins/navigateToMixin'
+/**
+ * Component for Create Quiz view.
+ */
 export default {
   name: 'CreateQuiz',
   components: {
@@ -81,6 +84,8 @@ export default {
   mixins: [navigateToMixin],
   data () {
     return {
+      // initial value of quiz object, contains
+      // one question with 2 options by default.
       quiz: {
         title: '',
         questions: [{
@@ -96,17 +101,26 @@ export default {
         }]
       },
       validInput: true,
+      // default value of error as this will
+      // always be checked first, but can be
+      // updated by try catch in save() with
+      // other meaningful values from server.
       error: 'No empty fields allowed.',
       maxQuestions: 30,
       maxOptionsPerQuestion: 6
     }
   },
+  /**
+   * Called on component mounted.
+   */
   async mounted () {
     // redirect home if not logged in or user is not admin
     if (!this.$store.state.isUserLoggedIn || !this.$store.state.user.isAdmin) this.navigateTo({ name: 'root' })
   },
   methods: {
-    // each question should have a minumum of 2 questionOptions by default
+    /**
+     * Create new question with minimum 2 options.
+     */
     addQuestion () {
       if (this.quiz.questions.length < this.maxQuestions) {
         this.quiz.questions.push({
@@ -122,6 +136,9 @@ export default {
         })
       }
     },
+    /**
+     * Add individual question response to question.
+     */
     addQuestionResponse (index) {
       if (this.quiz.questions[index].questionOptions.length < this.maxOptionsPerQuestion) {
         this.quiz.questions[index].questionOptions.push({
@@ -130,8 +147,11 @@ export default {
         })
       }
     },
+    /**
+     * Attempt to save and submit new quiz to database.
+     */
     async save () {
-      // loop through all input fields; check for any empty strings
+      // ensure no empty values in any questions or any question options
       this.validInput = true
       if (!this.quiz.title) this.validInput = false
       for (let i = 0; i < this.quiz.questions.length; i++) {
@@ -140,18 +160,22 @@ export default {
           if (!this.quiz.questions[i].questionOptions[j].text) this.validInput = false
         }
       }
-      // save quiz if input valid, else update and display error message
+      // save quiz if input valid
       if (this.validInput) {
         try {
+          // save quiz to database
           await QuizzesService.post(this.quiz)
-          // Display toast on successful register
+          // display toast on successful save
           this.$toasted.show('Quiz Created!', {
             theme: 'outline',
             position: 'top-center',
             duration: 2000
           })
+          // navigate back to quizzes page
+          // on successful submission
           this.navigateTo({name: 'quizzes'})
         } catch (err) {
+          // update error value and input state
           this.error = err.response.data.error
           this.validInput = false
         }

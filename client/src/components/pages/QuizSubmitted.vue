@@ -12,7 +12,7 @@
           buttonSize="large">check inbox
         </base-button>
         <base-button
-          @click="openQuizPage($store.state.isUserLoggedIn)"
+          @click="navigateTo({name: 'quizzes'})"
           buttonSize="large">more quizzes
         </base-button>
       </div>
@@ -26,21 +26,14 @@ import BaseButton from '@/components/ui/BaseButton'
 import BaseTitle from '@/components/ui/BaseTitle'
 import FooterWaves from '@/components/layout/FooterWaves'
 import navigateToMixin from '@/mixins/navigateToMixin'
+/**
+ * Component for view displayed after user submits a quiz.
+ */
 export default {
   name: 'QuizSubmitted',
   mixins: [navigateToMixin],
   components: {
     FooterWaves, BaseButton, BaseTitle
-  },
-  methods: {
-    openQuizPage (isUserLoggedIn) {
-      if (isUserLoggedIn) {
-        this.navigateTo({name: 'quizzes'})
-      } else {
-        // Open modal if not logged in
-        this.openModal(true)
-      }
-    }
   }
 }
 </script>

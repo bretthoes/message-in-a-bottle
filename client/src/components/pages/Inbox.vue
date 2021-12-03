@@ -124,6 +124,9 @@ import QuizzesService from '@/services/QuizzesService'
 import navigateToMixin from '@/mixins/navigateToMixin'
 import dateFormat from 'dateformat'
 import io from 'socket.io-client'
+/**
+ * Component for inbox view.
+ */
 export default {
   name: 'Inbox',
   data () {
@@ -146,14 +149,19 @@ export default {
     BasePanel, BaseTitle
   },
   mixins: [navigateToMixin],
-  // ensure socket connection is closed
-  // when this route is left
+  /**
+   * Ensure socket connection is closed
+   * when this route is left.
+   */
   beforeRouteLeave (to, from, next) {
     if (this.socket.id) {
       this.socket.close()
     }
     next()
   },
+  /**
+   * Called on component mounted.
+   */
   async mounted () {
     try {
       // redirect home if not logged in
@@ -205,12 +213,25 @@ export default {
     }
   },
   computed: {
+    /**
+     * Reverse messages for display in chat screen.
+     * This is done in conjunction with the messages
+     * being contained in a flex box with a reversed
+     * flex-direction. This double reversal is done
+     * to allow the newly added messages to be appended
+     * to the bottom while also pushing the scroll bar
+     * to the bottom when a new message is added.
+     */
     formattedMessages () {
       return this.messages.slice().reverse()
     }
   },
   methods: {
-    sendMessage (e) {
+    /**
+     * Attempt send mesage to specified room
+     * containing selected match.
+     */
+    sendMessage () {
       // ensure message is not blank before send
       if (this.message.trim() !== '') {
         // send message to socket
@@ -226,19 +247,25 @@ export default {
       }
     },
     /* various getters/setters for use on page */
-    // get username from id in matchProfiles
+    /**
+     * Get username from id in matchProfiles.
+     */
     getUsernameById (id) {
       const user = this.matchProfiles.find(p => p.id === id)
       if (user) return user.username
       else return ''
     },
-    // get id from username in matchProfiles
+    /**
+     * Get id from username in matchProfiles.
+     */
     getIdByUsername (username) {
       const user = this.matchProfiles.find(p => p.username === username)
       if (user) return user.id
       else return 0
     },
-    // get quiz title from id in quizzes
+    /**
+     * Get quiz title from id in quizzes.
+     */
     getQuizTitleById (id) {
       const quiz = this.quizzes.find(q => q.id === id)
       if (quiz) return quiz.title
@@ -250,20 +277,23 @@ export default {
       if (quiz) return quiz.id
       else return 0
     },
-    // return current minute formatted for display with message
+    /**
+     * Return current minute formatted for display with message.
+     */
     getFormattedTimestamp (now) {
       return dateFormat(now, 'h:MM TT')
     },
-    // set matched user and quiz name for display in chat
+    /**
+     * Set matched user and quiz name for display in chat.
+     */
     setCurrentChatCulture (match, index) {
       // no need to switch chats if we're already on the user
       if (this.activeIndex !== index) {
         // toggle active match to add background color
         this.toggle(index)
-        // update match name and quiz title
+        // update current chat culture
         this.currentChatMatchName = this.getUsernameById(match.UserId)
         this.currentChatQuizTitle = this.getQuizTitleById(match.QuizId)
-        // meed to set roomId here
         this.matchId = this.getRoomId(match.QuizId, match.UserId, this.$store.state.user.id)
       }
     },
@@ -276,6 +306,9 @@ export default {
       const userIds = [matchedUserId, thisUserId].sort((a, b) => a - b)
       return userIds.join('').toString() + quizId.toString()
     },
+    /**
+     * Set current chat culture.
+     */
     toggle (index) {
       this.activeIndex = index
     }

@@ -1,7 +1,5 @@
 <template>
   <footer>
-    <!-- TODO: Change viewbox dims on ultra wide and possibly mobile browser widths. Original 0 0 120 28.
-               Changed to 24 as svg will overlay above waves and user cannot click buttons. -->
     <svg viewBox="0 0 120 20">
       <defs>
         <filter>

@@ -20,7 +20,7 @@
         </h2>
         <br />
         <h4 class="field">
-          <b-icon icon="gift"></b-icon> {{getFormmatedDate(user.birthdate) || 'No birthday added.'}}
+          <b-icon icon="gift"></b-icon> {{getFormattedDate(user.birthdate) || 'No birthday added.'}}
         </h4>
         <br />
         <h4 class="field" >
@@ -58,6 +58,9 @@ import BaseButton from '@/components/ui/BaseButton'
 import UsersService from '@/services/UsersService'
 import navigateToMixin from '@/mixins/navigateToMixin'
 import dateFormat from 'dateformat'
+/**
+ * Component for profile page view.
+ */
 export default {
   name: 'Profile',
   data () {
@@ -65,6 +68,9 @@ export default {
       user: {}
     }
   },
+  /**
+   * Called on component mounted.
+   */
   async mounted () {
     try {
       // redirect home if not logged in
@@ -82,13 +88,19 @@ export default {
   },
   mixins: [navigateToMixin],
   computed: {
-    // computed property to load user profile image after user is defined
+    /**
+     * Load user profile image after user is defined.
+     * Load default avatar image if no profile image.
+     */
     imgUrl () {
       return this.user.blobUrl ? 'data:' + this.user.imageType + ';charset=utf-8;base64,' +
         this.user.blobUrl : require('@/assets/default_profile_picture.png')
     }
   },
   methods: {
+    /**
+     * Attempt to delete user.
+     */
     async deleteUser (userId) {
       try {
         // make user manually type "DELETE" before proceeding with deletion
@@ -105,7 +117,10 @@ export default {
         if (err) console.log(err)
       }
     },
-    getFormmatedDate (date) {
+    /**
+     * Return formatted date for display.
+     */
+    getFormattedDate (date) {
       return dateFormat(date, 'mmmm dS, yyyy')
     }
   }

@@ -28,6 +28,9 @@ import QuizzesService from '@/services/QuizzesService'
 import QuizResponsesService from '@/services/QuizResponsesService'
 import { GChart } from 'vue-google-charts'
 import dateFormat from 'dateformat'
+/**
+ * Component for stats view.
+ */
 export default {
   name: 'Stats',
   components: {
@@ -70,17 +73,24 @@ export default {
       return Object.keys(counts).map((key) => [(key), counts[key]])
     },
     columnChartData () {
+      // initiate counts for tracking, use object to track as
+      // key/value pairs, set up object with headers as first item
       const counts = {'Date': 'Users joined'}
+      // copy users for manipulation in display of column chart
       const copyUsers = this.users
       const usersSorted = copyUsers.sort((a, b) => a.createdAt > b.createdAt)
+      // count users and group by join date
       for (const u of usersSorted) {
         const createdDate = dateFormat(new Date(u.createdAt), 'm/d/yy')
         counts[createdDate] = counts[createdDate] ? counts[createdDate] + 1 : 1
       }
-      // map object to an array
+      // return object mapped to array for Vue Google Charts formatting
       return Object.keys(counts).map((key) => [(key), counts[key]])
     }
   },
+  /**
+   * Ran on component creation. Attempts fetching of data.
+   */
   async created () {
     try {
       // fetch all users
@@ -94,13 +104,13 @@ export default {
     }
   },
   methods: {
+    /**
+     * Get quiz title by quiz id.
+     */
     getQuizTitleById (id) {
       const quiz = this.quizzes.find(q => q.id === id)
       if (quiz) return quiz.title
       else return ''
-    },
-    getFormattedDate (utcDate) {
-      return utcDate
     }
   }
 }
