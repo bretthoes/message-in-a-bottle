@@ -11,10 +11,10 @@ const config = require('../config/config')
  * @param {int} expirationTime 
  * @returns json web token
  */
-function jwtSignUser(user, expirationTime = 604800) {
-   // 604800 is default value in seconds (one week for expiry)
+function jwtSignUser(user) {
+  const ONE_WEEK = 604800 // one week in seconds
   return jwt.sign(user, config.authentication.jwtSecret, {
-    expiresIn: expirationTime
+    expiresIn: ONE_WEEK
   })
 }
 module.exports = {
@@ -120,12 +120,15 @@ module.exports = {
       const userJson = user.toJSON()
       // sign token and set expiration for 20 mins
       // (time allotment to reset password)
-      const token = jwtSignUser(userJson, 1200)
+      const token = jwt.sign(userJson, config.authentication.resetKey, {expiresIn: 1200})
+      // define url
+      const url = 'http://localhost:8081/'
+      const resetKey = 'resetKey'
       const data = {
         from: 'noreply@reset.com',
         to: email,
         subject: 'Reset Password',
-        html: '<p>test</p>'
+        html: `<h1>Please click link to reset password.</h1><p>${config.authentication.clientUrl}/${token}</p>`
       }
       res.sendStatus(200)
     } catch (err) {
