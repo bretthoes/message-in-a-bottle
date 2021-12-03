@@ -14,7 +14,6 @@ module.exports = {
   },
   authentication: {
     jwtSecret: process.env.JWT_SECRET || 'secret',
-    resetKey: process.env.RESET_KEY || 'reset',
-    clientUrl:'http://localhost:8081/'
+    resetKey: process.env.RESET_KEY || 'reset'
   }
 }

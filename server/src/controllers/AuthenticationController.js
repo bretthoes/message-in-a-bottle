@@ -123,12 +123,11 @@ module.exports = {
       const token = jwt.sign(userJson, config.authentication.resetKey, {expiresIn: 1200})
       // define url
       const url = 'http://localhost:8081/'
-      const resetKey = 'resetKey'
       const data = {
         from: 'noreply@reset.com',
         to: email,
         subject: 'Reset Password',
-        html: `<h1>Please click link to reset password.</h1><p>${config.authentication.clientUrl}/${token}</p>`
+        html: `<h1>Please click link to reset password.</h1><p>${url}/${token}</p>`
       }
       res.sendStatus(200)
     } catch (err) {
