@@ -11,11 +11,13 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 #footer {
-  height: 400px;
+  height: 15%;
   width: 100%;
-  position: fixed;
+  position: absolute;
   bottom: 0;
   clear: both;
+  z-index: -5;
   background-image: url('~@/assets/waves.gif');
+  opacity: 0.8;
 }
 </style>

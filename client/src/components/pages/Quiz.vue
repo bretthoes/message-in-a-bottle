@@ -50,7 +50,6 @@
         </div>
       </div>
     </div>
-    <!-- TODO refactor this out to something cleaner than conditional rendering -->
     <div
       class="quiz-results-container container-fluid"
       v-if="quizAlreadySubmitted && quizAlreadySubmitted !== null"

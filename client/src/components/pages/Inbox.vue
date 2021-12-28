@@ -203,7 +203,6 @@ export default {
 
         // listen for messages from web socket
         this.socket.on('MESSAGE', (data) => {
-          console.log('MESSAGE:', data)
           // append message to messages array
           this.messages = [...this.messages, data]
         })
