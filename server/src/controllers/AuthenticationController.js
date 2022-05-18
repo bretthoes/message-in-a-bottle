@@ -32,6 +32,7 @@ module.exports = {
         token: jwtSignUser(userJson)
       })
     } catch (err) {
+      console.error(err)
       switch (err.errors[0].type) {
         case 'unique violation':
           error = err.errors[0].path + ' is already taken!'

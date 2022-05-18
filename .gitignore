@@ -4,3 +4,4 @@ client/dist/
 server/dist/
 client/build/
 *.sqlite
+*.env

@@ -160,7 +160,7 @@ export default {
         this.$toasted.show('Successfully Registered!', {
           theme: 'outline',
           position: 'top-center',
-          duration: 200
+          duration: 2000
         })
       } catch (err) {
         this.error = err.response.data.error

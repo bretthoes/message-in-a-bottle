@@ -2,7 +2,7 @@
 <template>
   <div class="container-fluid">
       <slot>
-        Panel.
+        Panel
       </slot>
   </div>
 </template>

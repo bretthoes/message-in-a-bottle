@@ -11,13 +11,14 @@ const { sequelize } = require('./models')
 const config = require('./config/config')
 const _ = require("lodash")
 const app = express()
+const dotenv = require('dotenv').config()
 app.use(morgan('combined'))
 app.use(bodyParser.json())
 app.use(fileUpload())
 const router = express.Router();
 router.get('/', function(req, res, next){
  req.url = '/index.html'
- next();
+ next()
 })
 
 app.use(cors())

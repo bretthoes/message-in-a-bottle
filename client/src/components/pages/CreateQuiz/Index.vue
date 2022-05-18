@@ -5,18 +5,18 @@
       <h4 style="text-align:left;">
         Quiz Title
       </h4>
-      <div class="field-wrapper">
+      <input-section-container>
         <input
           v-model="quiz.title"
           class="text-input"
           placeholder="Quiz title here..."/>
-      </div>
+      </input-section-container>
       <h4 style="text-align:left;">Questions</h4>
       <div
         v-for="(question, index) in quiz.questions"
         :key="index">
         <div class="createdQuestion">
-          <div class="field-wrapper">
+          <input-section-container>
             <input v-model="question.text"
             class="text-input mb-4"
             placeholder="Question text here..." />
@@ -36,7 +36,7 @@
               buttonPosition="right"
               buttonSize="circle">+
             </base-button>
-          </div>
+          </input-section-container>
         </div>
       </div>
       <base-button
@@ -71,6 +71,7 @@
 import BaseButton from '@/components/ui/BaseButton'
 import BasePanel from '@/components/ui/BasePanel'
 import BaseTitle from '@/components/ui/BaseTitle'
+import InputSectionContainer from '@/components/pages/CreateQuiz/InputSectionContainer'
 import QuizzesService from '@/services/QuizzesService'
 import navigateToMixin from '@/mixins/navigateToMixin'
 /**
@@ -79,7 +80,7 @@ import navigateToMixin from '@/mixins/navigateToMixin'
 export default {
   name: 'CreateQuiz',
   components: {
-    BaseButton, BasePanel, BaseTitle
+    BaseButton, BasePanel, BaseTitle, InputSectionContainer
   },
   mixins: [navigateToMixin],
   data () {
@@ -101,10 +102,9 @@ export default {
         }]
       },
       validInput: true,
-      // default value of error as this will
-      // always be checked first, but can be
-      // updated by try catch in save() with
-      // other meaningful values from server.
+      // default value of error as this will always be
+      // checked first, but can be updated by try catch
+      // in save with other meaningful text from server.
       error: 'No empty fields allowed.',
       maxQuestions: 30,
       maxOptionsPerQuestion: 6
@@ -197,13 +197,6 @@ export default {
   height: 40px;
   padding: 4px;
   padding-left: 16px;
-}
-.field-wrapper {
-  padding: 24px;
-  border: 2px solid darkgray;
-  margin: 24px 0;
-  background-color: #b1d3e1af;
-  overflow: hidden;
 }
 input {
   width: 100%;
