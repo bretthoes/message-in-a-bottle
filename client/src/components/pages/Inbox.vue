@@ -183,7 +183,7 @@ export default {
         // declare queryParams to send to server
         const queryParams = { userId: this.$store.state.user.id, rooms: this.rooms }
         // join all match chat rooms
-        this.socket = io('https://capstone-000794169.herokuapp.com/', {
+        this.socket = io(process.env.BASE_URL, {
           transports: ['websocket'],
           query: queryParams,
           reconnection: false,
