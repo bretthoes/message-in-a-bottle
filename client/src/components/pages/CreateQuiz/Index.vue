@@ -5,30 +5,31 @@
       <h4 style="text-align:left;">
         Quiz Title
       </h4>
-      <input-section-container>
-        <input
-          v-model="quiz.title"
-          class="text-input"
-          placeholder="Quiz title here..."/>
-      </input-section-container>
+      <input-section-panel>
+        <div>
+          <text-input
+            v-model="quiz.title"
+            placeholder="Quiz title here..."/>
+        </div>
+      </input-section-panel>
       <h4 style="text-align:left;">Questions</h4>
       <div
         v-for="(question, index) in quiz.questions"
         :key="index">
         <div class="createdQuestion">
-          <input-section-container>
-            <input v-model="question.text"
-            class="text-input mb-4"
-            placeholder="Question text here..." />
+          <input-section-panel>
+            <text-input
+              v-model="question.text"
+              placeholder="Question text here..."/><br />
             <div
               v-for="(questionResponse, childIndex) in question.questionOptions"
               :key="childIndex"
               class="question-responses">
               <div class="createdQuestionResponse">
-                <input
+                <text-input
                   v-model="questionResponse.text"
-                  class="text-input question-response-input"
-                  placeholder="Question response text here..."/>
+                  placeholder="Question response text here..."
+                  :style="{width: '92%', float:'right'}"/>
               </div>
             </div>
             <base-button
@@ -36,7 +37,7 @@
               buttonPosition="right"
               buttonSize="circle">+
             </base-button>
-          </input-section-container>
+          </input-section-panel>
         </div>
       </div>
       <base-button
@@ -59,7 +60,7 @@
         buttonColor="red">Cancel
       </base-button><br /><br /><br />
       <p
-        v-if="!this.validInput"
+        v-if="this.error"
         style="color:red;font-size:20px;text-align:right;">
         {{error}}
       </p>
@@ -71,16 +72,17 @@
 import BaseButton from '@/components/ui/BaseButton'
 import BasePanel from '@/components/ui/BasePanel'
 import BaseTitle from '@/components/ui/BaseTitle'
-import InputSectionContainer from '@/components/pages/CreateQuiz/InputSectionContainer'
 import QuizzesService from '@/services/QuizzesService'
 import navigateToMixin from '@/mixins/navigateToMixin'
+import InputSectionPanel from './InputSectionPanel'
+import TextInput from './TextInput'
 /**
  * Component for Create Quiz view.
  */
 export default {
   name: 'CreateQuiz',
   components: {
-    BaseButton, BasePanel, BaseTitle, InputSectionContainer
+    BaseButton, BasePanel, BaseTitle, InputSectionPanel, TextInput
   },
   mixins: [navigateToMixin],
   data () {
@@ -101,11 +103,7 @@ export default {
           }]
         }]
       },
-      validInput: true,
-      // default value of error as this will always be
-      // checked first, but can be updated by try catch
-      // in save with other meaningful text from server.
-      error: 'No empty fields allowed.',
+      error: '',
       maxQuestions: 30,
       maxOptionsPerQuestion: 6
     }
@@ -151,17 +149,8 @@ export default {
      * Attempt to save and submit new quiz to database.
      */
     async save () {
-      // ensure no empty values in any questions or any question options
-      this.validInput = true
-      if (!this.quiz.title) this.validInput = false
-      for (let i = 0; i < this.quiz.questions.length; i++) {
-        if (!this.quiz.questions[i].text) this.validInput = false
-        for (let j = 0; j < this.quiz.questions[i].questionOptions.length; j++) {
-          if (!this.quiz.questions[i].questionOptions[j].text) this.validInput = false
-        }
-      }
       // save quiz if input valid
-      if (this.validInput) {
+      if (this.validate(this.quiz)) {
         try {
           // save quiz to database
           await QuizzesService.post(this.quiz)
@@ -175,11 +164,21 @@ export default {
           // on successful submission
           this.navigateTo({name: 'quizzes'})
         } catch (err) {
-          // update error value and input state
+          // update error value
           this.error = err.response.data.error
-          this.validInput = false
+        }
+      } else this.error = 'No empty fields allowed.'
+    },
+    validate (quiz) {
+      // ensure no empty values in any questions or any question options
+      if (!quiz.title) return false
+      for (let i = 0; i < quiz.questions.length; i++) {
+        if (!quiz.questions[i].text) return false
+        for (let j = 0; j < quiz.questions[i].questionOptions.length; j++) {
+          if (!quiz.questions[i].questionOptions[j].text) return false
         }
       }
+      return true
     }
   }
 }
@@ -187,23 +186,4 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-.question-response-input {
-  width: 92%;
-  margin: 4px;
-  float: right;
-}
-.text-input {
-  border: 1px solid #e6e6e6;
-  height: 40px;
-  padding: 4px;
-  padding-left: 16px;
-}
-input {
-  width: 100%;
-  height: 100%;
-  border:none;
-}
-.title {
-  text-align: left;
-}
 </style>

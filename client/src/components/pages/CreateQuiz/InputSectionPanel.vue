@@ -8,7 +8,7 @@
 </template>
 <script>
 export default {
-  name: 'InputSectionContainer'
+  name: 'InputSectionPanel'
 }
 </script>
 
