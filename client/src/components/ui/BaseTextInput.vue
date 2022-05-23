@@ -1,4 +1,3 @@
-
 <template>
 <div>
   <input
@@ -51,5 +50,14 @@ export default {
 input {
   height: 100%;
   border:none;
+}
+input:hover {
+  background-color: beige;
+  opacity: 0.8;
+  transition: 0.2s;
+}
+input:focus {
+  background-color: beige;
+  opacity: 0.8;
 }
 </style>

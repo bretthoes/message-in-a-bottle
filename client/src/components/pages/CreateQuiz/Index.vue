@@ -7,7 +7,7 @@
       </h4>
       <input-section-panel>
         <div>
-          <text-input
+          <base-text-input
             v-model="quiz.title"
             placeholder="Quiz title here..."/>
         </div>
@@ -18,7 +18,7 @@
         :key="index">
         <div class="createdQuestion">
           <input-section-panel>
-            <text-input
+            <base-text-input
               v-model="question.text"
               placeholder="Question text here..."/><br />
             <div
@@ -26,7 +26,7 @@
               :key="childIndex"
               class="question-responses">
               <div class="createdQuestionResponse">
-                <text-input
+                <base-text-input
                   v-model="questionResponse.text"
                   placeholder="Question response text here..."
                   :style="{width: '92%', float:'right'}"/>
@@ -46,24 +46,7 @@
         buttonSize="ultra-wide"
         buttonColor="blue">+ Add Question
       </base-button>
-      <br /><hr />
-      <base-button
-        @click="save"
-        v-if="$store.state.user.isAdmin"
-        buttonPosition="right"
-        buttonColor="blue">Save
-      </base-button>
-      <base-button
-        @click="navigateTo({name: 'quizzes'})"
-        v-if="$store.state.user.isAdmin"
-        buttonPosition="right"
-        buttonColor="red">Cancel
-      </base-button><br /><br /><br />
-      <p
-        v-if="this.error"
-        style="color:red;font-size:20px;text-align:right;">
-        {{error}}
-      </p>
+      <save :quiz="quiz"/>
     </base-panel>
   </div>
 </template>
@@ -72,17 +55,17 @@
 import BaseButton from '@/components/ui/BaseButton'
 import BasePanel from '@/components/ui/BasePanel'
 import BaseTitle from '@/components/ui/BaseTitle'
-import QuizzesService from '@/services/QuizzesService'
+import BaseTextInput from '@/components/ui/BaseTextInput'
 import navigateToMixin from '@/mixins/navigateToMixin'
 import InputSectionPanel from './InputSectionPanel'
-import TextInput from './TextInput'
+import Save from './Save'
 /**
  * Component for Create Quiz view.
  */
 export default {
   name: 'CreateQuiz',
   components: {
-    BaseButton, BasePanel, BaseTitle, InputSectionPanel, TextInput
+    BaseButton, BasePanel, BaseTitle, InputSectionPanel, BaseTextInput, Save
   },
   mixins: [navigateToMixin],
   data () {
@@ -103,7 +86,6 @@ export default {
           }]
         }]
       },
-      error: '',
       maxQuestions: 30,
       maxOptionsPerQuestion: 6
     }
@@ -144,41 +126,6 @@ export default {
           displayResponse: false
         })
       }
-    },
-    /**
-     * Attempt to save and submit new quiz to database.
-     */
-    async save () {
-      // save quiz if input valid
-      if (this.validate(this.quiz)) {
-        try {
-          // save quiz to database
-          await QuizzesService.post(this.quiz)
-          // display toast on successful save
-          this.$toasted.show('Quiz Created!', {
-            theme: 'outline',
-            position: 'top-center',
-            duration: 2000
-          })
-          // navigate back to quizzes page
-          // on successful submission
-          this.navigateTo({name: 'quizzes'})
-        } catch (err) {
-          // update error value
-          this.error = err.response.data.error
-        }
-      } else this.error = 'No empty fields allowed.'
-    },
-    validate (quiz) {
-      // ensure no empty values in any questions or any question options
-      if (!quiz.title) return false
-      for (let i = 0; i < quiz.questions.length; i++) {
-        if (!quiz.questions[i].text) return false
-        for (let j = 0; j < quiz.questions[i].questionOptions.length; j++) {
-          if (!quiz.questions[i].questionOptions[j].text) return false
-        }
-      }
-      return true
     }
   }
 }
