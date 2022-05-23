@@ -10,22 +10,7 @@
           alt="Profile picture"
           :src="imgUrl"
           width="500" />
-        <br />
-        <h2 class="username field">
-          <b-icon icon="person-fill"></b-icon> {{user.username}}
-          <span
-            v-if="this.$store.state.user.isAdmin"
-            style="color:green;">(admin)
-          </span>
-        </h2>
-        <br />
-        <h4 class="field">
-          <b-icon icon="gift"></b-icon> {{getFormattedDate(user.birthdate) || 'No birthday added.'}}
-        </h4>
-        <br />
-        <h4 class="field" >
-          <b-icon icon="tags"></b-icon> {{user.location || 'No location added.'}}
-        </h4>
+        <details-view :user="user" />
       </b-col>
       <b-col
         md="6"
@@ -45,19 +30,18 @@
       buttonColor="blue">Edit
     </base-button>
   </base-panel>
-  <a href="#"
-    @click="deleteUser($store.state.user.id)"
-    v-if="$store.state.user.id == user.id || $store.state.user.isAdmin"
-    class="delete-profile">delete profile</a>
+  <delete :userId="this.$store.state.route.params.userId" />
 </div>
 </template>
 
 <script>
 import BasePanel from '@/components/ui/BasePanel'
 import BaseButton from '@/components/ui/BaseButton'
+import Delete from './Delete'
+import DetailsView from './DetailsView'
 import UsersService from '@/services/UsersService'
 import navigateToMixin from '@/mixins/navigateToMixin'
-import dateFormat from 'dateformat'
+
 /**
  * Component for profile page view.
  */
@@ -84,7 +68,7 @@ export default {
     }
   },
   components: {
-    BasePanel, BaseButton
+    BasePanel, BaseButton, Delete, DetailsView
   },
   mixins: [navigateToMixin],
   computed: {
@@ -95,33 +79,6 @@ export default {
     imgUrl () {
       return this.user.blobUrl ? 'data:' + this.user.imageType + ';charset=utf-8;base64,' +
         this.user.blobUrl : require('@/assets/default_profile_picture.png')
-    }
-  },
-  methods: {
-    /**
-     * Attempt to delete user.
-     */
-    async deleteUser (userId) {
-      try {
-        // make user manually type "DELETE" before proceeding with deletion
-        const text = await this.$prompt('This is non-reversible! Type "DELETE" to delete your account forever.')
-        if (text === 'DELETE') {
-          // delete user
-          await UsersService.delete(userId)
-          // clear user and return to root page on delete
-          this.navigateTo({ name: 'root' })
-          this.$store.dispatch('setToken', null)
-          this.$store.dispatch('setUser', null)
-        }
-      } catch (err) {
-        if (err) console.log(err)
-      }
-    },
-    /**
-     * Return formatted date for display.
-     */
-    getFormattedDate (date) {
-      return dateFormat(date, 'mmmm dS, yyyy')
     }
   }
 }
@@ -145,11 +102,5 @@ textarea {
   height: 80%;
   box-shadow: 5px 5px 5px grey;
   background-color: #ececec;
-}
-.delete-profile {
-  color: gray;
-}
-.delete-profile:hover {
-  color: lightgray;
 }
 </style>
