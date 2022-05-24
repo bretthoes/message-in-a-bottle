@@ -27,7 +27,7 @@ export default {
       name: 'ImageUpload',
       allowedFileTypes: ['image/jpeg', 'image/png', 'image/jpg'],
       error: null,
-      tempFile: null
+      previewImage: null
     }
   },
   props: {
@@ -41,13 +41,11 @@ export default {
     }
   },
   computed: {
-    // computed property to load user profile image after user is defined
+    // computed property to load user profile image after user is defined, will preferentailly load preview image if valid
     imgUrl () {
-      if (this.tempFile) return URL.createObjectURL(this.tempFile)
+      if (this.previewImage) return URL.createObjectURL(this.previewImage)
       if (this.user.blobUrl) return 'data:' + this.user.imageType + ';charset=utf-8;base64,' + this.user.blobUrl
       else return require('@/assets/default_profile_picture.png')
-      // return this.user.blobUrl ? 'data:' + this.user.imageType + ';charset=utf-8;base64,' +
-      //   this.user.blobUrl : require('@/assets/default_profile_picture.png')
     }
   },
   methods: {
@@ -55,8 +53,10 @@ export default {
      * Selects uploaded file from user.
      */
     selectFile (event) {
+      // validate image before update emit
       if (this.validateImageUpload(event.target.files[0])) {
-        this.tempFile = event.target.files[0]
+        // update preview image
+        this.previewImage = event.target.files[0]
         this.$emit('updateImage', event.target.files[0])
       }
     },
