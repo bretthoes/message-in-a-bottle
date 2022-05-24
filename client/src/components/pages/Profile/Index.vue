@@ -8,8 +8,7 @@
         <img
           class="profile-picture"
           alt="Profile picture"
-          :src="imgUrl"
-          width="500" />
+          :src="imgUrl" />
         <details-view :user="user" />
       </b-col>
       <b-col
@@ -93,8 +92,10 @@ export default {
 .profile-picture {
   border-radius: 300px;
   margin-bottom: 16px;
-  max-width: 100%;
   box-shadow: 5px 5px 5px grey;
+  width: 400px;
+  height: 400px;
+  object-fit: cover;
 }
 textarea {
   resize: none;

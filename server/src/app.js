@@ -12,7 +12,8 @@ const config = require('./config/config')
 const _ = require("lodash")
 const app = express()
 app.use(morgan('combined'))
-app.use(bodyParser.json())
+app.use(bodyParser.json({limit: '5mb'}))
+app.use(bodyParser.urlencoded({limit: '5mb', extended: true}));
 app.use(fileUpload())
 const router = express.Router();
 router.get('/', function(req, res, next){
