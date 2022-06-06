@@ -1,10 +1,10 @@
 <template>
   <div v-if="quiz">
-    <div v-if="answerKey.length < quiz.Questions.length">
+    <div v-if="answers.length < quiz.Questions.length">
     <h2>{{ quiz.title }}</h2>
     <quiz-container>
         <question-header>
-          <p>{{ answerKey.length + 1 }} / {{ quiz.Questions.length }}</p>
+          <p>{{ answers.length + 1 }} / {{ quiz.Questions.length }}</p>
           <h2>{{ currentQuestion.text }}</h2>
         </question-header>
         <question-options>
@@ -14,22 +14,22 @@
             :option="option"
             :index="index"
             :quiz="quiz"
-            :answerKey="answerKey"
-            @addAnswer="(anwser) => answerKey += anwser">
+            :answers="answers"
+            @addAnswer="(anwser) => answers += anwser">
           </question-option>
         </question-options>
         <question-footer
           :quiz="quiz"
-          :answerKey="answerKey"
-          @back="answerKey = answerKey.slice(0, answerKey.length - 1)">
+          :answers="answers"
+          @back="answers = answers.slice(0, answers.length - 1)">
         </question-footer>
       </quiz-container>
     </div>
     <results-view
       v-else
       :quiz="quiz"
-      :answerKey="answerKey"
-      @clearAnswers="answerKey = ''">
+      :answers="answers"
+      @clearAnswers="answers = ''">
     </results-view>
   </div>
 </template>
@@ -56,7 +56,7 @@ export default {
   data () {
     return {
       quiz: null,
-      answerKey: ''
+      answers: ''
     }
   },
   /**
@@ -75,7 +75,7 @@ export default {
       const quizResponseOnLoad = (await QuizResponsesService.show(params)).data
       // if found, set existing answer key for user to view their responses
       if (quizResponseOnLoad) {
-        this.answerKey = quizResponseOnLoad.answerKey
+        this.answers = quizResponseOnLoad.answers
       }
     } catch (err) {
       console.log(err)
@@ -83,7 +83,7 @@ export default {
   },
   computed: {
     currentQuestion () {
-      return this.quiz.Questions[this.answerKey.length]
+      return this.quiz.Questions[this.answers.length]
     }
   },
   mixins: [navigateToMixin]

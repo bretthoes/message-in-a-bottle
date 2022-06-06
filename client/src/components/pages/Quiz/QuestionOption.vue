@@ -1,5 +1,5 @@
 <template>
-  <div class="question-option" @click="$emit('addAnswer', index)">
+  <div class="question-option" @click="nextQuestion(index)">
     <div style="float:left;padding-left:10px;">
       {{ index + 1 }}.
     </div>
@@ -31,11 +31,18 @@ export default {
     }
   },
   methods: {
+    async nextQuestion (choice) {
+      // submit if we're answering the last question
+      if (this.answerKey.length === this.quiz.Questions.length - 1) {
+        // send complete answer key to submit
+        await this.submitQuiz(this.answerKey + choice)
+      } else this.$emit('addAnswer', choice) // send choice back to parent to update answer key
+    },
     async submitQuiz (answers) {
       const confirmed = await this.$confirm('Submit Quiz?')
-      if (confirmed) {
+      // ensure user confirmed submit and valid input
+      if (confirmed && answers.length === this.quiz.Questions.length) {
         try {
-          console.log('submitted...')
           // insert or update quiz response
           const quizResponse = {
             'userId': this.$store.state.user.id,

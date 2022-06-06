@@ -19,7 +19,7 @@ import QuizResponsesService from '@/services/QuizResponsesService'
  * the particular quiz.
  */
 export default {
-  name: 'Quiz',
+  name: 'Reset',
   props: {
     quiz: {
       type: Object,
@@ -34,8 +34,8 @@ export default {
     async resetQuiz () {
       const confirmed = await this.$confirm('Resetting this quiz will delete any matches from your results. Are you sure you want to continue?')
       if (confirmed) {
-        // delete QuizResponse
         try {
+          // delete QuizResponse
           await QuizResponsesService.delete({'userId': this.$store.state.user.id, 'quizId': this.quiz.id})
           // reset answer key in parent on reset
           this.$emit('clearAnswers')
