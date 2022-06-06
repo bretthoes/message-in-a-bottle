@@ -17,6 +17,7 @@
         </base-button>
       </div>
     </div>
+    <footer-waves></footer-waves>
   </div>
 </template>
 
@@ -24,6 +25,7 @@
 import BaseButton from '@/components/ui/BaseButton'
 import BaseTitle from '@/components/ui/BaseTitle'
 import navigateToMixin from '@/mixins/navigateToMixin'
+import FooterWaves from '@/components/layout/FooterWaves'
 /**
  * Component for view displayed after user submits a quiz.
  */
@@ -31,7 +33,7 @@ export default {
   name: 'QuizSubmitted',
   mixins: [navigateToMixin],
   components: {
-    BaseButton, BaseTitle
+    BaseButton, BaseTitle, FooterWaves
   }
 }
 </script>
