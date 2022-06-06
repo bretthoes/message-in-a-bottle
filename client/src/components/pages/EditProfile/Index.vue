@@ -4,7 +4,7 @@
       <b-col
         md="6"
         sm="12">
-        <image-upload :user="user" :file="file" @updateImage="(newImage) => this.file = newImage"/>
+        <image-upload :user="user" :file="file" @updateImage="(newImage) => file = newImage"/>
         <h2>
           <b-icon icon="person-fill"> </b-icon>
           <input
