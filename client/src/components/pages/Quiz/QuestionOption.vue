@@ -1,5 +1,7 @@
 <template>
-  <div class="question-option" @click="nextQuestion(index)">
+  <div
+    class="question-option"
+    @click="nextQuestion(index)">
     <div style="float:left;padding-left:10px;">
       {{ index + 1 }}.
     </div>

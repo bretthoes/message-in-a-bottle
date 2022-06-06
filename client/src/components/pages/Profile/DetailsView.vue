@@ -5,7 +5,8 @@
     <b-icon icon="person-fill"></b-icon> {{user.username}}
     <span
       v-if="this.$store.state.user.isAdmin"
-      style="color:green;">(admin)
+      style="color:green;">
+      (admin)
     </span>
   </h2>
   <br />

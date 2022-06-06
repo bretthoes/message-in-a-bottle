@@ -4,8 +4,13 @@
       <b>Final question!</b> Choosing an option above will submit quiz.
     </p>
     <div class="footer-buttons">
-      <button @click="$emit('back')" class="back">Back</button> <!-- TODO replace these with BaseButton to abstract styles better -->
-      <button @click="navigateTo({ name: 'quizzes' })" class="exit">
+      <button
+        @click="$emit('back')"
+        class="back">Back
+      </button>
+      <button
+        @click="navigateTo({ name: 'quizzes' })"
+        class="exit">
         Exit
       </button>
     </div>

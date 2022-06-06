@@ -4,7 +4,8 @@
     <h2>You already submitted this quiz!</h2>
     <h4>your answers:</h4>
     <ul>
-      <li v-for="(question, index) in quiz.Questions" :key="index">
+      <li v-for="(question, index) in quiz.Questions"
+        :key="index">
         {{ index + 1 }}. {{ question.text }}
         <ul>
           <li
@@ -17,8 +18,15 @@
         </ul>
       </li>
     </ul>
-    <a href="#" @click="navigateTo({ name: 'quizzes' })">back to quizzes</a>
-    <reset :quiz="quiz" @clearAnswers="$emit('clearAnswers')"></reset>
+    <a
+      href="#"
+      @click="navigateTo({ name: 'quizzes' })">
+      back to quizzes
+    </a>
+    <reset
+      :quiz="quiz"
+      @clearAnswers="$emit('clearAnswers')">
+    </reset>
   </div>
 </template>
 <script>

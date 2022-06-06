@@ -2,7 +2,9 @@
   <div>
     <br /><br />
     <!-- TODO: abstract with base button -->
-    <button @click="resetQuiz()" class="btn btn-outline-danger">
+    <button
+      @click="resetQuiz()"
+      class="btn btn-outline-danger">
       Reset Quiz
     </button>
     <br /><br />

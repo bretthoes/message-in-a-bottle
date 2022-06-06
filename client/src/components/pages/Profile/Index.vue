@@ -19,14 +19,16 @@
           v-model="user.biography"
           class="bio"
           readonly
-          placeholder="No bio added yet..."></textarea>
+          placeholder="No bio added yet...">
+        </textarea>
       </b-col>
     </b-row>
     <base-button
       @click="navigateTo({ name: 'user-edit', params: { userId: user.id }})"
       v-if="$store.state.user.id == user.id"
       buttonPosition="right"
-      buttonColor="blue">Edit
+      buttonColor="blue">
+      Edit
     </base-button>
   </base-panel>
   <delete :userId="this.$store.state.route.params.userId" />
