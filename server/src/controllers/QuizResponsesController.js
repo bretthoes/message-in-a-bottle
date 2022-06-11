@@ -14,7 +14,7 @@ module.exports = {
   async put (req, res) {
     try {
       // check if user has response to given quiz already
-      // TODO extract logic to policy
+      // TODO extract logic to policy or find create or update
       const foundQuizResponse = await QuizResponse.findOne({
         where: {
           UserId: req.body.userId,
@@ -31,7 +31,7 @@ module.exports = {
         })
         return res.send(quizResponse)
       } else {
-        // item found, update
+        // item found, update answer key with new response
         quizResponse = await QuizResponse.update({
           answerKey: req.body.answerKey
         }, {

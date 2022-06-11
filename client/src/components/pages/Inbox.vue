@@ -121,6 +121,7 @@ import BaseTitle from '@/components/ui/BaseTitle'
 import UsersService from '@/services/UsersService'
 import QuizResponsesService from '@/services/QuizResponsesService'
 import QuizzesService from '@/services/QuizzesService'
+import MessagesService from '@/services/MessagesService'
 import navigateToMixin from '@/mixins/navigateToMixin'
 import dateFormat from 'dateformat'
 import io from 'socket.io-client'
@@ -138,6 +139,7 @@ export default {
       rooms: [],
       matchProfiles: [],
       messages: [],
+      messagesFromDb: [],
       currentChatMatchName: '',
       currentChatQuizTitle: '',
       message: '',
@@ -230,7 +232,7 @@ export default {
      * Attempt send mesage to specified room
      * containing selected match.
      */
-    sendMessage () {
+    async sendMessage () {
       // ensure message is not blank before send
       if (this.message.trim() !== '') {
         // send message to socket
@@ -240,6 +242,14 @@ export default {
           message: this.message,
           roomId: this.matchId,
           timestamp: new Date()
+        })
+        // save message in database
+        const recipientId = this.matchProfiles.find(p => p.id === this.matches[this.activeIndex].UserId).id
+        await MessagesService.post({
+          roomId: this.matchId,
+          senderId: this.$store.state.user.id,
+          recipientId: recipientId,
+          text: this.message
         })
         // reset message input
         this.message = ''
@@ -289,7 +299,7 @@ export default {
       // no need to switch chats if we're already on the user
       if (this.activeIndex !== index) {
         // toggle active match to add background color
-        this.toggle(index)
+        this.activeIndex = index
         // update current chat culture
         this.currentChatMatchName = this.getUsernameById(match.UserId)
         this.currentChatQuizTitle = this.getQuizTitleById(match.QuizId)
@@ -304,12 +314,6 @@ export default {
       // connecting to private room
       const userIds = [matchedUserId, thisUserId].sort((a, b) => a - b)
       return userIds.join('').toString() + quizId.toString()
-    },
-    /**
-     * Set current chat culture.
-     */
-    toggle (index) {
-      this.activeIndex = index
     }
   }
 }

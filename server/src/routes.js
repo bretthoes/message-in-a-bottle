@@ -6,6 +6,7 @@ const AuthenticationControllerPolicy = require('./policies/AuthenticationControl
 const QuizzesController = require('./controllers/QuizzesController')
 const QuizResponsesController = require('./controllers/QuizResponsesController')
 const UsersController = require('./controllers/UsersController')
+const MessageController = require('./controllers/MessagesController')
 
 // define all routes
 module.exports = (app) => {
@@ -65,4 +66,14 @@ module.exports = (app) => {
 
   app.delete('/users/:userId',
     UsersController.destroy)
+
+  // Messages controller routes
+  app.get('/messages',
+    MessageController.index)
+
+  app.post('/messages',
+    MessageController.post)
+
+  app.delete('/messages/:roomId',
+    MessageController.destroy)
 }
