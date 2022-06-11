@@ -14,6 +14,7 @@ module.exports = {
   async put (req, res) {
     try {
       // check if user has response to given quiz already
+      // TODO extract logic to policy
       const foundQuizResponse = await QuizResponse.findOne({
         where: {
           UserId: req.body.userId,
