@@ -68,7 +68,7 @@ module.exports = (app) => {
     UsersController.destroy)
 
   // Messages controller routes
-  app.get('/messages',
+  app.get('/messages/:userId',
     MessageController.index)
 
   app.post('/messages',

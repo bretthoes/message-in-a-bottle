@@ -80,16 +80,16 @@
             <div class="chat-screen">
               <div
                 class="message-container"
-                v-for="(m, index) in formattedMessages"
+                v-for="(message, index) in formattedMessages"
                 :key="index"
-                v-bind:class="{ self: m.userId === $store.state.user.id }">
-                <div class="message" v-if="m.roomId === matchId">
-                  {{ m.message }}
+                v-bind:class="{ self: message.senderId === $store.state.user.id }">
+                <div class="message" v-if="message.roomId === matchId">
+                  {{ message.text }}
                 </div>
                 <span
                   class="timestamp"
-                  v-if="m.roomId === matchId">
-                  {{ getFormattedTimestamp(m.timestamp) }}
+                  v-if="message.roomId === matchId">
+                  {{ getFormattedTimestamp(message.createdAt) }}
                 </span>
               </div>
             </div>
@@ -139,7 +139,6 @@ export default {
       rooms: [],
       matchProfiles: [],
       messages: [],
-      messagesFromDb: [],
       currentChatMatchName: '',
       currentChatQuizTitle: '',
       message: '',
@@ -169,21 +168,29 @@ export default {
       // redirect home if not logged in
       if (!this.$store.state.isUserLoggedIn) this.navigateTo({ name: 'root' })
       this.matches = (await QuizResponsesService.index(this.$store.state.user.id)).data
+
       // only fetch user and quiz data and
       // set up socket if user has matches
       if (this.matches.length > 0) {
         // query users table to get usernames for display in list above instead of ids
         const matchedUserIds = this.matches.map(m => m.UserId)
         this.matchProfiles = (await UsersService.index(matchedUserIds)).data
+
         //  query quizzes table to get quiz names for display in match list
         const quizIds = this.matches.map(m => m.QuizId)
         this.quizzes = (await QuizzesService.index(quizIds)).data
+
         // uniquely create array of rooms from match info
         for (const match of this.matches) {
           this.rooms.push(this.getRoomId(match.QuizId, match.UserId, this.$store.state.user.id))
         }
+
+        // get existing messages for all matches from database for this user
+        this.messages = (await MessagesService.index(this.$store.state.user.id)).data
+
         // declare queryParams to send to server
         const queryParams = { userId: this.$store.state.user.id, rooms: this.rooms }
+
         // join all match chat rooms
         this.socket = io(process.env.BASE_URL, {
           transports: ['websocket'],
@@ -237,11 +244,10 @@ export default {
       if (this.message.trim() !== '') {
         // send message to socket
         this.socket.emit('SEND_MESSAGE', {
-          username: this.$store.state.user.username,
-          userId: this.$store.state.user.id,
-          message: this.message,
+          senderId: this.$store.state.user.id,
+          text: this.message,
           roomId: this.matchId,
-          timestamp: new Date()
+          createdAt: new Date()
         })
         // save message in database
         const recipientId = this.matchProfiles.find(p => p.id === this.matches[this.activeIndex].UserId).id

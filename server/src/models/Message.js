@@ -1,7 +1,7 @@
 module.exports = (sequelize, DataTypes) => {
   const Message = sequelize.define('Message', {
     roomId: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.STRING,
       allowNull: false
     },
     senderId: {
