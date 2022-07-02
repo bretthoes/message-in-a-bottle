@@ -13,17 +13,33 @@ module.exports = {
   async index (req, res) {
     try {
       // check for params
-      let empty
-      for (const q in req.query) empty = false
-      empty = true
+      let empty = true
+      for (const param in req.query) empty = false
       let users
       // if no params, return all users
       if (empty) {
         users = await User.findAll()
       } else { // if params, return matched users
         users = await User.findAll({
+          attributes: { 
+            exclude: [
+              'password',
+              'blobUrl',
+              'isAdmin',
+              'biography',
+              'resetLink',
+              'createdAt',
+              'updatedAt',
+              'imageType',
+              'isActive',
+              'birthdate',
+              'location',
+              'email'
+            ]
+          },
           where: {
-            id: req.query.matchIds
+            id: req.query.matchIds,
+            isActive: true
           }
         })
       }      

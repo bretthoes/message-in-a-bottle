@@ -1,5 +1,5 @@
 {
-  "name": "capstone",
+  "name": "message-in-a-bottle",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -12,12 +12,12 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/bretthoes/capstone.git"
+    "url": "git+https://github.com/bretthoes/message-in-a-bottle.git"
   },
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/bretthoes/capstone/issues"
+    "url": "https://github.com/bretthoes/message-in-a-bottle/issues"
   },
-  "homepage": "https://github.com/bretthoes/capstone#readme"
+  "homepage": "https://github.com/bretthoes/message-in-a-bottle#readme"
 }

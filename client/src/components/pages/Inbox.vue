@@ -6,15 +6,17 @@
       <div class="row">
         <div class="left col-md-4 col-sm-12">
           <h3 style="text-align:left;">Matches</h3>
-          <ul class="match-container">
+          <ul class="match-container" v-if="matches.length">
             <li
               v-for="(match, index) in matches"
               :key="index"
-              @click="setCurrentChatCulture(match, index)"
+              @click="activeIndex = index"
               :class="{ active: index === activeIndex }"
               class="matched-user"
             >
-              {{ getUsernameById(match.UserId) }}
+              <span v-if="matchProfiles[index]">
+                {{ matchProfiles[index].username }}
+              </span>
               <span v-if="onlineUsers[match.UserId]">
                 <!-- get online status here using userId -->
                 <b-icon
@@ -36,16 +38,14 @@
               </span>
             </li>
           </ul>
-          <h5 style="text-align:center;" v-if="matches.length === 0">
+          <h5 v-else style="text-align:center;">
             No matches!
           </h5>
         </div>
         <div class="col-md-8 col-sm-12">
           <h3>Chat</h3>
           <!-- TODO use a tag below to navigate to quiz response AND to user profile -->
-          <div
-            v-if="currentChatMatchName !== '' && currentChatQuizTitle !== ''"
-          >
+          <div v-if="activeIndex !== null">
             <h4>
               Chatting with
               <a
@@ -53,26 +53,26 @@
                   navigateTo({
                     name: 'user',
                     params: {
-                      userId: getIdByUsername(currentChatMatchName)
+                      userId: matchProfiles[activeIndex].id
                     }
                   })
                 "
                 href="#"
                 class="title-link"
-                >{{ currentChatMatchName }}</a
+                >{{ matchProfiles[activeIndex].username }}</a
               >, you matched on:
               <a
                 @click="
                   navigateTo({
                     name: 'quiz',
                     params: {
-                      quizId: getQuizIdByTitle(currentChatQuizTitle)
+                      quizId: matches[activeIndex].QuizId
                     }
                   })
                 "
                 href="#"
                 class="title-link"
-                >{{ currentChatQuizTitle }}
+                >{{ getQuizTitleById(matches[activeIndex].QuizId) }}
               </a>
             </h4>
           </div>
@@ -99,10 +99,10 @@
                   placeholder="Send message..."
                   type="text"
                   v-model="message"
-                  :disabled="currentChatMatchName === ''"
+                  :disabled="!Number.isFinite(activeIndex)"
                 ></b-form-input>
                 <b-input-group-append>
-                  <button type="submit" :disabled="currentChatMatchName === ''">
+                  <button type="submit" :disabled="!Number.isFinite(activeIndex)">
                     Send
                   </button>
                 </b-input-group-append>
@@ -140,9 +140,7 @@ export default {
       matchProfiles: [],
       messages: [],
       currentChatMatchName: '',
-      currentChatQuizTitle: '',
       message: '',
-      matchId: 0,
       activeIndex: null
     }
   },
@@ -171,7 +169,7 @@ export default {
 
       // only fetch user and quiz data and
       // set up socket if user has matches
-      if (this.matches.length > 0) {
+      if (this.matches.length) {
         // query users table to get usernames for display in list above instead of ids
         const matchedUserIds = this.matches.map(m => m.UserId)
         this.matchProfiles = (await UsersService.index(matchedUserIds)).data
@@ -232,6 +230,11 @@ export default {
      */
     formattedMessages () {
       return this.messages.slice().reverse()
+    },
+    matchId () {
+      return this.activeIndex !== null
+        ? this.getRoomId(this.matches[this.activeIndex].QuizId, this.matches[this.activeIndex].UserId, this.$store.state.user.id)
+        : 0
     }
   },
   methods: {
@@ -261,23 +264,7 @@ export default {
         this.message = ''
       }
     },
-    /* various getters/setters for use on page */
-    /**
-     * Get username from id in matchProfiles.
-     */
-    getUsernameById (id) {
-      const user = this.matchProfiles.find(p => p.id === id)
-      if (user) return user.username
-      else return ''
-    },
-    /**
-     * Get id from username in matchProfiles.
-     */
-    getIdByUsername (username) {
-      const user = this.matchProfiles.find(p => p.username === username)
-      if (user) return user.id
-      else return 0
-    },
+    /* various getters for use on page */
     /**
      * Get quiz title from id in quizzes.
      */
@@ -298,23 +285,9 @@ export default {
     getFormattedTimestamp (now) {
       return dateFormat(now, 'h:MM TT')
     },
-    /**
-     * Set matched user and quiz name for display in chat.
-     */
-    setCurrentChatCulture (match, index) {
-      // no need to switch chats if we're already on the user
-      if (this.activeIndex !== index) {
-        // toggle active match to add background color
-        this.activeIndex = index
-        // update current chat culture
-        this.currentChatMatchName = this.getUsernameById(match.UserId)
-        this.currentChatQuizTitle = this.getQuizTitleById(match.QuizId)
-        this.matchId = this.getRoomId(match.QuizId, match.UserId, this.$store.state.user.id)
-      }
-    },
     // generate unique match id for private room creation.
     // concatenates both userIds of a match and adds
-    // quizId to string to create unique matchid for room
+    // quizId to string to create unique id for room
     getRoomId (quizId, matchedUserId, thisUserId) {
       // sort ids to ensure strings are identical for both users
       // connecting to private room
