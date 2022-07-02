@@ -14,8 +14,8 @@
               :class="{ active: index === activeIndex }"
               class="matched-user"
             >
-              <span v-if="matchProfiles[index]">
-                {{ matchProfiles[index].username }}
+              <span v-if="matches[index]">
+                {{ matches[index].username }}
               </span>
               <span v-if="onlineUsers[match.UserId]">
                 <!-- get online status here using userId -->
@@ -53,13 +53,13 @@
                   navigateTo({
                     name: 'user',
                     params: {
-                      userId: matchProfiles[activeIndex].id
+                      userId: matches[activeIndex].id
                     }
                   })
                 "
                 href="#"
                 class="title-link"
-                >{{ matchProfiles[activeIndex].username }}</a
+                >{{ matches[activeIndex].username }}</a
               >, you matched on:
               <a
                 @click="
@@ -118,7 +118,6 @@
 <script>
 import BasePanel from '@/components/ui/BasePanel'
 import BaseTitle from '@/components/ui/BaseTitle'
-import UsersService from '@/services/UsersService'
 import QuizResponsesService from '@/services/QuizResponsesService'
 import QuizzesService from '@/services/QuizzesService'
 import MessagesService from '@/services/MessagesService'
@@ -137,7 +136,6 @@ export default {
       matches: [],
       quizzes: [],
       rooms: [],
-      matchProfiles: [],
       messages: [],
       currentChatMatchName: '',
       message: '',
@@ -167,13 +165,8 @@ export default {
       if (!this.$store.state.isUserLoggedIn) this.navigateTo({ name: 'root' })
       this.matches = (await QuizResponsesService.index(this.$store.state.user.id)).data
 
-      // only fetch user and quiz data and
       // set up socket if user has matches
       if (this.matches.length) {
-        // query users table to get usernames for display in list above instead of ids
-        const matchedUserIds = this.matches.map(m => m.UserId)
-        this.matchProfiles = (await UsersService.index(matchedUserIds)).data
-
         //  query quizzes table to get quiz names for display in match list
         const quizIds = this.matches.map(m => m.QuizId)
         this.quizzes = (await QuizzesService.index(quizIds)).data
@@ -253,7 +246,9 @@ export default {
           createdAt: new Date()
         })
         // save message in database
-        const recipientId = this.matchProfiles.find(p => p.id === this.matches[this.activeIndex].UserId).id
+        const recipientId = this.matches
+          .find(m => m.UserId === this.matches[this.activeIndex].UserId)
+          .UserId
         await MessagesService.post({
           roomId: this.matchId,
           senderId: this.$store.state.user.id,

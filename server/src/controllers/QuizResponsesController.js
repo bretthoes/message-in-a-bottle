@@ -64,8 +64,9 @@ module.exports = {
         // raw custom query to get all matches for a given user
         // TODO replace with sequelize self join statement
         const matches = await sequelize.query(
-          'SELECT A.:UserId AS UserId, A.:QuizId ' +
+          'SELECT A.:UserId, A.:QuizId, U.:username ' +
           'FROM QuizResponses A, QuizResponses B ' +
+          'INNER JOIN Users U ON U.:id = A.:UserId ' +
           'WHERE A.:answerKey = B.:answerKey ' +
           'AND A.:QuizId = B.:QuizId ' +
           'AND A.:UserId != B.:UserId ' +
@@ -77,6 +78,8 @@ module.exports = {
               answerKey: 'answerKey',
               QuizId: 'QuizId',
               UserId: 'UserId',
+              username: 'username',
+              id: 'id',
               currentUserId: req.params.userId,
             }
           }
