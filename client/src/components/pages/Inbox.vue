@@ -4,7 +4,7 @@
     <br />
     <base-panel>
       <div class="row">
-        <div class="left col-md-4 col-sm-12">
+        <div class="col-md-4 col-sm-12">
           <h3 style="text-align:left;">Matches</h3>
           <ul class="match-container" v-if="matches.length">
             <li
@@ -118,6 +118,7 @@
 <script>
 import BasePanel from '@/components/ui/BasePanel'
 import BaseTitle from '@/components/ui/BaseTitle'
+import BaseButton from '@/components/ui/BaseButton'
 import QuizResponsesService from '@/services/QuizResponsesService'
 import QuizzesService from '@/services/QuizzesService'
 import MessagesService from '@/services/MessagesService'
@@ -135,15 +136,13 @@ export default {
       onlineUsers: {},
       matches: [],
       quizzes: [],
-      rooms: [],
       messages: [],
-      currentChatMatchName: '',
       message: '',
       activeIndex: null
     }
   },
   components: {
-    BasePanel, BaseTitle
+    BasePanel, BaseTitle, BaseButton
   },
   mixins: [navigateToMixin],
   /**
@@ -172,20 +171,21 @@ export default {
         this.quizzes = (await QuizzesService.index(quizIds)).data
 
         // uniquely create array of rooms from match info
+        const rooms = []
         for (const match of this.matches) {
-          this.rooms.push(this.getRoomId(match.QuizId, match.UserId, this.$store.state.user.id))
+          rooms.push(this.getRoomId(match.QuizId, match.UserId, this.$store.state.user.id))
         }
 
         // get existing messages for all matches from database for this user
         this.messages = (await MessagesService.index(this.$store.state.user.id)).data
 
-        // declare queryParams to send to server
-        const queryParams = { userId: this.$store.state.user.id, rooms: this.rooms }
-
         // join all match chat rooms
         this.socket = io(process.env.BASE_URL, {
           transports: ['websocket'],
-          query: queryParams,
+          query: {
+            userId: this.$store.state.user.id,
+            rooms: rooms
+          },
           reconnection: false,
           rejectUnauthorized: false
         })
@@ -194,6 +194,10 @@ export default {
           // user online
           this.socket.on('online', (users) => {
             this.onlineUsers = users
+            console.log(users['4'])
+            console.log(JSON.stringify(users[0]))
+            console.log('users= ' + JSON.stringify(users))
+            console.log('matches= ' + JSON.stringify(this.matches))
           })
           // user offline
           this.socket.on('offline', (users) => {
@@ -225,7 +229,7 @@ export default {
       return this.messages.slice().reverse()
     },
     matchId () {
-      return this.activeIndex !== null
+      return Number.isFinite(this.activeIndex)
         ? this.getRoomId(this.matches[this.activeIndex].QuizId, this.matches[this.activeIndex].UserId, this.$store.state.user.id)
         : 0
     }
@@ -302,15 +306,11 @@ h3 {
   font-weight: 900;
   display: block;
 }
-.left {
-  border-right: 2px solid #65a8c48c;
-}
 .matched-user {
   padding: 14px;
   border-bottom: 4px solid #e6e6e6;
   font-size: 22px;
   font-family: "Montserrat", sans-serif;
-  list-style-type: none;
 }
 .matched-user:hover {
   background-color: #B1D3E1;
@@ -322,6 +322,9 @@ h3 {
 }
 .match-container {
   border-top: 4px solid #e6e6e6;
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
 }
 .chat-screen {
   background-color: white;
