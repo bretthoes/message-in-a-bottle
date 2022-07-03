@@ -194,10 +194,6 @@ export default {
           // user online
           this.socket.on('online', (users) => {
             this.onlineUsers = users
-            console.log(users['4'])
-            console.log(JSON.stringify(users[0]))
-            console.log('users= ' + JSON.stringify(users))
-            console.log('matches= ' + JSON.stringify(this.matches))
           })
           // user offline
           this.socket.on('offline', (users) => {
