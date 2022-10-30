@@ -5,7 +5,7 @@
         md="6"
         sm="12">
         <image-upload :user="user" :file="file" @updateImage="(newImage) => file = newImage"/>
-        <h2>
+        <h4>
           <b-icon icon="person-fill"></b-icon>
           <input
             type="text"
@@ -13,7 +13,7 @@
             minlength="4"
             maxlength="16"
           />
-        </h2>
+        </h4>
         <br />
         <h4>
           <b-icon icon="gift"></b-icon>
@@ -94,6 +94,9 @@ export default {
 .row {
   padding: 12px;
   text-align: left;
+}
+input {
+  width: 80%;
 }
 textarea {
   resize: none;
