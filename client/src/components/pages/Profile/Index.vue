@@ -5,7 +5,7 @@
       <b-col
         md="6"
         sm="12">
-        <profile-picture-view :imgUrl="imgUrl" />
+        <profile-picture-view :user="user" />
         <details-view :user="user" />
       </b-col>
       <b-col
@@ -70,17 +70,7 @@ export default {
   components: {
     BasePanel, BaseButton, Delete, DetailsView, ProfilePictureView
   },
-  mixins: [navigateToMixin],
-  computed: {
-    /**
-     * Load user profile image after user is defined.
-     * Load default avatar image if no profile image.
-     */
-    imgUrl () {
-      return this.user.blobUrl ? 'data:' + this.user.imageType + ';charset=utf-8;base64,' +
-        this.user.blobUrl : require('@/assets/default_profile_picture.png')
-    }
-  }
+  mixins: [navigateToMixin]
 }
 </script>
 
