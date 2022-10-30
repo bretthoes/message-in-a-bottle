@@ -6,7 +6,7 @@
         sm="12">
         <image-upload :user="user" :file="file" @updateImage="(newImage) => file = newImage"/>
         <h2>
-          <b-icon icon="person-fill"> </b-icon>
+          <b-icon icon="person-fill"></b-icon>
           <input
             type="text"
             v-model="user.username"
@@ -15,14 +15,14 @@
           />
         </h2>
         <br />
-        <h4 class="field">
-          <b-icon icon="gift"> </b-icon>
+        <h4>
+          <b-icon icon="gift"></b-icon>
           <input
             type="date"
             v-model="user.birthdate"/>
         </h4>
         <br />
-        <h4 class="field">
+        <h4>
           <b-icon icon="tags"></b-icon>
           <input
             type="text"

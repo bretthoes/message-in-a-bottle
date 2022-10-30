@@ -84,10 +84,10 @@ export default {
 <style scoped>
 .profile-picture {
   border-radius: 300px;
-  margin-bottom: 8px;
+  width: 100%;
+  max-width: 500px;
+  height: auto;
   box-shadow: 5px 5px 5px grey;
-  width: 400px;
-  height: 400px;
   object-fit: cover;
 }
 .error {

@@ -5,10 +5,7 @@
       <b-col
         md="6"
         sm="12">
-        <img
-          class="profile-picture"
-          alt="Profile picture"
-          :src="imgUrl" />
+        <profile-picture-view :imgUrl="imgUrl" />
         <details-view :user="user" />
       </b-col>
       <b-col
@@ -23,6 +20,7 @@
         </textarea>
       </b-col>
     </b-row>
+    <br />
     <base-button
       @click="navigateTo({ name: 'user-edit', params: { userId: user.id }})"
       v-if="$store.state.user.id == user.id"
@@ -40,6 +38,7 @@ import BasePanel from '@/components/ui/BasePanel'
 import BaseButton from '@/components/ui/BaseButton'
 import Delete from './Delete'
 import DetailsView from './DetailsView'
+import ProfilePictureView from './ProfilePictureView'
 import UsersService from '@/services/UsersService'
 import navigateToMixin from '@/mixins/navigateToMixin'
 
@@ -69,7 +68,7 @@ export default {
     }
   },
   components: {
-    BasePanel, BaseButton, Delete, DetailsView
+    BasePanel, BaseButton, Delete, DetailsView, ProfilePictureView
   },
   mixins: [navigateToMixin],
   computed: {
@@ -90,14 +89,6 @@ export default {
 .row {
   padding: 12px;
   text-align: left;
-}
-.profile-picture {
-  border-radius: 300px;
-  margin-bottom: 16px;
-  box-shadow: 5px 5px 5px grey;
-  width: 400px;
-  height: 400px;
-  object-fit: cover;
 }
 textarea {
   resize: none;

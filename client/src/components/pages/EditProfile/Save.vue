@@ -108,5 +108,6 @@ export default {
   flex-direction: row;
   justify-content: flex-end;
   flex-wrap: wrap;
+  padding-top: 12px;
 }
 </style>
