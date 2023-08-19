@@ -14,7 +14,7 @@ import Profile from '@/components/pages/Profile/Index'
 import Quiz from '@/components/pages/Quiz/Index'
 import QuizSubmitted from '@/components/pages/QuizSubmitted'
 import Quizzes from '@/components/pages/Quizzes'
-import Stats from '@/components/pages/stats'
+import Stats from '@/components/pages/Stats'
 
 Vue.use(Router)
 
