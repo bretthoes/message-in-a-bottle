@@ -53,7 +53,7 @@
                   navigateTo({
                     name: 'user',
                     params: {
-                      userId: matches[activeIndex].id
+                      userId: matches[activeIndex].UserId
                     }
                   })
                 "
