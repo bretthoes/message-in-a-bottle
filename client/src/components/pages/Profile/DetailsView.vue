@@ -4,7 +4,7 @@
   <h2 class="username field">
     <b-icon icon="person-fill"></b-icon> {{user.username}}
     <span
-      v-if="this.$store.state.user.isAdmin"
+      v-if="user.isAdmin"
       style="color:green;">
       (admin)
     </span>
