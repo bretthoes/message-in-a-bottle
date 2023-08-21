@@ -27,6 +27,7 @@ app.use(router)
 // use static path for production
 if (process.env.NODE_ENV.trim() === 'production') {
   app.use(express.static(path.join(__dirname, '../dist')))
+  process.env.PORT = 10000
 }
 
 // Pass our app and attach all endpoints
