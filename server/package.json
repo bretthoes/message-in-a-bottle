@@ -6,9 +6,10 @@
   "scripts": {
     "start": "npm run prod",
     "dev": "nodemon src/app.js --exec \"npm run lint && node\"",
-    "prod": "set NODE_ENV=production && node src/app.js",
+    "prod": "set NODE_ENV=production && npm run seed && node src/app.js",
     "lint": "eslint **/*.js",
-    "seed": "node ./seed"
+    "seed": "node ./seed",
+	  "build": "npm i"
   },
   "keywords": [],
   "author": "",
