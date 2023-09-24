@@ -87,18 +87,22 @@
             <div
               class='container'
               style='background-color:#f1f1f1'>
-              <button
-                class='modal-button'
+              <base-button
+                buttonPosition="center"
+                buttonSize="max-wide"
+                buttonColor="blue"
                 @click='register'
                 v-if='isRegister'>
                 Register
-              </button>
-              <button
-                class='modal-button'
+              </base-button>
+              <base-button
+                buttonPosition="center"
+                buttonSize="max-wide"
+                buttonColor="blue"
                 @click='login'
                 v-if='!isRegister'>
                 Login
-              </button>
+              </base-button>
               <span
                 class='psw'
                 v-if='!isRegister'
@@ -119,11 +123,15 @@
 <script>
 import AuthenticationService from '@/services/AuthenticationService'
 import navigateToMixin from '@/mixins/navigateToMixin'
+import BaseButton from '@/components/ui/BaseButton'
 /**
  * Component for conditional login/register modal.
  */
 export default {
   name: 'Modal',
+  components: {
+    BaseButton
+  },
   data () {
     return {
       username: '',
@@ -274,15 +282,6 @@ input[type='password'] {
 input:focus {
   padding: 9px 15px;
   background-color: beige;
-}
-.modal-button {
-  background-color: #006f9e;
-  color: white;
-  padding: 14px 20px;
-  margin: 8px 0;
-  border: none;
-  cursor: pointer;
-  width: 100%;
 }
 .modal-button:hover {
   opacity: 0.8;

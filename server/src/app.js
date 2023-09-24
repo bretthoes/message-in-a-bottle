@@ -25,7 +25,7 @@ app.use(cors())
 app.use(router)
 
 // use static path for production
-if (process.env.NODE_ENV.trim() === 'production') {
+if (process.env.NODE_ENV?.trim() === 'production') {
   app.use(express.static(path.join(__dirname, '../dist')))
   config.port = 10000
 }

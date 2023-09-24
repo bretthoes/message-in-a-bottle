@@ -92,6 +92,9 @@ button {
 .button.ultra-wide {
   width: 50%;
 }
+.button.max-wide {
+  width: 100%;
+}
 .button.circle {
   border-radius: 33px;
   width: 40px;
